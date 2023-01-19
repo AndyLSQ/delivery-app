@@ -28,7 +28,9 @@
 		<RouterView />
 	</main>
 
-	<footer>Footer</footer>
+	<footer>
+		<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
+	</footer>
 </template>
 
 <style scoped>
