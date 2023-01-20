@@ -14,18 +14,22 @@
 </script>
 
 <template>
-	<div class="inner-column">
-		<header v-bind:class="`${route.name} ${ui.menuClass}`">
+	<header v-bind:class="`${route.name} ${ui.menuClass}`">
+		<div class="inner-column">
 			<SiteMenu />
-		</header>
-		<main class="outlet">
+		</div>
+	</header>
+	<main class="outlet">
+		<div class="inner-column">
 			<RouterView />
-		</main>
+		</div>
+	</main>
 
-		<footer>
+	<footer>
+		<div class="inner-column">
 			<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
-		</footer>
-	</div>
+		</div>
+	</footer>
 </template>
 
 <style scoped>
