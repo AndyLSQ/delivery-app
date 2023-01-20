@@ -1,5 +1,6 @@
 <script setup>
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
+	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
 
 	const ui = useInterfaceStore();
@@ -13,24 +14,18 @@
 </script>
 
 <template>
-	<header v-bind:class="`${route.name} ${ui.menuClass}`">
-		<div class="wrapper">
-			<button @click="ui.toggleMenu()" class="menu-toggle">Toggle menu</button>
-			<nav class="site-menu">
-				<RouterLink to="/">Home</RouterLink>
-				<RouterLink to="/dashboard">Dashboard</RouterLink>
-				<RouterLink to="/restaurants">Restaurants</RouterLink>
-				<RouterLink to="/form">Form</RouterLink>
-			</nav>
-		</div>
-	</header>
-	<main class="outlet">
-		<RouterView />
-	</main>
+	<div class="inner-column">
+		<header v-bind:class="`${route.name} ${ui.menuClass}`">
+			<SiteMenu />
+		</header>
+		<main class="outlet">
+			<RouterView />
+		</main>
 
-	<footer>
-		<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
-	</footer>
+		<footer>
+			<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
+		</footer>
+	</div>
 </template>
 
 <style scoped>
