@@ -1,8 +1,10 @@
 <script setup>
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import { useInterfaceStore } from '@/stores/interface';
+	import { useLoginStore } from '@/stores/login';
 
 	const ui = useInterfaceStore();
+	const login = useLoginStore();
 	const route = useRoute();
 </script>
 
@@ -14,6 +16,7 @@
 		<RouterLink to="/restaurants">Restaurants</RouterLink>
 		<RouterLink to="/form">Form</RouterLink>
 	</nav>
+	<button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button>
 </template>
 
 <style scoped>
