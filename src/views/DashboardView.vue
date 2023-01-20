@@ -19,13 +19,4 @@
    .logged-in .logged-out-message {
       display: none;
    }
-   /*   .logged-out .logged-out-message {
-      display: block;
-   }
-   .logged-in .logged-out-message {
-      display: none;
-   }
-   .logged-in .logged-in-message {
-      display: block;
-   }*/
 </style>
