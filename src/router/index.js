@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import RestaurantsView from '../views/RestaurantsView.vue';
+import RestaurantView from '../views/RestaurantView.vue';
+import FormView from '../views/FormView.vue';
+import CartView from '../views/CartView.vue';
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,17 +24,27 @@ const router = createRouter({
       {
          path: '/restaurants',
          name: 'restaurants',
-         component: () => import('../views/RestaurantsView.vue'),
-      },
-      {
-         path: '/form',
-         name: 'form',
-         component: () => import('../views/FormView.vue'),
+         component: RestaurantsView,
       },
       {
          path: '/restaurant/:slug',
          name: 'restaurant',
-         component: () => import('../views/RestaurantView.vue'),
+         component: RestaurantView,
+      },
+      // {
+      //    path: '/restaurant/:slug/:menuItemSlug',
+      //    name: 'restaurant',
+      //    component: RestaurantView,
+      // },
+      {
+         path: '/form',
+         name: 'form',
+         component: FormView,
+      },
+      {
+         path: '/cart',
+         name: 'cart',
+         component: CartView,
       },
    ],
 });

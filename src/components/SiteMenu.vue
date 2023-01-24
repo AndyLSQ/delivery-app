@@ -2,10 +2,12 @@
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useLoginStore } from '@/stores/login';
+	import { useCartStore } from '@/stores/cart';
 
 	const ui = useInterfaceStore();
 	const login = useLoginStore();
 	const route = useRoute();
+	const cart = useCartStore();
 </script>
 
 <template>
@@ -15,6 +17,7 @@
 		<RouterLink to="/dashboard">Dashboard</RouterLink>
 		<RouterLink to="/restaurants">Restaurants</RouterLink>
 		<RouterLink to="/form">Form</RouterLink>
+		<RouterLink to="/cart">cart {{ cart.count }}</RouterLink>
 	</nav>
 	<button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button>
 </template>

@@ -1,0 +1,20 @@
+[
+   {
+      "id": "tbell123",
+      "name": "Taco Bell",
+      "priceLevel": "1",
+      "slug": "taco-bell"
+   },
+   {
+      "id": "chip123",
+      "name": "Chipotle",
+      "priceLevel": "2",
+      "slug": "chipotle"
+   },
+   {
+      "id": "mcd123",
+      "name": "McDonald's",
+      "priceLevel": "2",
+      "slug": "mcdonalds"
+   }
+]

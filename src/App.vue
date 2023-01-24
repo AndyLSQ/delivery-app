@@ -1,8 +1,11 @@
 <script setup>
+	import { onBeforeMount, onMounted } from 'vue';
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
+	import { useRestaurantStore } from '@/stores/restaurants';
 
+	const restaurantsData = useRestaurantStore();
 	const ui = useInterfaceStore();
 	const route = useRoute();
 
@@ -11,6 +14,19 @@
 	//       // do something
 	//    };
 	// }
+
+	// onMounted(function () {
+	// 	console.log('ON BEFORE MOUNT');
+	// 	const data = fetch('https://raw.githubusercontent.com/perpetual-education/restaurants-data/main/data.json');
+	// 	data
+	// 		.then(function (data) {
+	// 			return data.json();
+	// 		})
+	// 		.then(function (json) {
+	// 			restaurantsData.list = json;
+	// 			return console.log('THIS JSON GOT MOUNTED: ', json);
+	// 		});
+	// });
 </script>
 
 <template>

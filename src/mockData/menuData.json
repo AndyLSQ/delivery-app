@@ -1,0 +1,30 @@
+[
+	{
+		"restaurantSlug": "taco-bell",
+		"id": "tb1",
+		"name": "Chalupa",
+		"price": 4,
+		"categories": ["lunch", "dinner"]
+	},
+	{
+		"restaurantSlug": "taco-bell",
+		"id": "tb2",
+		"name": "Gordita Crunch",
+		"price": 5,
+		"categories": ["lunch", "dinner"]
+	},
+	{
+		"restaurantSlug": "chipotle",
+		"id": "cl1",
+		"name": "Burrito",
+		"price": 13,
+		"categories": ["lunch", "dinner"]
+	},
+	{
+		"restaurantSlug": "mcdonalds",
+		"id": "md1",
+		"name": "Big Mac",
+		"price": 6,
+		"categories": ["lunch", "dinner"]
+	}
+]
