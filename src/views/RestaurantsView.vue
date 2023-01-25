@@ -49,11 +49,10 @@
 				<li v-for="restaurant in userRestaurants" class="restaurant">
 					<p>{{ restaurant.name }}</p>
 					<p>Price level: {{ restaurant.price }}</p>
+					<!-- TODO: doesnt have to be 2 separate buttons could be 2 separate spans in the same button -->
 					<button v-if="restaurant.favorite" @click="toggleFav(restaurant.id)">Remove from favorites</button>
 					<button v-else @click="toggleFav(restaurant.id)">Add to favorites</button>
-					<RouterLink :to="`/restaurant/${restaurant.slug}`">
-						<button>Select Restaurant</button>
-					</RouterLink>
+					<RouterLink :to="`/restaurant/${restaurant.slug}`"> Select Restaurant </RouterLink>
 				</li>
 			</ul>
 

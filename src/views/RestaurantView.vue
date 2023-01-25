@@ -28,7 +28,7 @@
 	<button @click="menu.add('hi')">BIG BUTTON</button>
 
 	<h2>Menu</h2>
-	{{ currentMenu }}
+	<!-- {{ currentMenu }} -->
 	<!-- <p>{{ menu.filteredList }}</p> -->
 	<ul>
 		<div class="card" v-for="item in currentMenu">
@@ -38,4 +38,7 @@
 			<button @click="cart.add(item)">add to cart</button>
 		</div>
 	</ul>
+
+	<h1 class="loud-voice">cart preview</h1>
+	{{ cart.items }}
 </template>

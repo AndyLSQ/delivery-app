@@ -17,7 +17,7 @@
 		<RouterLink to="/dashboard">Dashboard</RouterLink>
 		<RouterLink to="/restaurants">Restaurants</RouterLink>
 		<RouterLink to="/form">Form</RouterLink>
-		<RouterLink to="/cart">cart {{ cart.count }}</RouterLink>
+		<RouterLink to="/cart">cart {{ cart.quantity }}</RouterLink>
 	</nav>
 	<button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button>
 </template>
