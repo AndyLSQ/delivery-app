@@ -9,9 +9,9 @@
 	const menu = useMenuStore();
 	const cart = useCartStore();
 
-	console.log(menu.list);
+	// console.log(menu.list);
 
-	console.log('restaurant list value: ', restaurants.list);
+	// console.log('restaurant list value: ', restaurants.list);
 	const restaurant = restaurants.list.find(function (record) {
 		return record.slug == route.params.slug;
 	});
