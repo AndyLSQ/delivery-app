@@ -13,7 +13,9 @@
 <template>
 	<button @click="ui.toggleMenu()" class="menu-toggle">Toggle menu</button>
 	<nav class="site-menu">
-		<RouterLink to="/">DeliveryCo</RouterLink>
+		<div class="logo">
+			<RouterLink to="/">Food<span>hub</span></RouterLink>
+		</div>
 		<!-- <RouterLink to="/dashboard">Dashboard</RouterLink> -->
 		<RouterLink to="/restaurants">Restaurants</RouterLink>
 		<!-- <RouterLink to="/form">Form</RouterLink> -->

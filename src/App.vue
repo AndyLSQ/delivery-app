@@ -4,6 +4,8 @@
 	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useRestaurantStore } from '@/stores/restaurants';
+	import SvgSpriteComponent from '@/components/SvgSpriteComponent.vue';
+	import SvgIcons from '@/components/SvgIcons.vue';
 
 	const restaurantsData = useRestaurantStore();
 	const ui = useInterfaceStore();
@@ -30,6 +32,7 @@
 </script>
 
 <template>
+	<SvgSpriteComponent />
 	<header v-bind:class="`${route.name} ${ui.menuClass}`">
 		<div class="inner-column">
 			<SiteMenu />
@@ -43,6 +46,8 @@
 
 	<footer>
 		<div class="inner-column">
+			<SvgIcons name="cart" />
+			<!-- DONT USE COLON IN FRONT OF NAME -->
 			<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
 		</div>
 	</footer>
