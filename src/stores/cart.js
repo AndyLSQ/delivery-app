@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 export const useCartStore = defineStore('cart', function () {
 	const items = ref([
-		{ name: 'testChalupa', id: 'tb1', price: 4, notes: 'no sour cream', quantity: 1 },
+		// { name: 'testChalupa', id: 'tb1', price: 4, notes: 'no sour cream', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: '', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: 'no tomato', quantity: 1 },
 	]);

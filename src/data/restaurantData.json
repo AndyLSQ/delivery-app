@@ -26,5 +26,12 @@
       "priceLevel": "2",
       "slug": "sweetgreen",
       "type": ["salad", "burgers"]
+   },
+   {
+      "id": "tf123",
+      "name": "True Food Kitchen",
+      "priceLevel": "2",
+      "slug": "mcdonalds",
+      "type": ["fast food", "burgers"]
    }
 ]
