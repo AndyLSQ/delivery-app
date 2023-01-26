@@ -42,7 +42,7 @@
 
 <template>
 	<div class="rest__detail">
-		{{ userRestaurants }}
+		<!-- {{ userRestaurants }} -->
 		<h1 class="loud-voice">This is a list page</h1>
 		<div>
 			<ul>
@@ -59,10 +59,6 @@
 			<h2>Favorites</h2>
 			<p>{{ favorites.favList }}</p>
 		</div>
-	</div>
-
-	<div class="cart">
-		<h1>hi im a cart</h1>
 	</div>
 </template>
 

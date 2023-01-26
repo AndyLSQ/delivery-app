@@ -35,7 +35,8 @@
 			<li>
 				{{ item.name }}
 			</li>
-			<button @click="cart.add(item)">add to cart</button>
+			<button v-if="cart.alreadyInList(item)" @click="cart.plusOne(item)">qty plus one</button>
+			<button v-else @click="cart.add(item)">add to cart</button>
 		</div>
 	</ul>
 

@@ -1,10 +1,10 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
-// import menuData from '../mockData/menuData.json' assert { type: 'json' };
+// import menuData from '../data/menuData.json' assert { type: 'json' };
 
 export const useCartStore = defineStore('cart', function () {
 	const items = ref([
-		{ name: 'testChalupa', id: 'tb1', price: 5, notes: 'no sour cream', quantity: 1 },
+		{ name: 'testChalupa', id: 'tb1', price: 4, notes: 'no sour cream', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: '', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: 'no tomato', quantity: 1 },
 	]);
@@ -20,6 +20,7 @@ export const useCartStore = defineStore('cart', function () {
 	//check if item is in "items" list
 	function alreadyInList(itemFromMenu) {
 		return items.value.find(function (itemInCart) {
+			console.log('item found in list');
 			return itemFromMenu.id == itemInCart.id;
 		});
 	}
@@ -95,6 +96,7 @@ export const useCartStore = defineStore('cart', function () {
 		quantity,
 		plusOne,
 		minusOne,
+		alreadyInList,
 		// consolList: consolList,
 	};
 });

@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import menuData from '../MockData/menuData.json' assert { type: 'json' };
+import menuData from '../data/menuData.json' assert { type: 'json' };
 import { useRoute } from 'vue-router';
 import router from '../router';
 

@@ -13,11 +13,12 @@
 <template>
 	<button @click="ui.toggleMenu()" class="menu-toggle">Toggle menu</button>
 	<nav class="site-menu">
-		<RouterLink to="/">Home</RouterLink>
-		<RouterLink to="/dashboard">Dashboard</RouterLink>
+		<RouterLink to="/">DeliveryCo</RouterLink>
+		<!-- <RouterLink to="/dashboard">Dashboard</RouterLink> -->
 		<RouterLink to="/restaurants">Restaurants</RouterLink>
-		<RouterLink to="/form">Form</RouterLink>
-		<RouterLink to="/cart">cart {{ cart.quantity }}</RouterLink>
+		<!-- <RouterLink to="/form">Form</RouterLink> -->
+		<RouterLink to="/cart">Cart {{ cart.quantity }}</RouterLink>
+		<RouterLink to="/account">Account</RouterLink>
 	</nav>
 	<button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button>
 </template>
