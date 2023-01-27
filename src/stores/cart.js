@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 export const useCartStore = defineStore('cart', function () {
 	const items = ref([
-		// { name: 'testChalupa', id: 'tb1', price: 4, notes: 'no sour cream', quantity: 1 },
+		// { name: 'testChalupa', id: 'tb1', price: 4, notes: 'a', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: '', quantity: 1 },
 		// { name: 'testGordita', id: 'tb2', price: 4, notes: 'no tomato', quantity: 1 },
 	]);
@@ -20,28 +20,78 @@ export const useCartStore = defineStore('cart', function () {
 	//check if item is in "items" list
 	function alreadyInList(itemFromMenu) {
 		return items.value.find(function (itemInCart) {
-			console.log('item found in list');
-			return itemFromMenu.id == itemInCart.id;
+			console.log(
+				'alreadyInList retuns: ',
+				itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes,
+			);
+			return itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes;
 		});
 	}
 
-	function add(item) {
+	function add(item, qty, notes) {
 		// call check function
+		console.log('qty: ', qty);
+		item.notes = '';
+		item.notes = notes;
 
+		// console.log('this item should have notes added ', item);
+
+		const newQty = Number(qty);
 		const found = alreadyInList(item);
 
 		//if found, quantity +1
 		if (found) {
-			found.quantity += 1;
-			console.log('alreadyInList: ', alreadyInList(item));
+			found.quantity += newQty;
+			console.log('alreadyInList: ', alreadyInList(item, notes));
 		} else {
-			//if not add it to list with quatitiy 1
-			item.quantity = 1;
+			//if not add it to list with quantitiy 1
+			item.quantity = newQty;
 			items.value.push(item);
-
-			console.log('item not found. new item list: ', items.value);
+			console.log('item not found. new item list: ');
 		}
 	}
+
+	//  ********
+
+	function inList(itemFromMenu) {
+		console.log('in list running');
+
+		return items.value.find(function (itemInCart) {
+			console.log('itemFromMenu notes', itemFromMenu.notes);
+			console.log('itemInCart notes', itemInCart.notes);
+			// console.log('itemFromMenu id', itemFromMenu.id);
+			// console.log('itemInCart id', itemInCart.id);
+			return itemFromMenu.notes == itemInCart.notes;
+		});
+	}
+
+	function tfTest(newItem) {}
+
+	function add2(item, singleNote, addQuantity) {
+		item.notes = singleNote;
+		console.log('item with notes added: ', item);
+		const found = inList(item);
+		console.log('found: ', found);
+
+		if (!inList(item)) {
+			console.log('item not found');
+			item.quantity = addQuantity;
+			items.value.push(item);
+		} else {
+			console.log('item found');
+			found.quantity += addQuantity;
+		}
+
+		// if (inList(item)) {
+		// 	console.log('item found');
+		// 	found.quantity += addQuantity;
+		// } else {
+		// 	console.log('item not found');
+		// 	item.quantity = addQuantity;
+		// 	items.value.push(item);
+		// }
+	}
+	//  ********
 
 	// =======================================================
 	function remove(excludeId) {
@@ -61,13 +111,13 @@ export const useCartStore = defineStore('cart', function () {
 		console.log('add this item -1: ', item);
 	}
 
-	watch(items.value, function () {
-		items.value.forEach(function (item) {
-			let itemSub = item.price * item.quantity;
-			item.subtotal = itemSub;
-			console.log('check subtotal: ', item);
-		});
-	});
+	// watch(items.value, function () {
+	// 	items.value.forEach(function (item) {
+	// 		let itemSub = item.price * item.quantity;
+	// 		item.subtotal = itemSub;
+	// 		console.log('check subtotal: ', item);
+	// 	});
+	// });
 
 	const subtotal = computed(function () {
 		let sub = 0;
@@ -91,12 +141,12 @@ export const useCartStore = defineStore('cart', function () {
 		items: items,
 		count: count,
 		add: add,
+		add2,
 		remove: remove,
 		subtotal: subtotal,
 		quantity,
 		plusOne,
 		minusOne,
 		alreadyInList,
-		// consolList: consolList,
 	};
 });
