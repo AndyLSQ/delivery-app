@@ -4,19 +4,14 @@
 	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useRestaurantStore } from '@/stores/restaurants';
-	import SvgSpriteComponent from '@/components/SvgSpriteComponent.vue';
-	import SvgIcons from '@/components/SvgIcons.vue';
+	import SvgSpriteComponent from '@/components/icons/SvgSprites.vue';
+	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
 	const restaurantsData = useRestaurantStore();
 	const ui = useInterfaceStore();
 	const route = useRoute();
 
-	// watch: {
-	//    $route(){
-	//       // do something
-	//    };
-	// }
-
+	//Old data pull
 	// onMounted(function () {
 	// 	console.log('ON BEFORE MOUNT');
 	// 	const data = fetch('https://raw.githubusercontent.com/perpetual-education/restaurants-data/main/data.json');
