@@ -1,10 +1,10 @@
 <script setup>
-	import { ref, reactive, computed, watch } from 'vue';
+	import { ref, reactive, computed } from 'vue';
 	import { useRoute } from 'vue-router';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useMenuStore } from '@/stores/menu';
 	import { useCartStore } from '@/stores/cart';
-	import DishView from './DishView.vue';
+	// import DishView from './DishView.vue';
 
 	const route = useRoute();
 	const restaurants = useRestaurantStore();
@@ -105,7 +105,7 @@
 	/*middle*/
 	.v-enter-active,
 	.v-leave-active {
-		transition: 2.3s ease-in-out;
+		transition: 0.3s ease-in-out;
 	}
 
 	/*start & end*/
@@ -115,10 +115,10 @@
 	}
 
 	:is(.v-enter-from, .v-enter-to) .dialogue {
-		transition: 2.3s ease-in-out;
+		/*		transition: 2.3s ease-in-out;*/
 	}
 
 	:is(.v-enter-from, .v-enter-to) .dialogue {
-		transform: translate(-100%);
+		/*		transform: translate(-100%);*/
 	}
 </style>

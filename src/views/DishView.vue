@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+	// Not currently used. Moved into RestaurantView.vue
+</script>
 
 <template>
 	<button @click="">Close</button>
