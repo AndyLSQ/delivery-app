@@ -1,5 +1,5 @@
 <script setup>
-	import { ref } from 'vue';
+	import { ref, watch, nextTick } from 'vue';
 	import { useRoute } from 'vue-router';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useMenuStore } from '@/stores/menu';
@@ -29,12 +29,33 @@
 	function openDishView(item) {
 		modalOpen.value = true;
 		modalItem.value = item;
-		console.log('modalItem: ', item);
 	}
 	function closeModal() {
 		modalOpen.value = false;
 		modalItem.value = null;
+		clearForm();
 	}
+
+	function clearForm() {
+		notes.value = '';
+		qty.value = 1;
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (modalOpen && e.keyCode == 27) {
+			closeModal();
+		}
+	});
+
+	// watch(modalOpen, function (newState, oldState) {
+	// 	nextTick(function () {
+	// 		const firstField = ref(null); // this is like a doc obj
+	// 		console.log('first field', firstField);
+	// 		firstField.value.focus();
+	// 		// console.log('modalItem: ', item);
+	// 	});
+	// });
+
 	const qty = ref(1);
 	const notes = ref('');
 </script>
@@ -51,16 +72,16 @@
 
 			<button @click="openDishView(item)">Add</button>
 
-			<button v-if="cart.alreadyInList(item)" @click="cart.minusOne(item)">qty minus one</button>
+			<!-- <button v-if="cart.alreadyInList(item)" @click="cart.minusOne(item)">qty minus one</button>
 
 			<button v-if="cart.alreadyInList(item)" @click="cart.plusOne(item)">qty plus one</button>
-			<button v-else @click="cart.add(item)">add to cart</button>
+			<button v-else @click="cart.add(item)">add to cart</button> -->
 		</div>
 	</ul>
 
 	<Transition>
-		<div class="modal" v-if="modalOpen">
-			<div class="dialogue">
+		<div class="modal" v-if="modalOpen" @click="closeModal()">
+			<div class="dialogue" @click.stop>
 				<button @click.prevent="closeModal()">Close</button>
 				<h2 class="loud-voice">{{ modalItem.name }}</h2>
 				<p>[Item image]</p>
@@ -70,15 +91,15 @@
 					<label for="cartNote">Special Requests</label>
 					<input id="cartNote" type="text" v-model="notes" />
 					<label for="quantity">Quantity</label>
-					<input id="quantity" type="number" min="1" max="99" v-model="qty" />
+					<input id="quantity" type="number" min="1" max="99" v-model="qty" ref="firstField" />
 
 					<button
 						@click.prevent="
-							cart.add2(modalItem, notes, qty);
+							cart.add(modalItem, qty, notes);
 							closeModal();
 						"
 					>
-						!! Add to cart 2!!
+						Add to cart
 					</button>
 				</form>
 			</div>
@@ -88,7 +109,11 @@
 	<div class="contain">
 		<h1 class="loud-voice">cart preview</h1>
 	</div>
+	<pre>
+		<code>
 	{{ cart.items }}
+		</code>
+	</pre>
 </template>
 
 <style scoped>
