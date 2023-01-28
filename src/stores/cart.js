@@ -18,79 +18,101 @@ export const useCartStore = defineStore('cart', function () {
 	// =================== METHOD 2 ========================
 
 	//check if item is in "items" list
-	function alreadyInList(itemFromMenu) {
+	// function alreadyInList(itemFromMenu) {
+	// 	return items.value.find(function (itemInCart) {
+	// 		console.log(
+	// 			'alreadyInList retuns: ',
+	// 			itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes,
+	// 		);
+	// 		return itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes;
+	// 	});
+	// }
+
+	function searchCart(newItem) {
+		// console.log('new item in SEARCHCART: ', newItem);
 		return items.value.find(function (itemInCart) {
-			console.log(
-				'alreadyInList retuns: ',
-				itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes,
-			);
-			return itemFromMenu.id == itemInCart.id && itemFromMenu.notes == itemInCart.notes;
+			return newItem.id == itemInCart.id && newItem.notes == itemInCart.notes;
 		});
 	}
 
 	function add(item, qty, notes) {
-		// call check function
-		console.log('qty: ', qty);
-		item.notes = '';
-		item.notes = notes;
+		// create new item object with notes
+		const newItem = { ...item, notes: notes };
 
 		// console.log('this item should have notes added ', item);
 
 		const newQty = Number(qty);
-		const found = alreadyInList(item);
+		newItem.quantity = newQty;
+
+		// check if this item was found in the list
+		const found = searchCart(newItem);
+		// const foundItem = searchCart(newItem);
+
+		if (found) {
+			console.log('item found in list');
+			found.quantity += newQty;
+		} else {
+			console.log('item not found in list');
+			items.value.push(newItem);
+		}
+
+		// items.value.push(newItem);
+		// console.log('!! itemst list now: ', items);
+
+		// const found = alreadyInList(item);
 
 		//if found, quantity +1
-		if (found) {
-			found.quantity += newQty;
-			console.log('alreadyInList: ', alreadyInList(item, notes));
-		} else {
-			//if not add it to list with quantitiy 1
-			item.quantity = newQty;
-			items.value.push(item);
-			console.log('item not found. new item list: ');
-		}
+		// if (found) {
+		// 	found.quantity += newQty;
+		// 	console.log('alreadyInList: ', alreadyInList(item, notes));
+		// } else {
+		// 	//if not add it to list with quantitiy 1
+		// 	item.quantity = newQty;
+		// 	items.value.push(item);
+		// 	console.log('item not found. new item list: ');
+		// }
 	}
 
 	//  ********
 
-	function inList(itemFromMenu) {
-		console.log('in list running');
+	// function inList(itemFromMenu) {
+	// 	console.log('in list running');
 
-		return items.value.find(function (itemInCart) {
-			console.log('itemFromMenu notes', itemFromMenu.notes);
-			console.log('itemInCart notes', itemInCart.notes);
-			// console.log('itemFromMenu id', itemFromMenu.id);
-			// console.log('itemInCart id', itemInCart.id);
-			return itemFromMenu.notes == itemInCart.notes;
-		});
-	}
+	// 	return items.value.find(function (itemInCart) {
+	// 		console.log('itemFromMenu notes', itemFromMenu.notes);
+	// 		console.log('itemInCart notes', itemInCart.notes);
+	// 		// console.log('itemFromMenu id', itemFromMenu.id);
+	// 		// console.log('itemInCart id', itemInCart.id);
+	// 		return itemFromMenu.notes == itemInCart.notes;
+	// 	});
+	// }
 
-	function tfTest(newItem) {}
+	// function tfTest(newItem) {}
 
-	function add2(item, singleNote, addQuantity) {
-		item.notes = singleNote;
-		console.log('item with notes added: ', item);
-		const found = inList(item);
-		console.log('found: ', found);
+	// function add2(item, singleNote, addQuantity) {
+	// 	item.notes = singleNote;
+	// 	console.log('item with notes added: ', item);
+	// 	const found = inList(item);
+	// 	console.log('found: ', found);
 
-		if (!inList(item)) {
-			console.log('item not found');
-			item.quantity = addQuantity;
-			items.value.push(item);
-		} else {
-			console.log('item found');
-			found.quantity += addQuantity;
-		}
+	// 	if (!inList(item)) {
+	// 		console.log('item not found');
+	// 		item.quantity = addQuantity;
+	// 		items.value.push(item);
+	// 	} else {
+	// 		console.log('item found');
+	// 		found.quantity += addQuantity;
+	// 	}
 
-		// if (inList(item)) {
-		// 	console.log('item found');
-		// 	found.quantity += addQuantity;
-		// } else {
-		// 	console.log('item not found');
-		// 	item.quantity = addQuantity;
-		// 	items.value.push(item);
-		// }
-	}
+	// if (inList(item)) {
+	// 	console.log('item found');
+	// 	found.quantity += addQuantity;
+	// } else {
+	// 	console.log('item not found');
+	// 	item.quantity = addQuantity;
+	// 	items.value.push(item);
+	// }
+	// }
 	//  ********
 
 	// =======================================================
@@ -141,12 +163,12 @@ export const useCartStore = defineStore('cart', function () {
 		items: items,
 		count: count,
 		add: add,
-		add2,
+		// add2,
 		remove: remove,
 		subtotal: subtotal,
 		quantity,
 		plusOne,
 		minusOne,
-		alreadyInList,
+		// alreadyInList,
 	};
 });
