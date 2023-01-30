@@ -26,7 +26,10 @@
 		</li>
 	</ul>
 	<p>Total quantity: {{ cart.quantity }}</p>
-	<p>Total: ${{ cart.subtotal }}</p>
+	<p>Subtotal: ${{ cart.subtotal }}</p>
+	<p>Delivery fee:</p>
+	<p>Tax:</p>
+	<p>Total:</p>
 	<!-- {{ cart.consolList }} -->
 </template>
 
