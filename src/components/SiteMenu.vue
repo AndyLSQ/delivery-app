@@ -63,6 +63,31 @@
 		right: 0;
 		width: 400px;
 		height: 100%;
+		z-index: 11;
+	}
+
+	.menu-link {
+		position: relative;
+	}
+
+	.qBadge {
+		border: 3px solid blue;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background-color: red;
+		color: white;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.svg-icons {
+		border: 3px solid blue;
+		width: 3rem;
 	}
 
 	@media (min-width: 500px) {
