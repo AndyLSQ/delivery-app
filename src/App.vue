@@ -41,7 +41,6 @@
 
 	<footer>
 		<div class="inner-column">
-			<SvgIcons name="cart" />
 			<!-- DONT USE COLON IN FRONT OF NAME -->
 			<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
 		</div>
