@@ -38,27 +38,80 @@
 		return userRestaurantsArray;
 	});
 
+	const favRestaurants = computed(function () {
+		// return 'hi';
+		return userRestaurants.value.filter((restaurant) => {
+			// console.log(restaurant);
+			return restaurant.favorite == true;
+		});
+	});
+
+	const searchString = ref('');
+
+	const filtered = computed(function () {
+		return restaurants.list.filter(function (item) {
+			return item.name.toLowerCase().includes(searchString.value.toLowerCase());
+		});
+	});
+
 	// console.log('test aI', favorites.alreadyIncluded('abc123'));
 </script>
 
 <template>
 	<div class="rest__detail">
 		<!-- {{ userRestaurants }} -->
-		<h1 class="loud-voice">This is a list page</h1>
-		<div>
+		<h2 class="loud-voice">Favorites</h2>
+		<!-- {{ favRestaurants }} -->
+		<!-- <p>{{ favorites.favList }}</p> -->
+
+		<div class="favRestaurants">
 			<ul>
-				<li v-for="restaurant in userRestaurants" class="restaurant">
-					<p>{{ restaurant.name }}</p>
-					<p>Price level: {{ restaurant.price }}</p>
-					<!-- TODO: doesnt have to be 2 separate buttons could be 2 separate spans in the same button -->
-					<button v-if="restaurant.favorite" @click="toggleFav(restaurant.id)">Remove from favorites</button>
-					<button v-else @click="toggleFav(restaurant.id)">Add to favorites</button>
-					<RouterLink :to="`/restaurant/${restaurant.slug}`"> Select Restaurant </RouterLink>
+				<li class="favPlaceholder" v-if="favRestaurants == ''">A space for all your favorites</li>
+				<li v-for="restaurant in favRestaurants" class="restaurant">
+					<RouterLink :to="`/restaurant/${restaurant.slug}`">
+						<p>{{ restaurant.name }}</p>
+						<p>Price level: {{ restaurant.price }}</p>
+					</RouterLink>
+					<div class="favHeart">
+						<SvgIcons
+							v-if="restaurant.favorite"
+							@click="toggleFav(restaurant.id)"
+							class="svg-icon full"
+							name="heart-full"
+						/><SvgIcons v-else @click="toggleFav(restaurant.id)" class="svg-icon empty" name="heart-empty" />
+					</div>
 				</li>
 			</ul>
+		</div>
 
-			<h2>Favorites</h2>
-			<p>{{ favorites.favList }}</p>
+		<h1 class="loud-voice">All Restaurants</h1>
+		<div class="allRestaurants">
+			<!-- <label for="Search">Search</label> -->
+			<div>
+				<input id="search" type="text" v-model="searchString" placeholder="Search restaurants" />
+				<!-- <button type="submit">Go</button> -->
+				<!-- <h2>Results for {{ searchString }}</h2> -->
+				<ul v-if="searchString != ''">
+					<li v-if="filtered == ''" class="noResults">No results found in your area</li>
+					<li v-for="item in filtered">{{ item.name }}</li>
+				</ul>
+			</div>
+			<ul>
+				<li v-for="restaurant in userRestaurants" class="restaurant">
+					<RouterLink :to="`/restaurant/${restaurant.slug}`">
+						<p>{{ restaurant.name }}</p>
+						<p>Price level: {{ restaurant.price }}</p>
+					</RouterLink>
+					<div class="favHeart">
+						<SvgIcons
+							v-if="restaurant.favorite"
+							@click="toggleFav(restaurant.id)"
+							class="svg-icon full"
+							name="heart-full"
+						/><SvgIcons v-else @click="toggleFav(restaurant.id)" class="svg-icon empty" name="heart-empty" />
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -66,5 +119,32 @@
 <style>
 	.restaurant {
 		border: 2px solid red;
+		position: relative;
 	}
+	.favHeart {
+		z-index: 10;
+		width: 3rem;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.svg-icon {
+		height: 2.5rem;
+		width: 2.5rem;
+	}
+	.favHeart .empty:hover {
+		fill: red;
+	}
+
+	.favHeart .full {
+		fill: red;
+	}
+
+	/*	.favHeart .full:hover {
+		fill: black;
+	}*/
 </style>
