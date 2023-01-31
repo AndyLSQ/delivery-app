@@ -1,5 +1,6 @@
 <script setup>
    import { useLoginStore } from '@/stores/login';
+   import LoginForm from '@/components/LoginForm.vue';
    const login = useLoginStore();
 </script>
 
@@ -10,6 +11,8 @@
       <div class="logged-out-message">This message is only for logged out users.</div>
       <div class="everyone-message">This message is for everyone.</div>
    </div>
+
+   <LoginForm />
 </template>
 
 <style>
