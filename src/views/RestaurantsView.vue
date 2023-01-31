@@ -48,7 +48,7 @@
 
 	const searchString = ref('');
 
-	const filtered = computed(function () {
+	const nameFiltered = computed(function () {
 		return restaurants.list.filter(function (item) {
 			return item.name.toLowerCase().includes(searchString.value.toLowerCase());
 		});
@@ -82,20 +82,27 @@
 					</div>
 				</li>
 			</ul>
+			<p>(side scroll this section)</p>
 		</div>
 
 		<h1 class="loud-voice">All Restaurants</h1>
 		<div class="allRestaurants">
 			<!-- <label for="Search">Search</label> -->
-			<div>
-				<input id="search" type="text" v-model="searchString" placeholder="Search restaurants" />
-				<!-- <button type="submit">Go</button> -->
-				<!-- <h2>Results for {{ searchString }}</h2> -->
-				<ul v-if="searchString != ''">
-					<li v-if="filtered == ''" class="noResults">No results found in your area</li>
-					<li v-for="item in filtered">{{ item.name }}</li>
-				</ul>
+			<div class="filter-menu">
+				<button>Breakfast</button>
+				<button>Lunch</button>
+				<button>Dinner</button>
+				<p>other ideas: vegan options, fast food, healthy, mexican, asian, pizza, coffee, snacks, desserts</p>
+				<p>(side scroll this section)</p>
 			</div>
+			<!-- <div>
+				<input id="search" type="text" v-model="searchString" placeholder="Search restaurants" />
+				<ul v-if="searchString != ''">
+					<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
+					<li v-for="item in nameFiltered">{{ item.name }}</li>
+				</ul>
+			</div> -->
+			<p>List:</p>
 			<ul>
 				<li v-for="restaurant in userRestaurants" class="restaurant">
 					<RouterLink :to="`/restaurant/${restaurant.slug}`">
