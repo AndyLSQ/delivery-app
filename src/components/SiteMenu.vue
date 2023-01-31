@@ -24,7 +24,7 @@
 
 	const searchString = ref('');
 
-	const filtered = computed(function () {
+	const nameFiltered = computed(function () {
 		return restaurants.list.filter(function (item) {
 			return item.name.toLowerCase().includes(searchString.value.toLowerCase());
 		});
@@ -32,7 +32,6 @@
 
 	function searchClick() {
 		searchString.value = '';
-		route.go(0);
 	}
 </script>
 
@@ -50,10 +49,10 @@
 			<!-- <button type="submit">Go</button> -->
 			<!-- <h2>Results for {{ searchString }}</h2> -->
 			<ul v-if="searchString != ''">
-				<li v-if="filtered == ''" class="noResults">No results found in your area</li>
-				<li v-for="item in filtered">
+				<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
+				<li v-for="item in nameFiltered">
 					<RouterLink :to="`/restaurant/${item.slug}`" @click="searchClick">
-						{{ item.name }} {{ item.slug }}
+						{{ item.name }}
 					</RouterLink>
 				</li>
 			</ul>
@@ -121,6 +120,7 @@
 	.svg-icons {
 		border: 3px solid blue;
 		width: 3rem;
+		height: 3rem;
 	}
 
 	@media (min-width: 500px) {
