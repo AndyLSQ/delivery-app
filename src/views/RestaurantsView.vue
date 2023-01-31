@@ -1,8 +1,9 @@
 <script setup>
-	import { computed, onBeforeMount, onMounted } from 'vue';
+	import { computed, ref, onBeforeMount, onMounted } from 'vue';
 	import { useRoute } from 'vue-router';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useFavoritesStore } from '@/stores/favorites';
+	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
 	const route = useRoute();
 	const restaurants = useRestaurantStore();
