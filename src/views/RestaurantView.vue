@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, watch, nextTick } from 'vue';
+	import { ref, computed, watch, nextTick } from 'vue';
 	import { useRoute } from 'vue-router';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useMenuStore } from '@/stores/menu';
@@ -11,11 +11,11 @@
 	const menu = useMenuStore();
 	const cart = useCartStore();
 
-	// console.log(menu.list);
-
-	// console.log('restaurant list value: ', restaurants.list);
-	const restaurant = restaurants.list.find(function (record) {
-		return record.slug == route.params.slug;
+	// Use computed so the route updates with any change in the url (for search)
+	const restaurant = computed(function () {
+		return restaurants.list.find(function (record) {
+			return record.slug == route.params.slug;
+		});
 	});
 
 	const currentMenu = menu.list.filter(function (item) {
