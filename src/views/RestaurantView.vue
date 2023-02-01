@@ -12,16 +12,29 @@
 	const cart = useCartStore();
 
 	// Use computed so the route updates with any change in the url (for search)
+
+	console.log(route.params.slug);
+
 	const restaurant = computed(function () {
 		return restaurants.list.find(function (record) {
+			console.log('1. slug from restaurants list: ', record.slug);
 			return record.slug == route.params.slug;
 		});
 	});
 
+	console.log('2. restaurant: ', restaurant);
+
 	const currentMenu = menu.list.filter(function (item) {
-		return item.restaurantSlug == restaurant.slug;
+		console.log('3. item from menu list', item);
+		console.log('3a. item.restaurantSlug', item.restaurantSlug);
+		console.log('3a. restaurant.value.slug', restaurant.value.slug);
+		return item.restaurantSlug == restaurant.value.slug;
 	});
+
+	console.log('4. currentMenu', currentMenu);
 	// const userRestaurants = []
+
+	console.log(menu);
 
 	const modalOpen = ref(false);
 	const modalItem = ref(null);
