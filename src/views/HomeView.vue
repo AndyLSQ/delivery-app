@@ -1,6 +1,6 @@
 <script setup>
    import { useLoginStore } from '@/stores/login';
-   import LoginForm from '@/components/LoginForm.vue';
+   // import LoginForm from '@/components/LoginForm.vue';
    const login = useLoginStore();
 </script>
 
@@ -12,7 +12,7 @@
       <div class="everyone-message">This message is for everyone.</div>
    </div>
 
-   <LoginForm />
+   <!-- <LoginForm /> -->
 </template>
 
 <style>
