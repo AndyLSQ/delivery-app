@@ -13,28 +13,28 @@
 
 	// Use computed so the route updates with any change in the url (for search)
 
-	console.log(route.params.slug);
+	// console.log(route.params.slug);
 
 	const restaurant = computed(function () {
 		return restaurants.list.find(function (record) {
-			console.log('1. slug from restaurants list: ', record.slug);
+			// console.log('1. slug from restaurants list: ', record.slug);
 			return record.slug == route.params.slug;
 		});
 	});
 
-	console.log('2. restaurant: ', restaurant);
+	// console.log('2. restaurant: ', restaurant);
 
 	const currentMenu = menu.list.filter(function (item) {
-		console.log('3. item from menu list', item);
-		console.log('3a. item.restaurantSlug', item.restaurantSlug);
-		console.log('3a. restaurant.value.slug', restaurant.value.slug);
+		// console.log('3. item from menu list', item);
+		// console.log('3a. item.restaurantSlug', item.restaurantSlug);
+		// console.log('3a. restaurant.value.slug', restaurant.value.slug);
 		return item.restaurantSlug == restaurant.value.slug;
 	});
 
-	console.log('4. currentMenu', currentMenu);
+	// console.log('4. currentMenu', currentMenu);
 	// const userRestaurants = []
 
-	console.log(menu);
+	// console.log(menu);
 
 	const modalOpen = ref(false);
 	const modalItem = ref(null);
@@ -92,6 +92,7 @@
 		</div>
 	</ul>
 
+	<!-- Add-to-cart modal -->
 	<Transition>
 		<div class="modal" v-if="modalOpen" @click="closeModal()">
 			<div class="dialogue" @click.stop>
@@ -119,51 +120,14 @@
 		</div>
 	</Transition>
 
-	<div class="contain">
+	<!-- <div class="contain">
 		<h1 class="loud-voice">cart preview</h1>
 	</div>
 	<pre>
 		<code>
 	{{ cart.items }}
 		</code>
-	</pre>
+	</pre> -->
 </template>
 
-<style scoped>
-	.modal {
-		background-color: rgba(0, 0, 0, 0.5);
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		display: grid;
-		place-items: center;
-		/*		align-items: center;*/
-		/*		justify-content: center;*/
-	}
-
-	.dialogue {
-		background-color: white;
-	}
-
-	/*middle*/
-	.v-enter-active,
-	.v-leave-active {
-		transition: 0.3s ease-in-out;
-	}
-
-	/*start & end*/
-	.v-enter-from,
-	.v-leave-to {
-		opacity: 0;
-	}
-
-	/*	:is(.v-enter-from, .v-enter-to) .dialogue {*/
-	/*		transition: 2.3s ease-in-out;*/
-	/*	}*/
-
-	/*	:is(.v-enter-from, .v-enter-to) .dialogue {*/
-	/*		transform: translate(-100%);*/
-	/*	}*/
-</style>
+<style scoped></style>
