@@ -1,44 +1,78 @@
 <script setup>
-	import { onBeforeMount, onMounted } from 'vue';
+	import { ref, onBeforeMount, onMounted } from 'vue';
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import SvgSpriteComponent from '@/components/icons/SvgSprites.vue';
+	import HeroView from '@/views/HeroView.vue';
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
+	import LoginForm from '@/components/LoginForm.vue';
+	import { userService } from '@/services/userService';
 
-	const restaurantsData = useRestaurantStore();
-	const ui = useInterfaceStore();
 	const route = useRoute();
 
-	//Old data pull
-	// onMounted(function () {
-	// 	console.log('ON BEFORE MOUNT');
-	// 	const data = fetch('https://raw.githubusercontent.com/perpetual-education/restaurants-data/main/data.json');
-	// 	data
-	// 		.then(function (data) {
-	// 			return data.json();
-	// 		})
-	// 		.then(function (json) {
-	// 			restaurantsData.list = json;
-	// 			return console.log('THIS JSON GOT MOUNTED: ', json);
-	// 		});
-	// });
+	// Stores
+	const restaurantsData = useRestaurantStore();
+	const ui = useInterfaceStore();
+	const user = userService();
+
+	// Listener - Escape modal
+	document.addEventListener('keydown', (e) => {
+		if (user.modalOpen && e.keyCode == 27) {
+			user.closeModal();
+		}
+	});
+
+	onMounted(function () {
+		if (window.localStorage.showHero) {
+			console.log('showHero already exists in LS');
+		} else {
+			console.log('showHero doesnt yet exist in LS, so set it to true');
+			window.localStorage.setItem('showHero', true);
+			// user.setHero();
+		}
+	});
+
+	// const heroShown = ref(true);
 </script>
 
 <template>
+	<!-- Icons -->
 	<SvgSpriteComponent />
-	<header v-bind:class="`${route.name} ${ui.menuClass}`">
-		<div class="inner-column">
-			<SiteMenu />
-		</div>
-	</header>
-	<main class="outlet">
-		<div class="inner-column">
-			<RouterView />
-		</div>
-	</main>
 
+	<button @click="user.dismissHero()">Hide hero</button>
+	<button @click="user.showHero()">Show hero</button>
+	<div class="delete">{{ user.heroShown }}</div>
+
+	<div class="heroView" v-if="user.heroShown == 'true'">
+		<HeroView />
+	</div>
+
+	<!-- Site menu -->
+	<div class="standardView" v-else>
+		<header v-bind:class="`${route.name} ${ui.menuClass}`">
+			<div class="inner-column">
+				<SiteMenu />
+			</div>
+		</header>
+
+		<!-- Router view -->
+		<main class="outlet">
+			<div class="inner-column">
+				<RouterView />
+			</div>
+		</main>
+	</div>
+
+	<!-- Login modal -->
+	<Transition>
+		<div class="modal" v-if="user.modalOpen" @click="user.closeModal()">
+			<div class="dialogue" @click.stop><LoginForm /></div>
+		</div>
+	</Transition>
+
+	<!-- Footer -->
 	<footer>
 		<div class="inner-column">
 			<!-- DONT USE COLON IN FRONT OF NAME -->
@@ -48,6 +82,7 @@
 </template>
 
 <style scoped>
+	/* TODO: MOVE THIS ALL INTO SITE MENU FILE	*/
 	.site-menu {
 		display: flex;
 		flex-direction: row;
