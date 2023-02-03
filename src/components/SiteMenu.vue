@@ -2,18 +2,24 @@
 	import { ref, computed } from 'vue';
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import CartView from '@/views/CartView.vue';
+
+	// Store imports
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useLoginStore } from '@/stores/login';
 	import { useCartStore } from '@/stores/cart';
-	// import SvgSpriteComponent from '@/components/icons/SvgSprites.vue';
+	import { userService } from '@/services/userService';
+
+	// Icons
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
+	// Store constants
 	const ui = useInterfaceStore();
 	const login = useLoginStore();
 	const route = useRoute();
 	const cart = useCartStore();
 	const restaurants = useRestaurantStore();
+	const userLogin = userService();
 
 	const sideMenuOpen = ref(false);
 
@@ -33,6 +39,12 @@
 	function searchClick() {
 		searchString.value = '';
 	}
+
+	document.addEventListener('keydown', (e) => {
+		if (sideMenuOpen && e.keyCode == 27) {
+			sideMenuOpen.value = false;
+		}
+	});
 </script>
 
 <template>
@@ -42,13 +54,20 @@
 			<RouterLink class="menu-link" to="/">Food<span>hub</span></RouterLink>
 		</div>
 		<!-- <RouterLink to="/dashboard">Dashboard</RouterLink> -->
-		<RouterLink class="menu-link" to="/restaurants">Restaurants</RouterLink>
+		<!-- <RouterLink class="menu-link" to="/restaurants">Restaurants</RouterLink> -->
 		<!-- <RouterLink to="/form">Form</RouterLink> -->
-		<div>
-			<input id="search" type="text" v-model="searchString" placeholder="Search restaurants" />
+
+		<!-- SEARCH BAR -->
+		<div class="searchBarContain">
+			<input
+				id="searchBar"
+				type="text"
+				v-model="searchString"
+				placeholder="Search restaurants"
+			/>
 			<!-- <button type="submit">Go</button> -->
 			<!-- <h2>Results for {{ searchString }}</h2> -->
-			<ul v-if="searchString != ''">
+			<ul class="searchResults" v-if="searchString != ''">
 				<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
 				<li v-for="item in nameFiltered">
 					<RouterLink :to="`/restaurant/${item.slug}`" @click="searchClick">
@@ -57,38 +76,130 @@
 				</li>
 			</ul>
 		</div>
-		<RouterLink class="menu-link" to="/account"> <SvgIcons class="svg-icons" name="user" />Sign In</RouterLink>
-		<div class="menu-link" @click="toggleSideMenu">
-			<SvgIcons class="svg-icons" name="cart" />
-			<div class="qBadge">{{ cart.quantity }}</div>
-			Cart
+
+		<div class="icon-nav">
+			<!-- ACCOUNT -->
+			<RouterLink to="/account" v-if="userLogin.loggedIn" class="icon-link signIn-link">
+				<SvgIcons class="svg-icons" name="user" />
+				<p class="quiet-voice">Account</p>
+			</RouterLink>
+			<!-- SIGN IN -->
+			<div v-else class="icon-link signIn-link" @click="userLogin.openModal()">
+				<SvgIcons class="svg-icons" name="sign-in" />
+				<p class="quiet-voice">Sign in</p>
+			</div>
+
+			<!-- CART -->
+			<div class="icon-link cart-link" @click="toggleSideMenu">
+				<SvgIcons class="svg-icons" name="cart" />
+				<div v-if="cart.quantity > 0" class="qBadge">{{ cart.quantity }}</div>
+				<p class="quiet-voice">Cart</p>
+			</div>
 		</div>
 	</nav>
-	<button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button>
+	<!-- Old login toggle -->
+	<!-- <button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button> -->
 
-	<div v-if="sideMenuOpen" class="sideCart">
-		<button @click="toggleSideMenu">X</button>
-		<p>!!!!! LOOK AT ME IM A SIDE MENU</p>
-		<CartView />
-	</div>
+	<!-- CART VIEW -->
+	<Transition name="slideOut">
+		<div v-if="sideMenuOpen" class="sideCartModal" @click="toggleSideMenu()">
+			<div class="sideCartDialogue" @click.stop>
+				<button @click="toggleSideMenu">X</button>
+				<CartView />
+			</div>
+		</div>
+	</Transition>
 </template>
 
 <style scoped>
 	.site-menu {
 		display: flex;
 		flex-direction: row;
-		flex-wrap: wrap;
+		align-items: center;
+		/*		flex-wrap: wrap;*/
+		justify-content: space-between;
 	}
 
-	.site-menu a {
-		padding: 1em;
+	.logo {
+		display: grid;
+		place-items: center;
 	}
 
-	.router-link-active {
+	.searchBarContain {
+		position: relative;
+		border: 1px solid red;
+		width: 50%;
+		display: grid;
+		place-items: center;
+	}
+
+	#searchBar {
+		width: 100%;
+		border: 2px solid green;
+		padding: 1rem;
+	}
+
+	.searchResults {
+		position: absolute;
+		top: 100%;
+		width: 100%;
+		background-color: lightgreen;
+	}
+
+	.icon-nav {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+		font-size: 0.75rem;
+		/*		border: 3px solid red;*/
+	}
+
+	.icon-link {
+		display: grid;
+		place-items: center;
+	}
+
+	.menu .router-link-active {
 		border-bottom: 3px solid red;
 	}
 
-	.sideCart {
+	/*middle*/
+
+	.slideOut-enter-active,
+	.slideOut-leave-active {
+		transition: background-color 0.3s ease-in-out;
+	}
+
+	/*start & end*/
+	.slideOut-enter-from .slideOut,
+	.slideOut-leave-to .slideOut {
+		opacity: 0;
+	}
+
+	.slideOut-enter-active .sideCartDialogue,
+	.slideOut-leave-active .sideCartDialogue {
+		transform: translateX(0%);
+		transition: transform 0.3s;
+	}
+
+	/*start & end*/
+	.slideOut-enter-from .sideCartDialogue,
+	.slideOut-leave-to .sideCartDialogue {
+		transform: translateX(100%);
+		/*		background-color: red;*/
+	}
+
+	.sideCartModal {
+		background-color: rgba(0, 0, 0, 0.5);
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 12;
+	}
+
+	.sideCartDialogue {
 		position: fixed;
 		background-color: lightblue;
 		top: 0;
@@ -98,7 +209,7 @@
 		z-index: 11;
 	}
 
-	.menu-link {
+	.cart-link {
 		position: relative;
 	}
 
@@ -119,8 +230,8 @@
 
 	.svg-icons {
 		border: 3px solid blue;
-		width: 3rem;
-		height: 3rem;
+		width: 2.5rem;
+		height: 2.5rem;
 	}
 
 	@media (min-width: 500px) {
