@@ -9,17 +9,17 @@ import router from '../router';
 export const useMenuStore = defineStore('menu', function () {
 	const list = ref(menuData);
 
-	console.log('List:: ', list);
+	// console.log('List:: ', list);
 
 	const filteredList = computed(function () {
 		return list.value.filter(function (item) {
-			console.log('listTest slug: ', item.restaurantSlug);
+			// console.log('listTest slug: ', item.restaurantSlug);
 
 			return item.restaurantSlug == 'chipotle';
 		});
 	});
 
-	console.log('filteredList:: ', filteredList);
+	// console.log('filteredList:: ', filteredList);
 
 	return {
 		list: list,
