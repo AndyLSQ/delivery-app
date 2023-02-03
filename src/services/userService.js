@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { defineStore } from 'pinia';
 
 export const userService = defineStore('user', function () {
@@ -17,6 +17,12 @@ export const userService = defineStore('user', function () {
 			role: 'admin',
 		},
 	];
+
+	const current = ref(null);
+
+	function logout() {
+		current.value = null;
+	}
 
 	const formInput = reactive({
 		username: '',
@@ -42,10 +48,6 @@ export const userService = defineStore('user', function () {
 		}
 	}
 
-	function logout() {}
-
-	const current = ref(null);
-
 	const loggedIn = computed(function () {
 		if (current.value) {
 			return true;
@@ -65,6 +67,46 @@ export const userService = defineStore('user', function () {
 		// }
 	});
 
+	// =======LOGIN MODAL========
+	const modalOpen = ref(false);
+
+	function openModal() {
+		modalOpen.value = true;
+	}
+
+	function closeModal() {
+		modalOpen.value = false;
+		// clearForm();
+	}
+
+	// =======HERO TOGGLE========
+	// const heroShown = ref(true);
+	const heroShown = ref(window.localStorage.getItem('showHero'));
+
+	function showHero() {
+		window.localStorage.setItem('showHero', true);
+		setHero();
+	}
+
+	function dismissHero() {
+		window.localStorage.setItem('showHero', false);
+		setHero();
+	}
+
+	function setHero() {
+		heroShown.value = window.localStorage.getItem('showHero');
+	}
+
+	// onMounted(function () {
+	// 	if (window.localStorage.showHero) {
+	// 		console.log('showHero already exists in LS');
+	// 	} else {
+	// 		console.log('showHero doesnt yet exist in LS, so set it to true');
+	// 		window.localStorage.setItem('showHero', true);
+	// 		// user.setHero();
+	// 	}
+	// });
+
 	return {
 		users,
 		login,
@@ -73,5 +115,12 @@ export const userService = defineStore('user', function () {
 		current,
 		isAdmin,
 		formInput,
+		modalOpen,
+		openModal,
+		closeModal,
+		heroShown,
+		setHero,
+		showHero,
+		dismissHero,
 	};
 });
