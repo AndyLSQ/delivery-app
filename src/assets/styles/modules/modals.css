@@ -8,8 +8,6 @@
 	display: grid;
 	place-items: center;
 	z-index: 12;
-	/*		align-items: center;*/
-	/*		justify-content: center;*/
 }
 
 .dialogue {
@@ -19,7 +17,7 @@
 /*middle*/
 .v-enter-active,
 .v-leave-active {
-	transition: 3.3s ease-in-out;
+	transition: 0.3s ease-in-out;
 }
 
 /*start & end*/
