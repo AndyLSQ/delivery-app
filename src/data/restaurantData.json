@@ -4,21 +4,21 @@
       "name": "Taco Bell",
       "priceLevel": "1",
       "slug": "taco-bell",
-      "type": ["fast food", "mexican"]
+      "type": ["fast-food", "mexican"]
    },
    {
       "id": "chip123",
       "name": "Chipotle",
       "priceLevel": "2",
       "slug": "chipotle",
-      "type": ["fast food", "mexican"]
+      "type": ["fast-food", "mexican"]
    },
    {
       "id": "mcd123",
       "name": "McDonald's",
       "priceLevel": "2",
       "slug": "mcdonalds",
-      "type": ["fast food", "burgers"]
+      "type": ["fast-food", "burgers"]
    },
    {
       "id": "sg123",
@@ -32,6 +32,6 @@
       "name": "True Food Kitchen",
       "priceLevel": "2",
       "slug": "mcdonalds",
-      "type": ["fast food", "burgers"]
+      "type": ["fast-food", "burgers"]
    }
 ]
