@@ -1,23 +1,45 @@
 /* Should we pull in @fonts here? */
 /* don't think you can... might have to be higher up (the top of) the food chain! */
-
-.loud-voice	{
-	font-family: sans-serif;
-	font-size: clamp(36px, 5vw, 60px);
+html {
+	font-family: 'poppins', sans-serif;
 }
+
+.logo {
+	font-family: 'Courgette', cursive;
+	font-size: 2rem;
+}
+.loud-voice {
+	font-size: 3rem;
+}
+.voice1 {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.voice2 {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.voice3 {
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
 @media (min-width: 600px) {
 	.loud-voice {
 		font-weight: 700; /* or variable font */
 	}
 }
 
-.attention-voice	{
+.attention-voice {
 	font-family: sans-serif;
 	font-size: 30px;
 }
 
-.calm-voice, p, li {
-	font-family: sans-serif;
+.calm-voice,
+p,
+li {
 	font-size: 1rem;
 	line-height: 1.4;
 }
@@ -28,6 +50,10 @@
 
 :is(.calm-voice, p) strong {
 	font-weight: 700;
+}
+
+.quiet-voice {
+	font-size: 0.75rem;
 }
 
 /* these would be scoped to section or to an article element */
