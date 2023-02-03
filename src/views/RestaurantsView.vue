@@ -54,19 +54,25 @@
 		});
 	});
 
+	const filterString = ref('');
+
+	const typeFiltered = computed(function () {
+		return restaurants.list.filter(function (item) {
+			return item.type.toLowerCase().includes(filterString.value.toLowerCase());
+		});
+	});
+
 	// console.log('test aI', favorites.alreadyIncluded('abc123'));
 </script>
 
 <template>
 	<div class="rest__detail">
-		<!-- {{ userRestaurants }} -->
-		<h2 class="loud-voice">Favorites</h2>
-		<!-- {{ favRestaurants }} -->
-		<!-- <p>{{ favorites.favList }}</p> -->
-
-		<div class="favRestaurants">
+		<!-- <div class="favRestaurants">
+			<h2 class="loud-voice favorites-list">Favorites</h2>
 			<ul>
-				<li class="favPlaceholder" v-if="favRestaurants == ''">A space for all your favorites</li>
+				<li class="favPlaceholder" v-if="favRestaurants == ''">
+					A space for all your favorites
+				</li>
 				<li v-for="restaurant in favRestaurants" class="restaurant">
 					<RouterLink :to="`/restaurant/${restaurant.slug}`">
 						<p>{{ restaurant.name }}</p>
@@ -78,31 +84,34 @@
 							@click="toggleFav(restaurant.id)"
 							class="svg-icon full"
 							name="heart-full"
-						/><SvgIcons v-else @click="toggleFav(restaurant.id)" class="svg-icon empty" name="heart-empty" />
+						/><SvgIcons
+							v-else
+							@click="toggleFav(restaurant.id)"
+							class="svg-icon empty"
+							name="heart-empty"
+						/>
 					</div>
 				</li>
 			</ul>
 			<p>(side scroll this section)</p>
-		</div>
+		</div> -->
 
-		<h1 class="loud-voice">All Restaurants</h1>
+		<h1 class="voice1">All Restaurants</h1>
 		<div class="allRestaurants">
 			<!-- <label for="Search">Search</label> -->
 			<div class="filter-menu">
-				<button>Breakfast</button>
-				<button>Lunch</button>
-				<button>Dinner</button>
-				<p>other ideas: vegan options, fast food, healthy, mexican, asian, pizza, coffee, snacks, desserts</p>
-				<p>(side scroll this section)</p>
+				<h2 class="voice3">Filters</h2>
+				<button>Mexican</button>
+				<button>Fast Food</button>
+				<button>Healthy</button>
+				<p>
+					other ideas: vegan options, fast food, healthy, mexican, asian, pizza, coffee,
+					snacks, desserts
+				</p>
+				<!-- <p>(side scroll this section)</p> -->
 			</div>
-			<!-- <div>
-				<input id="search" type="text" v-model="searchString" placeholder="Search restaurants" />
-				<ul v-if="searchString != ''">
-					<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
-					<li v-for="item in nameFiltered">{{ item.name }}</li>
-				</ul>
-			</div> -->
-			<p>List:</p>
+
+			<h2 class="voice2">List:</h2>
 			<ul>
 				<li v-for="restaurant in userRestaurants" class="restaurant">
 					<RouterLink :to="`/restaurant/${restaurant.slug}`">
@@ -115,7 +124,12 @@
 							@click="toggleFav(restaurant.id)"
 							class="svg-icon full"
 							name="heart-full"
-						/><SvgIcons v-else @click="toggleFav(restaurant.id)" class="svg-icon empty" name="heart-empty" />
+						/><SvgIcons
+							v-else
+							@click="toggleFav(restaurant.id)"
+							class="svg-icon empty"
+							name="heart-empty"
+						/>
 					</div>
 				</li>
 			</ul>
@@ -140,8 +154,8 @@
 		align-items: center;
 	}
 	.svg-icon {
-		height: 2.5rem;
-		width: 2.5rem;
+		height: 1.5rem;
+		width: 1.5rem;
 	}
 	.favHeart .empty:hover {
 		fill: red;
