@@ -3,25 +3,41 @@
 	import { useFirestore, useCollection } from 'vuefire';
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
 	import { useFavoritesStore } from '@/stores/favorites';
-
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
+	// ==== FB SETUP ====
 	const db = useFirestore();
-
+	// Set FB collection of restaurants as reactive data
 	const restaurants = useCollection(collection(db, 'restaurants'));
 	const favorites = useFavoritesStore();
 
-	function toggleFav(restaurantId) {
-		console.log('saving favorite');
-		favorites.toggleFavorite(restaurantId);
+	// ========== CRUD SETUP ==========
+	// TODO: CUD FOR ADMIN ONLY
+
+	// ==== CREATE (FORM) ====
+	// Reactive object to hold form inputs
+	const form = reactive({
+		name: '',
+		tags: [], // TODO: Add dropdown for this
+	});
+
+	function clearForm() {
+		form.name = ''; // clear form
 	}
 
+	function addRestaurant() {
+		addDoc(collection(db, 'restaurants'), {
+			name: form.name,
+		});
+		clearForm();
+	}
+
+	// ==== READ (FAVORITES) ====
+	// User specific array to track favorites
 	const userRestaurants = computed(function () {
 		const userRestaurantsArray = [];
 		restaurants.value.forEach(function (restaurant) {
-			// return console.log('rest COMP', restaurant);
 			if (favorites.favList.includes(restaurant.id)) {
-				//Give it a favorite boolean
 				restaurant.favorite = true;
 			} else {
 				restaurant.favorite = false;
@@ -30,31 +46,63 @@
 		});
 		return userRestaurantsArray;
 	});
+
+	// ==== UPDATE ====
+	const editing = ref(false);
+	// const originalName = null;
+
+	function editRestaurant(id, name) {
+		editing.value = id;
+		// originalName = name;
+	}
+
+	function clearEdit() {
+		editing.value = false;
+	}
+
+	function updateRestaurant(id, r) {
+		setDoc(doc(db, 'restaurants', id), {
+			name: r,
+		});
+		clearEdit();
+	}
+
+	// ==== DELETE =====
+	async function removeRestaurant(docId) {
+		const record = doc(db, 'restaurants', docId);
+		if (confirm('Are you sure you want to delete this restaurant?')) {
+			await deleteDoc(record);
+		}
+	}
 </script>
 
 <template>
 	<h2 class="voice2">Restaurant List</h2>
 	<ul>
-		<!-- 		{{
-			userRestaurants
-		}} -->
 		<li class="restaurant-card" v-for="restaurant in userRestaurants">
 			<RouterLink :to="`/restaurant/${restaurant.id}`">
 				<picture>[ restaurant image ]</picture>
 				{{ restaurant.name }}
 			</RouterLink>
-			<div class="favHeart">
-				<SvgIcons
-					v-if="restaurant.favorite"
-					@click="toggleFav(restaurant.id)"
-					class="svg-icon full"
-					name="heart-full"
-				/><SvgIcons
-					v-else
-					@click="toggleFav(restaurant.id)"
-					class="svg-icon empty"
-					name="heart-empty"
-				/>
+			<div class="favHeart" @click="favorites.toggleFavorite(restaurant.id)">
+				<SvgIcons v-if="restaurant.favorite" class="svg-icon full" name="heart-full" />
+				<SvgIcons v-else class="svg-icon empty" name="heart-empty" />
+			</div>
+
+			<div class="adminPanel">
+				<!-- TODO: ^ v-if user is an admin -->
+				<button @click="removeRestaurant(restaurant.id)" type="button">x</button>
+				<button
+					@click="editRestaurant(restaurant.id, restaurant.name)"
+					v-if="editing != restaurant.id"
+				>
+					Edit
+				</button>
+				<template v-if="editing == restaurant.id">
+					<input type="text" v-model="restaurant.name" />
+					<button @click="updateRestaurant(restaurant.id, restaurant.name)">Update</button>
+					<button @click="clearEdit()">Cancel</button>
+				</template>
 			</div>
 		</li>
 	</ul>
