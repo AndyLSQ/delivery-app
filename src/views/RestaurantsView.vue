@@ -4,39 +4,40 @@
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import { useFavoritesStore } from '@/stores/favorites';
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
+	import RestaurantList from '@/components/RestaurantList.vue';
 
 	const route = useRoute();
 	const restaurants = useRestaurantStore();
 	const favorites = useFavoritesStore();
 
-	function toggleFav(restaurantId) {
-		console.log('saving favorite');
-		favorites.toggleFavorite(restaurantId);
-	}
+	// function toggleFav(restaurantId) {
+	// 	console.log('saving favorite');
+	// 	favorites.toggleFavorite(restaurantId);
+	// }
 
 	const restaurant = restaurants.list.find(function (record) {
 		return record.slug == route.params.slug;
 	});
 
-	//create computed property
-	const userRestaurants = computed(function () {
-		//Look over full restaurant list (look at each restaurant)
-		const userRestaurantsArray = [];
+	// // create computed property
+	// const userRestaurants = computed(function () {
+	// 	//Look over full restaurant list (look at each restaurant)
+	// 	const userRestaurantsArray = [];
 
-		restaurants.list.forEach(function (restaurant) {
-			//If ID is in the favorites list,
-			if (favorites.favList.includes(restaurant.id)) {
-				//Give it a favorite boolean
-				restaurant.favorite = true;
-			} else {
-				restaurant.favorite = false;
-			}
-			userRestaurantsArray.push(restaurant);
-		});
+	// 	restaurants.list.forEach(function (restaurant) {
+	// 		//If ID is in the favorites list,
+	// 		if (favorites.favList.includes(restaurant.id)) {
+	// 			//Give it a favorite boolean
+	// 			restaurant.favorite = true;
+	// 		} else {
+	// 			restaurant.favorite = false;
+	// 		}
+	// 		userRestaurantsArray.push(restaurant);
+	// 	});
 
-		//Return a new array (add an addtl property to each item)
-		return userRestaurantsArray;
-	});
+	// 	//Return a new array (add an addtl property to each item)
+	// 	return userRestaurantsArray;
+	// });
 
 	const favRestaurants = computed(function () {
 		// return 'hi';
@@ -61,12 +62,12 @@
 			return item.type.toLowerCase().includes(filterString.value.toLowerCase());
 		});
 	});
-
-	// console.log('test aI', favorites.alreadyIncluded('abc123'));
 </script>
 
 <template>
+	<RestaurantList />
 	<div class="rest__detail">
+		<!-- DELETE THIS DIV - MOVED TO RESTAURANTLIST.vue -->
 		<!-- <div class="favRestaurants">
 			<h2 class="loud-voice favorites-list">Favorites</h2>
 			<ul>
@@ -96,9 +97,8 @@
 			<p>(side scroll this section)</p>
 		</div> -->
 
-		<h1 class="voice1">All Restaurants</h1>
+		<!-- 		<h1 class="voice1">All Restaurants</h1>
 		<div class="allRestaurants">
-			<!-- <label for="Search">Search</label> -->
 			<div class="filter-menu">
 				<h2 class="voice3">Filters</h2>
 				<button>Mexican</button>
@@ -108,7 +108,7 @@
 					other ideas: vegan options, fast food, healthy, mexican, asian, pizza, coffee,
 					snacks, desserts
 				</p>
-				<!-- <p>(side scroll this section)</p> -->
+			
 			</div>
 
 			<h2 class="voice2">List:</h2>
@@ -133,11 +133,11 @@
 					</div>
 				</li>
 			</ul>
-		</div>
+		</div> -->
 	</div>
 </template>
 
-<style>
+<style scoped>
 	.restaurant {
 		border: 2px solid red;
 		position: relative;

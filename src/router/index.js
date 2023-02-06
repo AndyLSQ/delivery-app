@@ -58,6 +58,11 @@ const router = createRouter({
          name: 'dish',
          component: DishView,
       },
+      // {
+      //    path: '/sign-in',
+      //    name: 'sign-in',
+      //    component: DishView,
+      // },
    ],
 });
 
