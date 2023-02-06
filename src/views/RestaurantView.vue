@@ -5,6 +5,7 @@
 	import { useMenuStore } from '@/stores/menu';
 	import { useCartStore } from '@/stores/cart';
 	// import DishView from './DishView.vue';
+	import MenuList from '@/components/MenuList.vue';
 
 	const route = useRoute();
 	const restaurants = useRestaurantStore();
@@ -74,7 +75,8 @@
 </script>
 
 <template>
-	<h1 class="loud-voice">{{ restaurant.name }}</h1>
+	<MenuList />
+	<!--	<h1 class="loud-voice">{{ restaurant.name }}</h1>
 
 	<h2>Menu</h2>
 	<ul>
@@ -84,16 +86,11 @@
 			</li>
 
 			<button @click="openDishView(item)">Add</button>
-
-			<!-- <button v-if="cart.alreadyInList(item)" @click="cart.minusOne(item)">qty minus one</button>
-
-			<button v-if="cart.alreadyInList(item)" @click="cart.plusOne(item)">qty plus one</button>
-			<button v-else @click="cart.add(item)">add to cart</button> -->
 		</div>
-	</ul>
+	</ul> -->
 
 	<!-- Add-to-cart modal -->
-	<Transition>
+	<!-- 	<Transition>
 		<div class="modal" v-if="modalOpen" @click="closeModal()">
 			<div class="dialogue" @click.stop>
 				<button @click.prevent="closeModal()">Close</button>
@@ -118,7 +115,7 @@
 				</form>
 			</div>
 		</div>
-	</Transition>
+	</Transition> -->
 
 	<!-- <div class="contain">
 		<h1 class="loud-voice">cart preview</h1>
