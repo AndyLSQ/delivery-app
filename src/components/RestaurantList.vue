@@ -18,11 +18,12 @@
 	// Reactive object to hold form inputs
 	const form = reactive({
 		name: '',
-		tags: [], // TODO: Add dropdown for this
+		tags: [], // TODO: Add checkboxes for this
 	});
 
 	function clearForm() {
-		form.name = ''; // clear form
+		form.name = '';
+		form.tags = [];
 	}
 
 	function addRestaurant() {
@@ -106,6 +107,12 @@
 			</div>
 		</li>
 	</ul>
+	<form class="adminPanel" @submit.prevent="addRestaurant()">
+		<h2 class="voice2">Add item</h2>
+		<label for="newRestName">Restaurant name</label>
+		<input type="text" id="newRestName" v-model="form.name" />
+		<button type="submit">Add</button>
+	</form>
 </template>
 
 <style scoped>
