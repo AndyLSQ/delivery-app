@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 export const useFavoritesStore = defineStore('favorites', function () {
 	const favList = ref([]);
 
-	function alreadyIncluded(searchId) {
+	function alreadyFavorite(searchId) {
 		return favList.value.find(function (itemId) {
 			return searchId == itemId;
 		});
@@ -20,15 +20,12 @@ export const useFavoritesStore = defineStore('favorites', function () {
 		});
 	}
 
-	console.log('test aI', alreadyIncluded('abc123'));
-
 	function toggleFavorite(favorite) {
-		// console.log('favorite came thru as: ', favorite);
-		if (alreadyIncluded(favorite)) {
-			console.log('already a favorite so remove it');
+		if (alreadyFavorite(favorite)) {
+			// console.log('already a favorite so remove it');
 			removeFavorite(favorite);
 		} else {
-			console.log('not yet a favorite so add it');
+			// console.log('not yet a favorite so add it');
 			addFavorite(favorite);
 		}
 		// console.log('new favlist: ', favList);
@@ -37,6 +34,6 @@ export const useFavoritesStore = defineStore('favorites', function () {
 	return {
 		favList: favList,
 		toggleFavorite: toggleFavorite,
-		alreadyIncluded: alreadyIncluded,
+		alreadyFavorite: alreadyFavorite,
 	};
 });
