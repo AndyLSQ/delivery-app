@@ -1,7 +1,6 @@
 <script setup>
 	import { computed, ref } from 'vue';
 	import { userService } from '@/services/userService.js';
-
 	const userLogin = userService();
 	// const usernameInput = ref(''); -- moved to store
 	const user = userService();
