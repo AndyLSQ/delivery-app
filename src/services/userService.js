@@ -1,7 +1,55 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { defineStore } from 'pinia';
 
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	signOut as fbSignOut,
+} from 'firebase/auth';
+
+import { useCurrentUser } from 'vuefire';
+
 export const userService = defineStore('user', function () {
+	// ======== FB-AUTH ============
+	const auth = getAuth();
+
+	const currentFB = useCurrentUser();
+
+	const form = reactive({
+		username: '',
+		password: '',
+		// role: "",
+	});
+
+	function clearForm() {
+		form.username = '';
+		form.password = '';
+		// form.role = '';
+	}
+
+	function signUp(email, password) {
+		createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+			//signed in
+			console.log('user.signUp');
+			clearForm();
+		});
+	}
+
+	function signOut() {
+		console.log('sign out initiated');
+		fbSignOut(auth)
+			.then(() => {
+				console.log('sign out successful');
+				// Sign-out successful.
+			})
+			.catch((error) => {
+				console.log(error);
+				// An error happened.
+			});
+	}
+
+	// ====================
 	const users = [
 		{
 			username: 'tom',
@@ -122,5 +170,9 @@ export const userService = defineStore('user', function () {
 		setHero,
 		showHero,
 		dismissHero,
+		signUp,
+		form,
+		currentFB,
+		signOut,
 	};
 });
