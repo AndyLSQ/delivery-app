@@ -25,26 +25,36 @@
 		});
 	});
 
-	const menu = useCollection(collection(db, 'restaurants', 'mcdonalds', 'menu'));
+	// const menu = useCollection(collection(db, 'restaurants', route.params.slug, 'menu'));
+
+	const categories = useCollection(collection(db, 'restaurants', route.params.slug, 'categories'));
+
+	const items = useCollection(collection(db, 'restaurants', route.params.slug, 'items'));
 
 	// ==== CREATE ====
 	const form = reactive({
 		name: '',
 		price: '',
-		course: '', // TODO: Add radio buttons for this
+		category: '', // TODO: Add radio buttons for this
+		description: '',
+		imageUrl: 'https://peprojects.dev/images/square.jpg',
 	});
 
 	function clearForm() {
 		form.name = '';
 		form.price = '';
-		form.course = '';
+		form.category = '';
+		form.description = '';
+		form.imageUrl = 'https://peprojects.dev/images/square.jpg';
 	}
 
 	function addItem() {
-		addDoc(collection(db, 'restaurants', 'mcdonalds', 'menu'), {
+		addDoc(collection(db, 'restaurants', route.params.slug, 'items'), {
 			name: form.name,
 			price: form.price,
-			course: form.course,
+			belongsToCategory: form.category.name,
+			description: form.description,
+			imageUrl: form.imageUrl,
 		});
 		clearForm();
 	}
