@@ -70,18 +70,18 @@
 		editing.value = false;
 	}
 
-	function updateItem(id, newName, newPrice, newCourse) {
-		setDoc(doc(db, 'restaurants', 'mcdonalds', 'menu', id), {
+	function updateItem(id, newName, newPrice, newCategory) {
+		setDoc(doc(db, 'restaurants', 'mcdonalds', 'items', id), {
 			name: newName,
 			price: newPrice,
-			course: newCourse,
+			belongsToCategory: newCategory,
 		});
 		clearEdit();
 	}
 
 	// ==== DELETE =====
 	async function removeItem(id) {
-		const record = doc(db, 'restaurants', 'mcdonalds', 'menu', id);
+		const record = doc(db, 'restaurants', 'mcdonalds', 'items', id);
 		if (confirm('Are you sure you want to delete this menu item?')) {
 			await deleteDoc(record);
 		}
@@ -89,56 +89,96 @@
 </script>
 
 <template>
-	<h1>Menu List</h1>
-	current restaurant: {{ currentRestaurant }}
-	<ul>
-		<li v-for="item in menu">
-			<!-- <p>ID: {{ item.id }}</p> -->
-			{{ item.course }}
-			{{ item.name }}
-			${{ item.price }}
-			<div class="adminPanel">
-				<!-- TODO: ^ v-if user is an admin -->
-				<button @click="removeItem(item.id)" type="button">x</button>
-				<button
-					@click="editItem(item.id, item.name, item.price, item.course)"
-					v-if="editing != item.id"
-				>
-					Edit
-				</button>
-				<template v-if="editing == item.id">
-					<input type="text" placeholder="Name" v-model="item.name" />
-					$<input type="number" placeholder="Price" v-model="item.price" />
-					<input type="text" placeholder="Course" v-model="item.course" />
-					<button @click="updateItem(item.id, item.name, item.price, item.course)">
-						Update
+	<div class="router-view" :key="$route.path">
+		<h1 class="voice1">Menu</h1>
+
+		<ul>
+			<li v-for="category in categories">
+				<h2 class="voice2 categoryHeader">{{ category.name }}</h2>
+				<CategoryItemsGrid :category="category" :items="items" />
+			</li>
+			<!-- ===== OLD LI ===== -->
+			<!-- <li v-for="item in menu">
+				{{ item.name }}
+				<div class="adminPanel">
+
+					<button @click="removeItem(item.id)" type="button">x</button>
+					<button
+						@click="editItem(item.id, item.name, item.price, item.course)"
+						v-if="editing != item.id"
+					>
+						Edit
 					</button>
-					<button @click="clearEdit()">Cancel</button>
-				</template>
-			</div>
-		</li>
-	</ul>
-	<form class="adminPanel" @submit.prevent="addItem()">
-		<h2 class="voice2">Add Item</h2>
-		<div>
-			<label for="newItemName">Item name</label>
-			<input type="text" id="newItemName" v-model="form.name" />
+					<template v-if="editing == item.id">
+						<input type="text" placeholder="Name" v-model="item.name" />
+						$<input type="number" placeholder="Price" v-model="item.price" />
+						<input type="text" placeholder="Course" v-model="item.course" />
+						<button @click="updateItem(item.id, item.name, item.price, item.course)">
+							Update
+						</button>
+						<button @click="clearEdit()">Cancel</button>
+					</template>
+				</div>
+			</li> -->
+		</ul>
+		<!-- <div class="addCategory">
+			<form class="adminPanel" @submit.prevent="addItem()">
+				<h2 class="voice2">Add Item</h2>
+				<div>
+					<label for="newItemName">Item name</label>
+					<input type="text" id="newItemName" v-model="form.name" />
+				</div>
+				<div>
+					<label for="newItemPrice">Price</label>
+					<input type="number" id="newItemPrice" v-model="form.price" />
+				</div>
+				<div>
+					<label for="newItemName">Category</label>
+					<select>
+						<option v-for="category in categories" :value="category">
+							{{ category.name }}
+						</option>
+					</select>
+				</div>
+				<button type="submit">Add</button>
+			</form>
+		</div> -->
+		<div class="adminPanel addItem">
+			<form @submit.prevent="addItem()">
+				<h2 class="voice2">Add Item</h2>
+				<div>
+					<label for="newItemName">Item Name</label>
+					<input type="text" id="newItemName" v-model="form.name" />
+				</div>
+				<div>
+					<label for="newItemPrice">Price</label>
+					<input type="number" id="newItemPrice" v-model="form.price" />
+				</div>
+				<div>
+					<label for="newItemDescription">Item Description</label>
+					<input type="text" id="newItemDescription" v-model="form.description" />
+				</div>
+				<div>
+					<label for="newItemName">Category</label>
+					<select v-model="form.category">
+						<option v-for="category in categories" :value="category">
+							{{ category.name }}
+						</option>
+					</select>
+				</div>
+				<div>
+					<label for="newItemImageUrl">Item ImageUrl</label>
+					<input type="text" id="newItemImageUrl" v-model="form.imageUrl" />
+				</div>
+				<button type="submit">Add</button>
+			</form>
 		</div>
-		<div>
-			<label for="newItemPrice">Price</label>
-			<input type="number" id="newItemPrice" v-model="form.price" />
-		</div>
-		<div>
-			<label for="newItemName">Course</label>
-			<input
-				type="text"
-				id="newItemName"
-				v-model="form.course"
-				placeholder="Appetizer, Main, Drink, Dessert"
-			/>
-		</div>
-		<button type="submit">Add</button>
-	</form>
+		<!-- TODO: Add form to add categories -->
+	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+	.categoryHeader {
+		/*		text-transform: capitalize;*/
+	}
+</style>
