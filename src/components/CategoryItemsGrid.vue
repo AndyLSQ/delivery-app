@@ -14,6 +14,7 @@
 <template>
 	<div class="category">
 		<h2 class="voice2">{{ category.name }}</h2>
+		<div>{{ category.description }}</div>
 		<ul class="categoryGrid">
 			<li v-for="item in categoryItems">
 				<MenuItemCard :item="item" />
