@@ -59,6 +59,14 @@ li {
 /* these would be scoped to section or to an article element */
 /* this is just a loose setting for now */
 /* or smaller group of article-like styles such as a <text-content> custom element */
+
+h1,
+h2,
+h3,
+h4 {
+	text-transform: capitalize;
+}
+
 p + p {
 	margin-top: 1em;
 }
