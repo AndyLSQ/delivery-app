@@ -53,9 +53,6 @@
 		<div class="logo">
 			<RouterLink class="menu-link" to="/">Food<span>hub</span></RouterLink>
 		</div>
-		<!-- <RouterLink to="/dashboard">Dashboard</RouterLink> -->
-		<!-- <RouterLink class="menu-link" to="/restaurants">Restaurants</RouterLink> -->
-		<!-- <RouterLink to="/form">Form</RouterLink> -->
 
 		<!-- SEARCH BAR -->
 		<div class="searchBarContain">
@@ -69,7 +66,8 @@
 			<!-- <h2>Results for {{ searchString }}</h2> -->
 			<ul class="searchResults" v-if="searchString != ''">
 				<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
-				<li v-for="item in nameFiltered">
+				<li v-for="item in nameFiltered" :key="`/restaurant/${item.slug}`">
+					<!-- use key to diff -->
 					<RouterLink :to="`/restaurant/${item.slug}`" @click="searchClick">
 						{{ item.name }}
 					</RouterLink>
