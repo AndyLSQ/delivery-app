@@ -25,13 +25,12 @@
 		});
 	});
 
-	// const menu = useCollection(collection(db, 'restaurants', route.params.slug, 'menu'));
-
 	const categories = useCollection(collection(db, 'restaurants', route.params.slug, 'categories'));
 
 	const items = useCollection(collection(db, 'restaurants', route.params.slug, 'items'));
 
 	// ==== CREATE ====
+	// == (ITEM) ==
 	const form = reactive({
 		name: '',
 		price: '',
@@ -52,11 +51,39 @@
 		addDoc(collection(db, 'restaurants', route.params.slug, 'items'), {
 			name: form.name,
 			price: form.price,
-			belongsToCategory: form.category.name,
+			belongsToCategory: form.category,
 			description: form.description,
 			imageUrl: form.imageUrl,
 		});
 		clearForm();
+	}
+
+	// == (CATEGORY) ==
+	const kebabCase = (str) =>
+		str
+			.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+			.join('-')
+			.toLowerCase();
+
+	function slugifyCategory() {}
+	const categoryForm = reactive({
+		name: '',
+		description: '',
+	});
+
+	function clearCategoryForm() {
+		categoryForm.name = '';
+		categoryForm.description = '';
+	}
+
+	function addCategory() {
+		slugifyCategory();
+		addDoc(collection(db, 'restaurants', route.params.slug, 'categories'), {
+			id: 'test-id',
+			name: categoryForm.name,
+			description: categoryForm.description,
+		});
+		clearCategoryForm();
 	}
 
 	// ==== UPDATE ====
@@ -98,28 +125,21 @@
 			</li>
 		</ul>
 		<!-- TODO: Add form to add categories -->
-		<!-- <div class="addCategory">
-			<form class="adminPanel" @submit.prevent="addItem()">
-				<h2 class="voice2">Add Item</h2>
+		<div class="addCategory">
+			<form class="adminPanel" @submit.prevent="addCategory()">
+				<h2 class="voice2">Add Category</h2>
 				<div>
-					<label for="newItemName">Item name</label>
-					<input type="text" id="newItemName" v-model="form.name" />
+					<label for="newCategoryName">Category name</label>
+					<input type="text" id="newCategoryName" v-model="categoryForm.name" />
 				</div>
 				<div>
-					<label for="newItemPrice">Price</label>
-					<input type="number" id="newItemPrice" v-model="form.price" />
+					<label for="newCategoryDescription">Description</label>
+					<input type="text" id="newCategoryDescription" v-model="categoryForm.description" />
 				</div>
-				<div>
-					<label for="newItemName">Category</label>
-					<select>
-						<option v-for="category in categories" :value="category">
-							{{ category.name }}
-						</option>
-					</select>
-				</div>
+
 				<button type="submit">Add</button>
 			</form>
-		</div> -->
+		</div>
 		<div class="adminPanel addItem">
 			<form @submit.prevent="addItem()">
 				<h2 class="voice2">Add Item</h2>
@@ -138,7 +158,7 @@
 				<div>
 					<label for="newItemName">Category</label>
 					<select v-model="form.category">
-						<option v-for="category in categories" :value="category">
+						<option v-for="category in categories" :value="category.id">
 							{{ category.name }}
 						</option>
 					</select>
