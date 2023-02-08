@@ -150,12 +150,14 @@
 				<button type="submit">Add</button>
 			</form>
 		</div>
-		<!-- TODO: Add form to add categories -->
 	</div>
 </template>
 
 <style scoped>
-	.categoryHeader {
-		/*		text-transform: capitalize;*/
+	.categories {
+		border: 3px solid yellow;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
 	}
 </style>
