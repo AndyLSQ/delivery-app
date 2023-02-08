@@ -2,10 +2,12 @@
 	// Imports
 	import { ref, reactive, computed, onMounted } from 'vue';
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
-	import { useFirestore, useCollection } from 'vuefire';
+	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import { useRoute } from 'vue-router';
 
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
+
+	import CategoryItemsGrid from '@/components/CategoryItemsGrid.vue';
 
 	// Declarations
 	const route = useRoute();
