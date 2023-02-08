@@ -92,35 +92,12 @@
 	<div class="router-view" :key="$route.path">
 		<h1 class="voice1">Menu</h1>
 
-		<ul>
+		<ul class="categories">
 			<li v-for="category in categories">
-				<h2 class="voice2 categoryHeader">{{ category.name }}</h2>
 				<CategoryItemsGrid :category="category" :items="items" />
 			</li>
-			<!-- ===== OLD LI ===== -->
-			<!-- <li v-for="item in menu">
-				{{ item.name }}
-				<div class="adminPanel">
-
-					<button @click="removeItem(item.id)" type="button">x</button>
-					<button
-						@click="editItem(item.id, item.name, item.price, item.course)"
-						v-if="editing != item.id"
-					>
-						Edit
-					</button>
-					<template v-if="editing == item.id">
-						<input type="text" placeholder="Name" v-model="item.name" />
-						$<input type="number" placeholder="Price" v-model="item.price" />
-						<input type="text" placeholder="Course" v-model="item.course" />
-						<button @click="updateItem(item.id, item.name, item.price, item.course)">
-							Update
-						</button>
-						<button @click="clearEdit()">Cancel</button>
-					</template>
-				</div>
-			</li> -->
 		</ul>
+		<!-- TODO: Add form to add categories -->
 		<!-- <div class="addCategory">
 			<form class="adminPanel" @submit.prevent="addItem()">
 				<h2 class="voice2">Add Item</h2>
