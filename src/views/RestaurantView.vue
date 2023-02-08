@@ -75,7 +75,7 @@
 </script>
 
 <template>
-	<MenuList />
+	<MenuList :key="$route.path" />
 	<!--	<h1 class="loud-voice">{{ restaurant.name }}</h1>
 
 	<h2>Menu</h2>
