@@ -6,30 +6,34 @@
 
 	const categoryItems = computed(function () {
 		return props.items.filter(function (item) {
-			// console.log('item.belongsToCategory', item.belongsToCategory);
-			// console.log('props.category.id', props.category.id);
 			return item.belongsToCategory == props.category.id;
 		});
 	});
 </script>
 
 <template>
-	<!-- {{ category }} -->
-	<!-- {{ items }} -->
-	<!-- {{ categoryItems }} -->
-	<ul>
-		<li v-for="item in categoryItems">
-			<picture>
-				<img :src="item.imageUrl" alt="" />
-			</picture>
-			<h3 class="voice3">{{ item.name }}</h3>
-			${{ item.price }}
-			{{ item.description }}
-		</li>
-	</ul>
+	<div class="category">
+		<h2 class="voice2">{{ category.name }}</h2>
+		<ul class="categoryGrid">
+			<li v-for="item in categoryItems">
+				<MenuItemCard :item="item" />
+			</li>
+		</ul>
+	</div>
 </template>
 
 <style scoped>
+	/*.category {
+		display: flex;
+		flex-direction: column;
+		border: 3px solid yellow;
+	}*/
+	.categoryGrid {
+		border: 2px solid blue;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
 	picture {
 		aspect-ratio: 1/1;
 		width: 200px;
