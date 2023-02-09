@@ -24,12 +24,12 @@
 		<ul>
 			<li class="cartItem" v-for="item in cart.items">
 				<h2 class="voice3">{{ item.name }}</h2>
-				<p v-if="item.notes">
+				<div v-if="item.notes" class="itemNotes">
 					<em>{{ item.notes }}</em>
-				</p>
+				</div>
 				<!-- <p>${{ item.price }}</p> -->
 				<div>${{ item.subtotal }}</div>
-				<button v-if="item.quantity == 1" @click="cart.remove(item.id)">D</button>
+				<button v-if="item.quantity == 1" @click="cart.remove(item)">D</button>
 				<button v-if="item.quantity > 1" @click="cart.minusOne(item)">-</button>
 				{{ item.quantity }}
 				<button @click="cart.plusOne(item)">+</button>
@@ -51,5 +51,8 @@
 <style scoped>
 	.cartItem {
 		border: 1px solid red;
+	}
+	em {
+		font-style: italic;
 	}
 </style>
