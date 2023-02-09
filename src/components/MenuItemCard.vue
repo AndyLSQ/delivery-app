@@ -11,6 +11,7 @@
 
 	const categories = useCollection(collection(db, 'restaurants', route.params.slug, 'categories'));
 
+	// ============= ITEM U.D. =============
 	// ==== UPDATE ====
 	const editing = ref(false);
 
@@ -40,6 +41,34 @@
 			await deleteDoc(record);
 		}
 	}
+
+	// ============= CART-ADD MODAL =============
+	const cartAddOpen = ref(false);
+	const cartAddItem = ref(null);
+	const qty = ref(1);
+	const notes = ref('');
+
+	function openCartAdd(item) {
+		cartAddOpen.value = true;
+		cartAddItem.value = item;
+	}
+
+	function closeCartAdd() {
+		cartAddOpen.value = false;
+		cartAddItem.value = null;
+		clearAddItem();
+	}
+
+	function clearAddItem() {
+		notes.value = '';
+		qty.value = 1;
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (cartAddOpen && e.keyCode == 27) {
+			closeCartAdd();
+		}
+	});
 </script>
 
 <template>
@@ -50,7 +79,32 @@
 		<h3 class="voice3">{{ item.name }}</h3>
 		<div>${{ item.price }}</div>
 		<div>{{ item.description }}</div>
-		<!-- {{ item.belongsToCategory }} -->
+
+		<div class="addToCartButton">
+			<button @click="openCartAdd(item)">Add to cart</button>
+		</div>
+
+		<!-- ======== CART-ADD MODAL ======== -->
+		<Transition>
+			<div class="modal cartAdd" v-if="cartAddOpen" @click="closeCartAdd()">
+				<div class="dialogue" @click.stop>
+					<button @click.prevent="closeCartAdd()">Close</button>
+					<h2 class="loud-voice">{{ cartAddItem.name }}</h2>
+					<picture>
+						<img :src="item.imageUrl" alt="" />
+					</picture>
+					<p>${{ item.price }}</p>
+					<p>{{ item.description }}</p>
+					<form action="">
+						<label for="cartNote">Special Requests</label>
+						<input id="cartNote" type="text" v-model="notes" />
+					</form>
+				</div>
+			</div>
+		</Transition>
+		<!-- ======== / CART-ADD MODAL ======== -->
+
+		<!-- ======== ADMIN PANEL ======== -->
 		<div class="adminPanel">
 			<button @click="removeItem(item.id)" type="button">X</button>
 
@@ -84,6 +138,7 @@
 				<button @click="clearEdit()">Cancel</button>
 			</template>
 		</div>
+		<!-- ======== / ADMIN PANEL ======== -->
 	</div>
 </template>
 
@@ -96,6 +151,14 @@
 		/*		width: 200px;*/
 		width: 100%;
 		height: 250px;
+	}
+
+	.dialogue {
+		/*		width: 60vw; Todo: Define this later */
+	}
+	.modal picture {
+		border: 2px solid blue;
+		height: 400px;
 	}
 
 	img {
