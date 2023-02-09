@@ -62,7 +62,7 @@
 				<input type="text" placeholder="Description" v-model="item.description" />
 				<select v-model="item.belongsToCategory" :value="item.belongsToCategory" required>
 					<!-- <option disabled value="">Please select one</option> -->
-					<option v-for="category in categories" :value="category">
+					<option v-for="category in categories" :value="category.id">
 						{{ category.name }}
 					</option>
 				</select>
