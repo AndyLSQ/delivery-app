@@ -115,6 +115,7 @@
 
 <template>
 	<div class="router-view" :key="$route.path">
+		<!-- {{ currentRestaurant.name }}  -->
 		<h1 class="voice1">Menu</h1>
 
 		<ul class="categories">
