@@ -59,13 +59,6 @@
 	}
 
 	// == (CATEGORY) ==
-	const kebabCase = (str) =>
-		str
-			.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-			.join('-')
-			.toLowerCase();
-
-	function slugifyCategory() {}
 	const categoryForm = reactive({
 		name: '',
 		description: '',
@@ -77,42 +70,47 @@
 	}
 
 	function addCategory() {
-		slugifyCategory();
 		addDoc(collection(db, 'restaurants', route.params.slug, 'categories'), {
 			id: 'test-id',
-			name: categoryForm.name,
+			name: categoryForm.name.toLowerCase(),
 			description: categoryForm.description,
 		});
 		clearCategoryForm();
 	}
 
 	// ==== UPDATE ====
-	const editing = ref(false);
+	// == (ITEM) ==
+	// const editing = ref(false);
 
-	function editItem(id, name) {
-		editing.value = id;
-	}
+	// function editItem(id, name) {
+	// 	editing.value = id;
+	// }
 
-	function clearEdit() {
-		editing.value = false;
-	}
+	// function clearEdit() {
+	// 	editing.value = false;
+	// }
 
-	function updateItem(id, newName, newPrice, newCategory) {
-		setDoc(doc(db, 'restaurants', 'mcdonalds', 'items', id), {
-			name: newName,
-			price: newPrice,
-			belongsToCategory: newCategory,
-		});
-		clearEdit();
-	}
+	// function updateItem(id, newName, newPrice, newCategory) {
+	// 	setDoc(doc(db, 'restaurants', 'mcdonalds', 'items', id), {
+	// 		name: newName,
+	// 		price: newPrice,
+	// 		belongsToCategory: newCategory,
+	// 	});
+	// 	clearEdit();
+	// }
+
+	// == (CATEGORY) ==
 
 	// ==== DELETE =====
+	// == (ITEM) ==
 	async function removeItem(id) {
 		const record = doc(db, 'restaurants', 'mcdonalds', 'items', id);
 		if (confirm('Are you sure you want to delete this menu item?')) {
 			await deleteDoc(record);
 		}
 	}
+
+	// == (CATEGORY) ==
 </script>
 
 <template>
@@ -125,7 +123,7 @@
 			</li>
 		</ul>
 		<!-- TODO: Add form to add categories -->
-		<div class="addCategory">
+		<div class="adminPanel addCategory">
 			<form class="adminPanel" @submit.prevent="addCategory()">
 				<h2 class="voice2">Add Category</h2>
 				<div>
@@ -175,7 +173,7 @@
 
 <style scoped>
 	.categories {
-		border: 3px solid yellow;
+		border: 1px solid yellow;
 		display: flex;
 		flex-direction: column;
 		gap: 40px;

@@ -1,20 +1,71 @@
 <script setup>
-	import { computed } from 'vue';
+	import { ref, computed } from 'vue';
+	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
+	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import MenuItemCard from '@/components/MenuItemCard.vue';
+	import { useRoute } from 'vue-router';
 
 	const props = defineProps(['category', 'items']);
+
+	const route = useRoute();
+
+	// new
+	// ==== FB SETUP ====
+	const db = useFirestore();
+
+	const currentCategory = props.category;
+	// ============
 
 	const categoryItems = computed(function () {
 		return props.items.filter(function (item) {
 			return item.belongsToCategory == props.category.id;
 		});
 	});
+
+	// ==== UPDATE ====
+	// == CATEGORY ==
+	const editing = ref(false);
+
+	function editCategory(id) {
+		editing.value = id;
+		console.log('editing', editing.value);
+	}
+
+	function clearEdit() {
+		editing.value = false;
+	}
+	function updateCategory(id, newName, newDescription) {
+		setDoc(doc(db, 'restaurants', route.params.slug, 'categories', id), {
+			name: newName,
+			description: newDescription,
+		});
+		clearEdit();
+	}
+
+	// ==== DELETE =====
+	async function removeCategory(id) {
+		const record = doc(db, 'restaurants', route.params.slug, 'categories', id);
+		if (confirm('Are you sure you want to delete this category?')) {
+			await deleteDoc(record);
+		}
+	}
 </script>
 
 <template>
 	<div class="category">
 		<h2 class="voice2">{{ category.name }}</h2>
 		<div>{{ category.description }}</div>
+		<!-- ADD BUTTONS HERE -->
+		<button @click="removeCategory(category.id)" type="button">X</button>
+		<button @click="editCategory(category.id)">Edit</button>
+		<template v-if="editing == category.id">
+			<input type="text" placeholder="Name" v-model="category.name" />
+			<input type="text" placeholder="Description" v-model="category.description" />
+			<button @click="updateCategory(category.id, category.name, category.description)">
+				Update
+			</button>
+			<button @click="clearEdit()">Cancel</button>
+		</template>
 		<ul class="categoryGrid">
 			<li v-for="item in categoryItems">
 				<MenuItemCard :item="item" />
@@ -24,13 +75,11 @@
 </template>
 
 <style scoped>
-	/*.category {
-		display: flex;
-		flex-direction: column;
-		border: 3px solid yellow;
-	}*/
+	.category {
+		border: 4px solid orange;
+	}
 	.categoryGrid {
-		border: 2px solid blue;
+		border: 1px solid blue;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 1rem;
