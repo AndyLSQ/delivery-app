@@ -3,11 +3,13 @@
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
 	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import { useRoute } from 'vue-router';
+	import { useCartStore } from '@/stores/cart';
 
 	const route = useRoute();
 	const db = useFirestore();
 	const props = defineProps(['item']);
 	const currentItem = props.item;
+	const cart = useCartStore();
 
 	const categories = useCollection(collection(db, 'restaurants', route.params.slug, 'categories'));
 
@@ -93,11 +95,28 @@
 					<picture>
 						<img :src="item.imageUrl" alt="" />
 					</picture>
-					<p>${{ item.price }}</p>
-					<p>{{ item.description }}</p>
+					<div>${{ item.price }}</div>
+					<div>{{ item.description }}</div>
 					<form action="">
 						<label for="cartNote">Special Requests</label>
 						<input id="cartNote" type="text" v-model="notes" />
+						<label for="quantity">Quantity</label>
+						<input
+							id="quantity"
+							type="number"
+							min="1"
+							max="99"
+							v-model="qty"
+							ref="firstField"
+						/>
+						<button
+							@click.prevent="
+								cart.add(cartAddItem, qty, notes);
+								closeCartAdd();
+							"
+						>
+							Add to cart
+						</button>
 					</form>
 				</div>
 			</div>
