@@ -32,30 +32,28 @@ export const useCartStore = defineStore('cart', function () {
 	// =================== METHOD 2 ========================
 
 	function searchCart(newItem) {
-		// console.log('new item in SEARCHCART: ', newItem);
 		return items.value.find(function (itemInCart) {
 			return newItem.id == itemInCart.id && newItem.notes == itemInCart.notes;
 		});
 	}
 
 	function add(item, qty, notes) {
-		// create new item object with notes
-		const newItem = { ...item, notes: notes };
+		// create new item object with notes & needed to manually add ID
+		const newItem = { ...item, id: item.id, notes: notes };
 
-		// console.log('this item should have notes added ', item);
+		// console.log('this item should have ID & quantity & notes added ', newItem);
 
 		const newQty = Number(qty);
 		newItem.quantity = newQty;
 
 		// check if this item was found in the list
 		const found = searchCart(newItem);
-		// const foundItem = searchCart(newItem);
 
 		if (found) {
-			console.log('item found in list');
+			console.log('item found in cart');
 			found.quantity += newQty;
 		} else {
-			console.log('item not found in list');
+			console.log('item not found in cart');
 			items.value.push(newItem);
 		}
 
@@ -63,10 +61,13 @@ export const useCartStore = defineStore('cart', function () {
 	}
 
 	// =======================================================
-	function remove(excludeId) {
-		// console.log('remove called', excludeId);
+	function remove(excludeItem) {
+		console.log('remove excludeItem.id', excludeItem.id);
+		console.log('remove excludeItem.notes', excludeItem.notes);
 		items.value = items.value.filter(function (item) {
-			return item.id != excludeId;
+			console.log('filter loop ID: ', item.id);
+			console.log('filter loop notes: ', item.notes);
+			return item.id != excludeItem.id || item.notes != excludeItem.notes;
 		});
 	}
 
