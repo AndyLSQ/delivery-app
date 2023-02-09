@@ -62,11 +62,7 @@ export const useCartStore = defineStore('cart', function () {
 
 	// =======================================================
 	function remove(excludeItem) {
-		console.log('remove excludeItem.id', excludeItem.id);
-		console.log('remove excludeItem.notes', excludeItem.notes);
 		items.value = items.value.filter(function (item) {
-			console.log('filter loop ID: ', item.id);
-			console.log('filter loop notes: ', item.notes);
 			return item.id != excludeItem.id || item.notes != excludeItem.notes;
 		});
 	}
