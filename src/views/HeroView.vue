@@ -3,6 +3,7 @@
 	import { userService } from '@/services/userService';
 	// Icons
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
+	import LoginForm from '@/components/LoginForm.vue';
 
 	const user = userService();
 
@@ -41,44 +42,12 @@
 		<h1 class="loud-voice">Fresh. Local. Fast.</h1>
 		<p class="voice2">Quality meals at your doorstep</p>
 		<p>Exclusively serving the Austin community</p>
-		<div class="signup">
-			<!-- round those corners! -->
-			<form class="signupForm">
-				<div class="field">
-					<label for="signupFirstName">First Name</label>
-					<input id="signupFirstName" type="text" />
-				</div>
-				<div class="field">
-					<label for="signupLastName">Last Name</label>
-					<input id="signupLastName" type="text" />
-				</div>
-				<div class="field">
-					<label for="signupEmail">Email</label>
-					<input id="signupEmail" type="text" />
-				</div>
-				<div class="field">
-					<label for="signupPhoneNumber">Phone Number</label>
-					<input id="signupPhoneNumber" type="text" />
-				</div>
-				<div class="field passwordField">
-					<label for="signupPassword">New Password</label>
-					<input
-						id="signupPassword"
-						type="password"
-						minlength="6"
-						placeholder="At least 6 characters"
-					/>
-				</div>
-				<div class="submitSignup">
-					<button>Sign Up</button>
-				</div>
-			</form>
-			<p>Already a member? <button>Sign In</button></p>
-			<button @click="user.dismissHero()">Continue as guest(Hide hero)</button>
-			<button @click="user.showHero()">Show hero</button>
-		</div>
 
-		{{ user.heroShown }}
+		<LoginForm />
+
+		<button @click="user.dismissHero()">Continue as guest</button>
+		<!-- <button @click="user.showHero()">Show hero</button> -->
+		<!-- {{ user.heroShown }} -->
 	</div>
 </template>
 
