@@ -6,6 +6,24 @@
 	// const usernameInput = ref(''); -- moved to store
 	// const user = userService();
 
+	// Icons
+	import SvgIcons from '@/components/icons/IconTemplate.vue';
+
+	const authType = ref('signIn');
+
+	function toggleAuthScreen() {
+		console.log('start: ', authType.value);
+		if (authType.value == 'signUp') {
+			authType.value = 'signIn';
+			user.resetErrorMessage();
+			console.log('end: ', authType.value);
+		} else {
+			authType.value = 'signUp';
+			console.log('end: ', authType.value);
+			user.resetErrorMessage();
+		}
+	}
+
 	function togglePasswordVisibility() {
 		if (passwordVisibility.value == 'password') {
 			passwordVisibility.value = 'text';
