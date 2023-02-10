@@ -1,3 +1,4 @@
+\
 <script setup>
 	import { ref, computed, watch } from 'vue';
 	import { useRoute } from 'vue-router';
@@ -14,19 +15,19 @@
 	const menu = useMenuStore();
 	const cart = useCartStore();
 
-	const currentRestaurant1 = computed(function () {
-		return restaurants.value.find(function (record) {
-			return record.id == route.params.slug;
-		});
-	});
+	// const currentRestaurant1 = computed(function () {
+	// 	return restaurants.value.find(function (record) {
+	// 		return record.id == route.params.slug;
+	// 	});
+	// });
 
-	// const currentRestaurant2 = ref(useDocument(doc(db, 'restaurants', route.params.slug)));
+	const currentRestaurant2 = ref(useDocument(doc(db, 'restaurants', route.params.slug)));
 </script>
 
 <template>
-	<div>cr1: {{ currentRestaurant1.name }}</div>
-	<!-- <div>cr2: {{ currentRestaurant2.name }}</div> -->
-	<div>Tags: {{ currentRestaurant1 }}</div>
+	<!-- <div>cr1: {{ currentRestaurant1.name }}</div> -->
+	<div v-if="currentRestaurant2">cr2: {{ currentRestaurant2.name }}</div>
+	<!-- <div>Tags: {{ currentRestaurant1 }}</div> -->
 	<MenuList :key="$route.path" />
 </template>
 
