@@ -24,6 +24,10 @@ export const userService = defineStore('user', function () {
 
 	const errorMessage = ref(null);
 
+	function resetErrorMessage() {
+		errorMessage.value = null;
+	}
+
 	function clearForm() {
 		form.username = '';
 		form.password = '';
@@ -201,5 +205,6 @@ export const userService = defineStore('user', function () {
 		signOut,
 		signIn,
 		errorMessage,
+		resetErrorMessage,
 	};
 });
