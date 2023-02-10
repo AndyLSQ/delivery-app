@@ -66,11 +66,12 @@
 			</button>
 			<button @click="clearEdit()">Cancel</button>
 		</template>
-		<ul class="categoryGrid">
+		<ul v-if="categoryItems.length" class="categoryGrid">
 			<li v-for="item in categoryItems">
 				<MenuItemCard :item="item" />
 			</li>
 		</ul>
+		<p v-else>There are no menu items in this category yet.</p>
 	</div>
 </template>
 
