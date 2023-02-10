@@ -3,8 +3,6 @@
 	import { userService } from '@/services/userService.js';
 	const user = userService();
 	const passwordVisibility = ref('password');
-	// const usernameInput = ref(''); -- moved to store
-	// const user = userService();
 
 	// Icons
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
