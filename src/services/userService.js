@@ -22,6 +22,8 @@ export const userService = defineStore('user', function () {
 		// role: "",
 	});
 
+	const errorMessage = ref(null);
+
 	function clearForm() {
 		form.username = '';
 		form.password = '';
@@ -34,6 +36,24 @@ export const userService = defineStore('user', function () {
 			console.log('user.signUp');
 			clearForm();
 		});
+	}
+
+	function signIn(email, password) {
+		signInWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+				console.log('user.signin');
+				errorMessage = null;
+				clearForm();
+				// Signed in
+				// const user = userCredential.user;
+				// ...
+			})
+			.catch((error) => {
+				// console.log(error.code, error.message);
+				// const errorCode = error.code;
+				errorMessage = error.message;
+				console.log('ERROR MESSAGE', error.message);
+			});
 	}
 
 	function signOut() {
@@ -174,5 +194,7 @@ export const userService = defineStore('user', function () {
 		form,
 		currentFB,
 		signOut,
+		signIn,
+		errorMessage,
 	};
 });

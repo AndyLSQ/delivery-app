@@ -19,7 +19,7 @@
 	const route = useRoute();
 	const cart = useCartStore();
 	const restaurants = useRestaurantStore();
-	const userLogin = userService();
+	const user = userService();
 
 	const sideMenuOpen = ref(false);
 
@@ -77,12 +77,18 @@
 
 		<div class="icon-nav">
 			<!-- ACCOUNT -->
-			<RouterLink to="/account" v-if="userLogin.loggedIn" class="icon-link signIn-link">
+			<!-- ========= BELOW is actual router link to acct page ========= -->
+			<!-- 	<RouterLink to="/account" v-if="user.currentFB" class="icon-link signIn-link">
 				<SvgIcons class="svg-icons" name="user" />
 				<p class="quiet-voice">Account</p>
-			</RouterLink>
+			</RouterLink> -->
+			<!-- ========= BELOW is dummy setup for now that just opens modal========= -->
+			<div v-if="user.currentFB" class="icon-link signIn-link" @click="user.openModal()">
+				<SvgIcons class="svg-icons" name="user" />
+				<p class="quiet-voice">Account</p>
+			</div>
 			<!-- SIGN IN -->
-			<div v-else class="icon-link signIn-link" @click="userLogin.openModal()">
+			<div v-else class="icon-link signIn-link" @click="user.openModal()">
 				<SvgIcons class="svg-icons" name="sign-in" />
 				<p class="quiet-voice">Sign in</p>
 			</div>
