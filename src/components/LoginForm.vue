@@ -37,6 +37,7 @@
 			<button type="button" @click="togglePasswordVisibility()">Show/Hide Password</button>
 		</div>
 		<button type="submit">Sign up</button>
+		<div>error message: {{ user.errorMessage }}</div>
 	</form>
 
 	<form @submit.prevent="user.signIn(user.form.username, user.form.password)" v-if="!user.current">

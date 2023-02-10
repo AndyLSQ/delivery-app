@@ -31,18 +31,23 @@ export const userService = defineStore('user', function () {
 	}
 
 	function signUp(email, password) {
-		createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-			//signed in
-			console.log('user.signUp');
-			clearForm();
-		});
+		createUserWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+				//signed in
+				console.log('user.signUp');
+				clearForm();
+			})
+			.catch((error) => {
+				errorMessage.value = error.message;
+				console.log('ERROR MESSAGE', error.message);
+			});
 	}
 
 	function signIn(email, password) {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				console.log('user.signin');
-				errorMessage = null;
+				// errorMessage.value = null;
 				clearForm();
 				// Signed in
 				// const user = userCredential.user;
@@ -51,7 +56,7 @@ export const userService = defineStore('user', function () {
 			.catch((error) => {
 				// console.log(error.code, error.message);
 				// const errorCode = error.code;
-				errorMessage = error.message;
+				errorMessage.value = error.message;
 				console.log('ERROR MESSAGE', error.message);
 			});
 	}
