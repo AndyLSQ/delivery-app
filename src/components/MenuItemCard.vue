@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, computed } from 'vue';
+	import { ref, reactive, computed } from 'vue';
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
 	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import { useRoute } from 'vue-router';
@@ -14,6 +14,19 @@
 	const categories = useCollection(collection(db, 'restaurants', route.params.slug, 'categories'));
 
 	// ============= ITEM U.D. =============
+
+	// PULL FB DATA INTO UPDATE FORM (CREATE NEW REACTIVE OBJECTS)
+	const update = reactive({ ...props.item });
+
+	function save(id) {
+		const recordToSave = {
+			...props.item,
+			...update,
+		};
+		console.log('recordToSave: ', recordToSave);
+		setDoc(doc(db, 'restaurants', route.params.slug, 'items', id), recordToSave);
+	}
+
 	// ==== UPDATE ====
 	const editing = ref(false);
 
@@ -76,6 +89,7 @@
 <template>
 	<div class="itemCard">
 		<picture>
+			<!-- template allows me to reference prop direclty, but in script would need to say props.item -->
 			<img :src="item.imageUrl" alt="" />
 		</picture>
 		<h3 class="voice3">{{ item.name }}</h3>
@@ -130,26 +144,27 @@
 			<button @click="editItem(item.id)" v-if="editing != item.id">Edit!</button>
 
 			<template v-if="editing == item.id">
-				<input type="text" placeholder="Name" v-model="item.name" />
-				$<input type="number" placeholder="Price" v-model="item.price" />
-				<input type="text" placeholder="Description" v-model="item.description" />
-				<select v-model="item.belongsToCategory" :value="item.belongsToCategory" required>
+				<input type="text" placeholder="Name" v-model="update.name" />
+				$<input type="number" placeholder="Price" v-model="update.price" />
+				<input type="text" placeholder="Description" v-model="update.description" />
+				<select v-model="update.belongsToCategory" :value="update.belongsToCategory" required>
 					<!-- <option disabled value="">Please select one</option> -->
 					<option v-for="category in categories" :value="category.id">
 						{{ category.name }}
 					</option>
 				</select>
-				<input type="text" placeholder="Image URL" v-model="item.imageUrl" />
+				<input type="text" placeholder="Image URL" v-model="update.imageUrl" />
 				<button
 					@click="
-						updateItem(
-							item.id,
-							item.name,
-							item.price,
-							item.description,
-							item.belongsToCategory,
-							item.imageUrl,
-						)
+						save(item.id)
+						// updateItem(
+						// 	update.id,
+						// 	update.name,
+						// 	update.price,
+						// 	update.description,
+						// 	update.belongsToCategory,
+						// 	update.imageUrl,
+						// )
 					"
 				>
 					Update
