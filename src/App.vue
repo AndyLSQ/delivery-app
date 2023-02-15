@@ -37,7 +37,7 @@
 	// const heroShown = ref(true);
 </script>
 
-<template>
+<template :key="route.params">
 	<!-- Icons -->
 	<SvgSpriteComponent />
 
