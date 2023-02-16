@@ -1,5 +1,6 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useRouter, useRoute } from 'vue-router';
 
 import {
 	getAuth,
@@ -11,6 +12,10 @@ import {
 import { useCurrentUser } from 'vuefire';
 
 export const userService = defineStore('user', function () {
+	// ======== ROUTER (for sign in redirect) ============
+	const router = useRouter();
+	const route = useRoute();
+
 	// ======== FB-AUTH ============
 	const auth = getAuth();
 
