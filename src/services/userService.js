@@ -55,18 +55,14 @@ export const userService = defineStore('user', function () {
 	function signIn(email, password) {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
-				console.log('user.signin');
-				// errorMessage.value = null;
 				clearForm();
 				// Signed in
 				// const user = userCredential.user;
-				// ...
+				router.push(route.query.redirect || '/');
+				closeModal();
 			})
 			.catch((error) => {
-				// console.log(error.code, error.message);
-				// const errorCode = error.code;
 				errorMessage.value = error.message;
-				console.log('ERROR MESSAGE', error.message);
 			});
 	}
 
@@ -75,6 +71,8 @@ export const userService = defineStore('user', function () {
 		fbSignOut(auth)
 			.then(() => {
 				console.log('sign out successful');
+				router.push(route.query.redirect || '/welcome');
+				closeModal();
 				// Sign-out successful.
 			})
 			.catch((error) => {
