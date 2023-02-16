@@ -159,31 +159,31 @@ export const userService = defineStore('user', function () {
 		// clearForm();
 	}
 
-	// =======HERO TOGGLE========
-	// const heroShown = ref(true);
-	const heroShown = ref(window.localStorage.getItem('showHero'));
+	// =======Welcome TOGGLE========
+	// const WelcomeShown = ref(true);
+	const welcomeShown = ref(window.localStorage.getItem('showWelcome'));
 
-	function showHero() {
-		window.localStorage.setItem('showHero', true);
-		setHero();
+	function showWelcome() {
+		window.localStorage.setItem('showWelcome', true);
+		setWelcome();
 	}
 
-	function dismissHero() {
-		window.localStorage.setItem('showHero', false);
-		setHero();
+	function dismissWelcome() {
+		window.localStorage.setItem('showWelcome', false);
+		setWelcome();
 	}
 
-	function setHero() {
-		heroShown.value = window.localStorage.getItem('showHero');
+	function setWelcome() {
+		welcomeShown.value = window.localStorage.getItem('showWelcome');
 	}
 
 	// onMounted(function () {
-	// 	if (window.localStorage.showHero) {
-	// 		console.log('showHero already exists in LS');
+	// 	if (window.localStorage.showWelcome) {
+	// 		console.log('showWelcome already exists in LS');
 	// 	} else {
-	// 		console.log('showHero doesnt yet exist in LS, so set it to true');
-	// 		window.localStorage.setItem('showHero', true);
-	// 		// user.setHero();
+	// 		console.log('showWelcome doesnt yet exist in LS, so set it to true');
+	// 		window.localStorage.setItem('showWelcome', true);
+	// 		// user.setWelcome();
 	// 	}
 	// });
 
@@ -198,10 +198,10 @@ export const userService = defineStore('user', function () {
 		modalOpen,
 		openModal,
 		closeModal,
-		heroShown,
-		setHero,
-		showHero,
-		dismissHero,
+		welcomeShown,
+		setWelcome,
+		showWelcome,
+		dismissWelcome,
 		signUp,
 		form,
 		currentFB,
