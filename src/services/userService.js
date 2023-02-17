@@ -13,7 +13,8 @@ import {
 
 import { useCurrentUser, useFirestore, useDocument } from 'vuefire';
 
-//
+// ======== GET USER AUTH DOCS ========
+// Function: If there is a current user, get their doc
 function useUser() {
 	const db = useFirestore();
 	const authUser = useCurrentUser();
@@ -32,18 +33,24 @@ function useUser() {
 		return userDoc.value?.roles.admin;
 	});
 
+	// Set constants for user data fields
 	const roles = computed(() => userDoc.value?.roles);
 	const firstName = computed(() => userDoc.value?.firstName);
+	const lastName = computed(() => userDoc.value?.lastName);
+	const email = computed(() => userDoc.value?.email);
+	const phone = computed(() => userDoc.value?.phone);
 
-	return { isAdmin, roles, firstName };
+	// Return all of them
+	return { isAdmin, roles, firstName, lastName, email, phone };
 }
 
+// ======== EXPORT ============
 export const userService = defineStore('user', function () {
-	// ======== ROUTER (for sign in redirect) ============
+	// ROUTER (for sign in redirect)
 	const router = useRouter();
 	const route = useRoute();
 
-	// ======== FB-AUTH ============
+	// ======== SIGNUP & SIGNIN ========
 	const auth = getAuth();
 
 	const currentFB = useCurrentUser();
@@ -127,75 +134,67 @@ export const userService = defineStore('user', function () {
 			});
 	}
 
-	// =====UPDATE USER INFO
+	// ======== UPDATE USER INFO ========
 	function updateProfile(formData) {
 		updateDoc(doc(db, 'users', currentFB.value.uid), formData);
 	}
 
-	// ====================
-	const users = [
-		// {
-		// 	username: 'tom',
-		// 	password: '123',
-		// 	address: '',
-		// 	phone: '',
-		// },
-		// {
-		// 	username: 'bill',
-		// 	password: '999',
-		// 	address: '',
-		// 	phone: '',
-		// 	role: 'admin',
-		// },
-	];
+	// ========OLD============
 
-	const current = ref(null);
+	// const users = [
+	// {
+	// 	username: 'tom',
+	// 	password: '123',
+	// 	address: '',
+	// 	phone: '',
+	// },
+	// {
+	// 	username: 'bill',
+	// 	password: '999',
+	// 	address: '',
+	// 	phone: '',
+	// 	role: 'admin',
+	// },
+	// ];
 
-	function logout() {
-		current.value = null;
-	}
+	// const current = ref(null);
 
-	const formInput = reactive({
-		username: '',
-		password: '',
-	});
+	// function logout() {
+	// 	current.value = null;
+	// }
 
-	function clearForm() {
-		formInput.username = '';
-		formInput.password = '';
-	}
+	// const formInput = reactive({
+	// 	username: '',
+	// 	password: '',
+	// });
 
-	function login() {
-		console.log('username: ', formInput.username);
-		const found = users.find(function (user) {
-			return user.username == formInput.username;
-		});
+	// function clearForm() {
+	// 	formInput.username = '';
+	// 	formInput.password = '';
+	// }
 
-		if (found) {
-			current.value = found;
-			clearForm();
-		} else {
-			alert('invalid user!!');
-		}
-	}
+	// function login() {
+	// 	console.log('username: ', formInput.username);
+	// 	const found = users.find(function (user) {
+	// 		return user.username == formInput.username;
+	// 	});
 
-	const loggedIn = computed(function () {
-		if (current.value) {
-			return true;
-			console.log('loggedIn is true');
-		} else {
-			console.log('loggedIn is false');
-			return false;
-		}
-	});
+	// 	if (found) {
+	// 		current.value = found;
+	// 		clearForm();
+	// 	} else {
+	// 		alert('invalid user!!');
+	// 	}
+	// }
 
-	// const isAdmin = computed(function () {
-	// 	return current.value?.role == 'admin';
-	// 	// if (current.value) {
-	// 	// 	return current.value?.role == 'admin';
-	// 	// } else {
-	// 	// 	return false;
-	// 	// }
+	// const loggedIn = computed(function () {
+	// 	if (current.value) {
+	// 		return true;
+	// 		console.log('loggedIn is true');
+	// 	} else {
+	// 		console.log('loggedIn is false');
+	// 		return false;
+	// 	}
 	// });
 
 	// =======LOGIN MODAL========
@@ -239,12 +238,19 @@ export const userService = defineStore('user', function () {
 	// });
 
 	return {
-		users,
-		login,
-		logout,
-		loggedIn,
-		current,
-		formInput,
+		// users,
+		// login,
+		// logout,
+		// loggedIn,
+		// current,
+		// formInput,
+		currentFB,
+		form,
+		signUp,
+		signOut,
+		signIn,
+		errorMessage,
+		resetErrorMessage,
 		modalOpen,
 		openModal,
 		closeModal,
@@ -252,13 +258,6 @@ export const userService = defineStore('user', function () {
 		setWelcome,
 		showWelcome,
 		dismissWelcome,
-		signUp,
-		form,
-		currentFB,
-		signOut,
-		signIn,
-		errorMessage,
-		resetErrorMessage,
 		info,
 		isAdmin,
 		updateProfile,
