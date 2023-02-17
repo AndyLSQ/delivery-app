@@ -96,8 +96,6 @@
 			</div>
 		</div>
 	</nav>
-	<!-- Old login toggle -->
-	<!-- <button @click="login.toggleLogin()" class="login-toggle">{{ login.loginButton }}</button> -->
 
 	<!-- CART VIEW -->
 	<Transition name="slideOut">
