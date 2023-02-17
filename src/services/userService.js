@@ -2,6 +2,8 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';
 
+import { doc, collection, setDoc, updateDoc } from 'firebase/firestore';
+
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
@@ -9,7 +11,32 @@ import {
 	signOut as fbSignOut,
 } from 'firebase/auth';
 
-import { useCurrentUser } from 'vuefire';
+import { useCurrentUser, useFirestore, useDocument } from 'vuefire';
+
+//
+function useUser() {
+	const db = useFirestore();
+	const authUser = useCurrentUser();
+
+	const docReference = computed(function () {
+		if (authUser.value) {
+			return doc(collection(db, 'users'), authUser.value.uid);
+		} else {
+			return false;
+		}
+	});
+
+	const userDoc = useDocument(docReference);
+
+	const isAdmin = computed(function () {
+		return userDoc.value?.roles.admin;
+	});
+
+	const roles = computed(() => userDoc.value?.roles);
+	const firstName = computed(() => userDoc.value?.firstName);
+
+	return { isAdmin, roles, firstName };
+}
 
 export const userService = defineStore('user', function () {
 	// ======== ROUTER (for sign in redirect) ============
@@ -27,6 +54,8 @@ export const userService = defineStore('user', function () {
 		// role: "",
 	});
 
+	const db = useFirestore();
+
 	const errorMessage = ref(null);
 
 	function resetErrorMessage() {
@@ -39,10 +68,27 @@ export const userService = defineStore('user', function () {
 		// form.role = '';
 	}
 
+	const { isAdmin, ...info } = useUser();
+
 	function signUp(email, password) {
 		createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
+			.then(async (userCredential) => {
 				//signed in
+				// NEW ---------
+				console.log(userCredential.user.uid);
+				const newUserId = userCredential.user.uid;
+				try {
+					await setDoc(doc(db, 'users', newUserId), {
+						username: '',
+						email: email,
+						roles: {
+							admin: true,
+						},
+					});
+				} catch (error) {
+					console.log(error.message);
+				}
+
 				console.log('user.signUp');
 				clearForm();
 			})
@@ -81,21 +127,26 @@ export const userService = defineStore('user', function () {
 			});
 	}
 
+	// =====UPDATE USER INFO
+	function updateProfile(formData) {
+		updateDoc(doc(db, 'users', currentFB.value.uid), formData);
+	}
+
 	// ====================
 	const users = [
-		{
-			username: 'tom',
-			password: '123',
-			address: '',
-			phone: '',
-		},
-		{
-			username: 'bill',
-			password: '999',
-			address: '',
-			phone: '',
-			role: 'admin',
-		},
+		// {
+		// 	username: 'tom',
+		// 	password: '123',
+		// 	address: '',
+		// 	phone: '',
+		// },
+		// {
+		// 	username: 'bill',
+		// 	password: '999',
+		// 	address: '',
+		// 	phone: '',
+		// 	role: 'admin',
+		// },
 	];
 
 	const current = ref(null);
@@ -138,14 +189,14 @@ export const userService = defineStore('user', function () {
 		}
 	});
 
-	const isAdmin = computed(function () {
-		return current.value?.role == 'admin';
-		// if (current.value) {
-		// 	return current.value?.role == 'admin';
-		// } else {
-		// 	return false;
-		// }
-	});
+	// const isAdmin = computed(function () {
+	// 	return current.value?.role == 'admin';
+	// 	// if (current.value) {
+	// 	// 	return current.value?.role == 'admin';
+	// 	// } else {
+	// 	// 	return false;
+	// 	// }
+	// });
 
 	// =======LOGIN MODAL========
 	const modalOpen = ref(false);
@@ -193,7 +244,6 @@ export const userService = defineStore('user', function () {
 		logout,
 		loggedIn,
 		current,
-		isAdmin,
 		formInput,
 		modalOpen,
 		openModal,
@@ -209,5 +259,8 @@ export const userService = defineStore('user', function () {
 		signIn,
 		errorMessage,
 		resetErrorMessage,
+		info,
+		isAdmin,
+		updateProfile,
 	};
 });
