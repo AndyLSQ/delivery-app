@@ -12,8 +12,14 @@
 <template>
 	<AccountNav />
 	<div v-if="user.currentFB">
-		<button type="button" @click="user.signOut()">signout</button>
-		User: {{ user.currentFB.email }}
+		<button
+			type="button"
+			@click="user.signOut()"
+		>
+			signout
+		</button>
+		<!-- User: {{ user.currentFB.email }} -->
+		User email: {{ user?.info.email }}
 		<h1 class="voice1">Test Area</h1>
 		<p>{{ user?.info.roles }}</p>
 		<p v-if="user.isAdmin">THIS IS AN ADMIN</p>
