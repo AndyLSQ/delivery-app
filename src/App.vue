@@ -5,7 +5,7 @@
 	import { useInterfaceStore } from '@/stores/interface';
 	import { useRestaurantStore } from '@/stores/restaurants';
 	import SvgSpriteComponent from '@/components/icons/SvgSprites.vue';
-	import HeroView from '@/views/HeroView.vue';
+	import WelcomeView from '@/views/WelcomeView.vue';
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
 	import LoginForm from '@/components/LoginForm.vue';
 	import { userService } from '@/services/userService';
@@ -25,28 +25,28 @@
 	});
 
 	onMounted(function () {
-		if (window.localStorage.showHero) {
-			console.log('showHero already exists in LS');
+		if (window.localStorage.showWelcome) {
+			console.log('showWelcome already exists in LS');
 		} else {
-			console.log('showHero doesnt yet exist in LS, so set it to true');
-			window.localStorage.setItem('showHero', true);
-			// user.setHero();
+			console.log('showWelcome doesnt yet exist in LS, so set it to true');
+			window.localStorage.setItem('showWelcome', true);
+			// user.setWelcome();
 		}
 	});
 
-	// const heroShown = ref(true);
+	// const WelcomeShown = ref(true);
 </script>
 
 <template :key="route.params">
 	<!-- Icons -->
 	<SvgSpriteComponent />
 
-	<button @click="user.dismissHero()">Hide hero</button>
-	<button @click="user.showHero()">Show hero</button>
-	<div class="delete">{{ user.heroShown }}</div>
+	<button @click="user.dismissWelcome()">Hide Welcome</button>
+	<button @click="user.showWelcome()">Show Welcome</button>
+	<div class="delete">{{ user.welcomeShown }}</div>
 
-	<div class="heroView" v-if="user.heroShown == 'true'">
-		<HeroView />
+	<div class="welcomeView" v-if="user.welcomeShown == 'true'">
+		<WelcomeView />
 	</div>
 
 	<!-- Site menu -->
