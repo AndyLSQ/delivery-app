@@ -11,7 +11,10 @@
 <template>
 	<div class="welcome">
 		<div class="logo">
-			<SvgIcons class="svg-icons" name="logo-dark" />
+			<SvgIcons
+				class="svg-icons"
+				name="logo-dark"
+			/>
 			DishList
 		</div>
 		<h1 class="loud-voice">Fresh. Local. Fast.</h1>
@@ -38,13 +41,16 @@
 		font-family: 'Courgette', cursive;
 		align-items: center;
 		justify-content: center;
-		/*		font-size: 2.5rem;*/
+		color: var(--highlight);
+		fill: var(--highlight);
 	}
 	.logo .svg-icons {
 		width: 2rem;
 		height: 2rem;
 	}
-
+	.voice2 {
+		color: var(--highlight);
+	}
 	.signupForm {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
