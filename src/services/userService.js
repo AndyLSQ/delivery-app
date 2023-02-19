@@ -40,8 +40,13 @@ function useUser() {
 	const email = computed(() => userDoc.value?.email);
 	const phone = computed(() => userDoc.value?.phone);
 
+	const address = computed(() => userDoc.value?.address);
+	const city = computed(() => userDoc.value?.city);
+	const state = computed(() => userDoc.value?.state);
+	const zip = computed(() => userDoc.value?.zip);
+
 	// Return all of them
-	return { isAdmin, roles, firstName, lastName, email, phone };
+	return { isAdmin, roles, firstName, lastName, email, phone, address, city, state, zip };
 }
 
 // ======== EXPORT ============
