@@ -83,20 +83,48 @@
 
 <template>
 	<h2 class="voice2">Restaurant List</h2>
-	<ul>
-		<li class="restaurant-card" v-for="restaurant in userRestaurants">
+	<ul class="restaurantGrid">
+		<li
+			class="restaurant-card"
+			v-for="restaurant in userRestaurants"
+		>
 			<RouterLink :to="`/restaurant/${restaurant.id}`">
-				<picture>[ restaurant image ]</picture>
-				{{ restaurant.name }}
+				<picture>
+					<img
+						:src="restaurant.imageUrl"
+						alt=""
+					/>
+				</picture>
+				<h2 class="voice3">{{ restaurant.name }}</h2>
+				<p class="quiet-voice">
+					This is where the restaurant description will go. Right here in this spot. Who knows
+					how long it will be.
+				</p>
 			</RouterLink>
-			<div class="favHeart" @click="favorites.toggleFavorite(restaurant.id)">
-				<SvgIcons v-if="restaurant.favorite" class="svg-icon full" name="heart-full" />
-				<SvgIcons v-else class="svg-icon empty" name="heart-empty" />
+			<div
+				class="favHeart"
+				@click="favorites.toggleFavorite(restaurant.id)"
+			>
+				<SvgIcons
+					v-if="restaurant.favorite"
+					class="svg-icon full"
+					name="heart-full"
+				/>
+				<SvgIcons
+					v-else
+					class="svg-icon empty"
+					name="heart-empty"
+				/>
 			</div>
 
 			<div class="adminPanel">
 				<!-- TODO: ^ v-if user is an admin -->
-				<button @click="removeRestaurant(restaurant.id)" type="button">x</button>
+				<button
+					@click="removeRestaurant(restaurant.id)"
+					type="button"
+				>
+					x
+				</button>
 				<button
 					@click="editRestaurant(restaurant.id, restaurant.name)"
 					v-if="editing != restaurant.id"
@@ -104,31 +132,72 @@
 					Edit
 				</button>
 				<template v-if="editing == restaurant.id">
-					<input type="text" v-model="restaurant.name" />
-					<button @click="updateRestaurant(restaurant.id, restaurant.name)">Update</button>
+					<input
+						type="text"
+						placeholder="Restaurant Name"
+						v-model="restaurant.name"
+					/>
+					<input
+						type="text"
+						placeholder="Image URL"
+						v-model="restaurant.imageUrl"
+					/>
+					<button
+						@click="updateRestaurant(restaurant.id, restaurant.name, restaurant.imageUrl)"
+					>
+						Update
+					</button>
 					<button @click="clearEdit()">Cancel</button>
 				</template>
 			</div>
 		</li>
 	</ul>
-	<form class="adminPanel" @submit.prevent="addRestaurant()">
+	<form
+		class="adminPanel"
+		@submit.prevent="addRestaurant()"
+	>
 		<h2 class="voice2">Add item</h2>
 		<label for="newRestName">Restaurant name</label>
-		<input type="text" id="newRestName" v-model="form.name" />
+		<input
+			type="text"
+			id="newRestName"
+			v-model="form.name"
+		/>
 		<button type="submit">Add</button>
 	</form>
 </template>
 
 <style scoped>
+	.restaurantGrid {
+		border: 1px solid blue;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
 	.restaurant-card {
 		border: 2px solid red;
 		position: relative;
 	}
+
+	picture {
+		/*		aspect-ratio: 1/1;*/
+		/*		width: 200px;*/
+		width: 100%;
+		height: 250px;
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	.favHeart {
 		z-index: 10;
 		width: 3rem;
 		position: absolute;
-		top: 0;
+		top: 5px;
 		right: 0;
 		padding: 0;
 		display: flex;
