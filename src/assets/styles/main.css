@@ -22,23 +22,8 @@
 /* S ections and more stuff */
 
 /* then other contextual styles */
+
 body {
 	background-color: var(--paper);
 	color: var(--ink);
-}
-
-.my-fantastic-image {
-	max-width: 300px;
-	border-bottom-right-radius: 30px;
-}
-
-.logo {
-	font-family: sans-serif;
-	font-size: 2rem;
-	font-weight: bold;
-}
-
-.logo span {
-	background-color: hsla(48, 99%, 49%, 1);
-	border-radius: 10px;
 }

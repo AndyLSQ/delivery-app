@@ -1,18 +1,23 @@
 html {
+	--paper: var(--light-green);
+	--ink: var(--text-gray);
+	--light-ink: hsla(60, 0%, 44%, 1);
+
+	--light-green: hsla(160, 68%, 99%, 1);
+	--text-gray: hsla(0, 0%, 22%, 1);
+	--light-gray: hsla(0, 0%, 85%, 1);
+	--highlight: hsla(151, 89%, 32%, 1);
+
 	--black: #111111;
 	--white: #efefef;
 
 	--neutral-stuffs: gray;
 
 	--color: hsla(206, 66%, 77%, 1);
-	--highlight: hsla(190, 90%, 60%, 1);
 
-	--shadow: rgba(0, 0, 0, 0.8);
+	--shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 	--corners: 10px; /* or whatevers */
-
-	--paper: white; /*shadier dodgerblue*/
-	--ink: black;
 }
 
 @media (prefers-color-scheme: dark) {

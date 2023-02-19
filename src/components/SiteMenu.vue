@@ -48,11 +48,26 @@
 </script>
 
 <template>
-	<button @click="ui.toggleMenu()" class="menu-toggle">Toggle menu</button>
+	<button
+		@click="ui.toggleMenu()"
+		class="menu-toggle"
+	>
+		Toggle menu
+	</button>
+
 	<nav class="site-menu">
-		<div class="logo">
-			<RouterLink class="menu-link" to="/">Food<span>hub</span></RouterLink>
-		</div>
+		<RouterLink
+			class="menu-link"
+			to="/"
+		>
+			<div class="logo menu-link">
+				<SvgIcons
+					class="svg-icons"
+					name="logo-dark"
+				/>
+				DishList
+			</div>
+		</RouterLink>
 
 		<!-- SEARCH BAR -->
 		<div class="searchBarContain">
@@ -64,11 +79,25 @@
 			/>
 			<!-- <button type="submit">Go</button> -->
 			<!-- <h2>Results for {{ searchString }}</h2> -->
-			<ul class="searchResults" v-if="searchString != ''">
-				<li v-if="nameFiltered == ''" class="noResults">No results found in your area</li>
-				<li v-for="item in nameFiltered" :key="`/restaurant/${item.slug}`">
+			<ul
+				class="searchResults"
+				v-if="searchString != ''"
+			>
+				<li
+					v-if="nameFiltered == ''"
+					class="noResults"
+				>
+					No results found in your area
+				</li>
+				<li
+					v-for="item in nameFiltered"
+					:key="`/restaurant/${item.slug}`"
+				>
 					<!-- use key to diff -->
-					<RouterLink :to="`/restaurant/${item.slug}`" @click="searchClick">
+					<RouterLink
+						:to="`/restaurant/${item.slug}`"
+						@click="searchClick"
+					>
 						{{ item.name }}
 					</RouterLink>
 				</li>
@@ -76,31 +105,62 @@
 		</div>
 
 		<div class="icon-nav">
-			<div v-if="user.currentFB" class="icon-link signIn-link">
+			<div
+				v-if="user.currentFB"
+				class="icon-link signIn-link"
+			>
 				<RouterLink to="/account">
-					<SvgIcons class="svg-icons" name="user" />
+					<SvgIcons
+						class="svg-icons"
+						name="user"
+					/>
 					<p class="quiet-voice">Account</p>
 				</RouterLink>
 			</div>
 			<!-- SIGN IN -->
-			<div v-else class="icon-link signIn-link" @click="user.openModal()">
-				<SvgIcons class="svg-icons" name="sign-in" />
-				<p class="quiet-voice">Sign in</p>
+			<div
+				v-else
+				class="menu-link icon-link signIn-link"
+				@click="user.openModal()"
+			>
+				<SvgIcons
+					class="svg-icons"
+					name="sign-in"
+				/>
+				<!-- <p class="quiet-voice">Sign in</p> -->
 			</div>
 
 			<!-- CART -->
-			<div class="icon-link cart-link" @click="toggleSideMenu">
-				<SvgIcons class="svg-icons" name="cart" />
-				<div v-if="cart.quantity > 0" class="qBadge">{{ cart.quantity }}</div>
-				<p class="quiet-voice">Cart</p>
+			<div
+				class="menu-link icon-link cart-link"
+				@click="toggleSideMenu"
+			>
+				<SvgIcons
+					class="svg-icons"
+					name="cart"
+				/>
+				<div
+					v-if="cart.quantity > 0"
+					class="qBadge"
+				>
+					{{ cart.quantity }}
+				</div>
+				<!-- <p class="quiet-voice">Cart</p> -->
 			</div>
 		</div>
 	</nav>
 
 	<!-- CART VIEW -->
 	<Transition name="slideOut">
-		<div v-if="sideMenuOpen" class="sideCartModal" @click="toggleSideMenu()">
-			<div class="sideCartDialogue" @click.stop>
+		<div
+			v-if="sideMenuOpen"
+			class="sideCartModal"
+			@click="toggleSideMenu()"
+		>
+			<div
+				class="sideCartDialogue"
+				@click.stop
+			>
 				<button @click="toggleSideMenu">X</button>
 				<CartView />
 			</div>
@@ -113,18 +173,14 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		/*		color: var(--highlight);*/
 		/*		flex-wrap: wrap;*/
 		justify-content: space-between;
 	}
 
-	.logo {
-		display: grid;
-		place-items: center;
-	}
-
 	.searchBarContain {
 		position: relative;
-		border: 1px solid red;
+		/*		border: 1px solid red;*/
 		width: 50%;
 		display: grid;
 		place-items: center;
@@ -132,23 +188,47 @@
 
 	#searchBar {
 		width: 100%;
-		border: 2px solid green;
-		padding: 1rem;
+		border: none;
+		padding: 0.75rem 1.5rem;
+		border: 1px solid var(--light-gray);
+		border-radius: 25px;
+		box-shadow: var(--shadow);
+		font-size: 1rem;
+	}
+
+	#searchBar:focus {
+		border: 1px solid var(--highlight);
 	}
 
 	.searchResults {
 		position: absolute;
 		top: 100%;
 		width: 100%;
-		background-color: lightgreen;
+		background-color: white;
+		border: 1px solid var(--light-ink);
+		/*		padding: 10px;*/
+		border-radius: 10px;
 	}
 
+	.searchResults li {
+		padding: 5px 10px;
+		border-radius: 10px;
+	}
+
+	.searchResults li:hover {
+		background-color: lightgray;
+	}
 	.icon-nav {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 10px;
+		gap: 1.75rem;
 		font-size: 0.75rem;
-		/*		border: 3px solid red;*/
+		fill: var(--light-ink);
+	}
+
+	.menu-link:hover {
+		fill: var(--ink);
+		color: var(--ink);
 	}
 
 	.icon-link {
@@ -156,9 +236,14 @@
 		place-items: center;
 	}
 
-	.menu .router-link-active {
-		border-bottom: 3px solid red;
+	textarea:focus,
+	input:focus {
+		outline: none;
 	}
+
+	/*	.menu .router-link-active {
+		border-bottom: 3px solid red;
+	}*/
 
 	/*middle*/
 
@@ -211,10 +296,10 @@
 	}
 
 	.qBadge {
-		border: 3px solid blue;
+		/*		border: 3px solid white;*/
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: -12px;
+		right: -12px;
 		background-color: red;
 		color: white;
 		width: 1.5rem;
@@ -225,10 +310,14 @@
 		align-items: center;
 	}
 
-	.svg-icons {
-		border: 3px solid blue;
-		width: 2.5rem;
-		height: 2.5rem;
+	.icon-link .svg-icons {
+		/*		border: 3px solid var(--highlight);*/
+		/*		background-color: var(--highlight);*/
+		/*		border-radius: 5px;*/
+		/*		padding: 7px;*/
+		/*		fill: white;*/
+		width: 2.25rem;
+		height: 2.25rem;
 	}
 
 	@media (min-width: 500px) {
