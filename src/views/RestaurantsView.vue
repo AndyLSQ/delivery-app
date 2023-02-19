@@ -41,7 +41,7 @@
 	<div class="section filters">
 		<div class="headline">
 			<div class="eyebrow">Choose your craving</div>
-			<h2 class="voice2">Restaurant Filter</h2>
+			<h2 class="voice2">Filter by Type</h2>
 		</div>
 		<ul class="filter-list">
 			<li class="filter-selector">
