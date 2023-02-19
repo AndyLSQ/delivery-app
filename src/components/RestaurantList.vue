@@ -123,21 +123,29 @@
 					/>
 				</div>
 
-				<div class="admin-panel">
+				<div class="admin-panel-inline">
 					<!-- TODO: ^ v-if user is an admin -->
 					<button
+						class="warn"
 						@click="removeRestaurant(restaurant.id)"
 						type="button"
 					>
-						x
+						<SvgIcons
+							class="svg-icon trash"
+							name="trash"
+						/>
 					</button>
 					<button
+						class=""
 						@click="editRestaurant(restaurant.id, restaurant.name)"
 						v-if="editing != restaurant.id"
 					>
-						Edit
+						<SvgIcons
+							class="svg-icon edit"
+							name="edit"
+						/>
 					</button>
-					<template v-if="editing == restaurant.id">
+					<form v-if="editing == restaurant.id">
 						<input
 							type="text"
 							placeholder="Restaurant Name"
@@ -149,12 +157,18 @@
 							v-model="restaurant.imageUrl"
 						/>
 						<button
+							class=""
 							@click="updateRestaurant(restaurant.id, restaurant.name, restaurant.imageUrl)"
 						>
 							Update
 						</button>
-						<button @click="clearEdit()">Cancel</button>
-					</template>
+						<button
+							class=""
+							@click="clearEdit()"
+						>
+							Cancel
+						</button>
+					</form>
 				</div>
 			</li>
 		</ul>
@@ -192,7 +206,7 @@
 		align-items: center;
 		cursor: pointer;
 		fill: var(--light-ink);
-		background-color: var(--paper-color);
+		background-color: var(--white);
 		box-shadow: var(--card-shadow);
 		/*		border: 1px solid red;*/
 	}
@@ -200,6 +214,7 @@
 		height: 1.5rem;
 		width: 1.5rem;
 	}
+
 	.favHeart:hover {
 		fill: var(--highlight);
 	}

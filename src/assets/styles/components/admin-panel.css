@@ -1,0 +1,6 @@
+.admin-panel-inline {
+	padding: 15px;
+	padding-top: 0px;
+	display: flex;
+	gap: 0.5rem;
+}

@@ -1,0 +1,25 @@
+.admin-panel-inline button {
+	background-color: var(--admin-highlight);
+	border: 2px solid var(--admin-highlight);
+	border-radius: 5px;
+	color: var(--white);
+	padding: 4px 12px;
+	box-shadow: var(--shadow-subtle);
+	font-family: inherit;
+}
+
+.admin-panel-inline .svg-icon {
+	fill: var(--white);
+	height: 1.25rem;
+	width: 1.25rem;
+}
+
+.admin-panel-inline button.warn {
+	background-color: var(--warn);
+	border: 2px solid var(--warn);
+}
+
+.admin-panel-inline button:hover {
+	box-shadow: var(--card-shadow);
+	border: 2px solid var(--black);
+}
