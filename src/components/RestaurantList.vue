@@ -19,16 +19,19 @@
 	const form = reactive({
 		name: '',
 		tags: [], // TODO: Add checkboxes for this
+		imageUrl: '',
 	});
 
 	function clearForm() {
 		form.name = '';
 		form.tags = [];
+		form.imageUrl = '';
 	}
 
 	function addRestaurant() {
 		addDoc(collection(db, 'restaurants'), {
 			name: form.name,
+			imageUrl: form.imageUrl,
 		});
 		clearForm();
 	}
@@ -52,7 +55,7 @@
 	const editing = ref(false);
 	// const originalName = null;
 
-	function editRestaurant(id, name) {
+	function editRestaurant(id, name, imageUrl) {
 		editing.value = id;
 		// originalName = name;
 	}
@@ -61,9 +64,10 @@
 		editing.value = false;
 	}
 
-	function updateRestaurant(id, r) {
+	function updateRestaurant(id, r, imageUrl) {
 		setDoc(doc(db, 'restaurants', id), {
 			name: r,
+			imageUrl: imageUrl,
 		});
 		clearEdit();
 	}
@@ -142,5 +146,9 @@
 
 	.favHeart .full {
 		fill: red;
+	}
+
+	.favHeart .full:hover {
+		fill: black;
 	}
 </style>
