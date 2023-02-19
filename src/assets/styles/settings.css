@@ -1,6 +1,7 @@
 html {
 	--paper: var(--light-green);
 	--paper-color: var(--light-green2);
+	--paper-gray: hsla(0, 0%, 96%, 1);
 	--ink: var(--text-gray);
 	--light-ink: hsla(60, 0%, 44%, 1);
 
@@ -12,6 +13,10 @@ html {
 	--text-gray: hsla(0, 0%, 22%, 1);
 	--light-gray: hsla(0, 0%, 85%, 1);
 	--highlight: hsla(151, 89%, 32%, 1);
+	--admin-highlight: hsla(183, 100%, 27%, 1);
+	--admin-highlight-hover: hsla(183, 90%, 20%, 1);
+	--warn: hsla(7, 85%, 46%, 1);
+	--warn-hover: hsla(7, 85%, 35%, 1);
 
 	--black: #111111;
 	--white: white;
