@@ -13,7 +13,7 @@
 	// 	form.lastName = user.info.lastName;
 	// });
 
-	// EDIT BUTTON
+	// EDIT
 	const form = reactive({
 		firstName: user.info.firstName,
 		lastName: user.info.lastName,
@@ -43,14 +43,34 @@
 </script>
 
 <template>
-	<h1 class="voice1">Your Profile</h1>
-	<!-- <p>Full User: {{ user }}</p> -->
-	<p>User Info: {{ user.info }}</p>
-	<p>UID: {{ user.currentFB.uid }}</p>
-	<p>First Name: {{ user?.info.firstName }}</p>
-	<p>Last Name: {{ user?.info.lastName }}</p>
-	<p>Email: {{ user?.info.email }}</p>
-	<p>Phone: {{ user?.info.phone }}</p>
+	<h1 class="voice1">Profile</h1>
+
+	<div class="userInfo">
+		<div
+			class="userField"
+			v-if="user?.info.firstName"
+		>
+			First Name: {{ user?.info.firstName }}
+		</div>
+		<div
+			class="userField"
+			v-if="user?.info.lastName"
+		>
+			Last Name: {{ user?.info.lastName }}
+		</div>
+		<div
+			class="userField"
+			v-if="user?.info.email"
+		>
+			Email: {{ user?.info.email }}
+		</div>
+		<div
+			class="userField"
+			v-if="user?.info.phone"
+		>
+			Phone: {{ user?.info.phone }}
+		</div>
+	</div>
 
 	<button
 		v-if="!profileEditing"
