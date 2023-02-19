@@ -2,11 +2,11 @@
 	display: flex;
 	gap: 0.75rem;
 	font-family: 'Lobster', cursive;
-	font-size: 2.5rem;
+	font-size: 2.75rem;
 	align-items: center;
 	justify-content: center;
-	color: var(--light-ink);
-	fill: var(--light-ink);
+	color: var(--highlight);
+	fill: var(--highlight);
 }
 .logo .svg-icons {
 	width: 2rem;

@@ -190,10 +190,11 @@
 		width: 100%;
 		border: none;
 		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--light-gray);
-		border-radius: 25px;
-		box-shadow: var(--shadow);
+		border: 1px solid white;
+		border-radius: var(--corners);
+		box-shadow: var(--card-shadow);
 		font-size: 1rem;
+		font-family: 'poppins', sans-serif;
 	}
 
 	#searchBar:focus {
@@ -202,33 +203,36 @@
 
 	.searchResults {
 		position: absolute;
-		top: 100%;
+		top: 110%;
 		width: 100%;
 		background-color: white;
-		border: 1px solid var(--light-ink);
+		border: 1px solid var(--light-gray);
+		/*		border-top: none;*/
+		box-shadow: var(--shadow-subtle);
 		/*		padding: 10px;*/
-		border-radius: 10px;
+		border-radius: var(--corners);
+		overflow: hidden;
 	}
 
 	.searchResults li {
 		padding: 5px 10px;
-		border-radius: 10px;
+		/*		border-radius: var(--corners);*/
 	}
 
 	.searchResults li:hover {
-		background-color: lightgray;
+		background-color: var(--paper-color);
 	}
 	.icon-nav {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.75rem;
 		font-size: 0.75rem;
-		fill: var(--light-ink);
+		fill: var(--ink);
 	}
 
 	.menu-link:hover {
-		fill: var(--ink);
-		color: var(--ink);
+		fill: var(--light-ink);
+		color: var(--light-ink);
 	}
 
 	.icon-link {

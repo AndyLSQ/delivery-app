@@ -56,18 +56,37 @@
 		<h2 class="voice2">{{ category.name }}</h2>
 		<div>{{ category.description }}</div>
 		<!-- ADD BUTTONS HERE -->
-		<button @click="removeCategory(category.id)" type="button">X</button>
+		<button
+			@click="removeCategory(category.id)"
+			type="button"
+		>
+			X
+		</button>
 		<button @click="editCategory(category.id)">Edit</button>
 		<template v-if="editing == category.id">
-			<input type="text" placeholder="Name" v-model="category.name" />
-			<input type="text" placeholder="Description" v-model="category.description" />
+			<input
+				type="text"
+				placeholder="Name"
+				v-model="category.name"
+			/>
+			<input
+				type="text"
+				placeholder="Description"
+				v-model="category.description"
+			/>
 			<button @click="updateCategory(category.id, category.name, category.description)">
 				Update
 			</button>
 			<button @click="clearEdit()">Cancel</button>
 		</template>
-		<ul v-if="categoryItems.length" class="categoryGrid">
-			<li v-for="item in categoryItems" :key="item.id">
+		<ul
+			v-if="categoryItems.length"
+			class="categoryGrid"
+		>
+			<li
+				v-for="item in categoryItems"
+				:key="item.id"
+			>
 				<MenuItemCard :item="item" />
 			</li>
 		</ul>

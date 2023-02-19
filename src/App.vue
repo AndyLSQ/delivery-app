@@ -123,6 +123,13 @@
 		border-bottom: 3px solid red;
 	}
 
+	footer {
+		box-shadow: var(--shadow);
+		background-color: var(--paper-dark);
+		color: var(--white);
+		padding: 30px 0px;
+	}
+
 	@media (min-width: 500px) {
 		.menu-toggle {
 			display: none;

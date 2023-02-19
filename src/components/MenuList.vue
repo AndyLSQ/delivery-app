@@ -114,26 +114,43 @@
 </script>
 
 <template>
-	<div class="router-view" :key="$route.path">
+	<div
+		class="router-view"
+		:key="$route.path"
+	>
 		<!-- {{ currentRestaurant.name }}  -->
 		<h1 class="voice1">Menu</h1>
 
 		<ul class="categories">
 			<li v-for="category in categories">
-				<CategoryItemsGrid :category="category" :items="items" />
+				<CategoryItemsGrid
+					:category="category"
+					:items="items"
+				/>
 			</li>
 		</ul>
 		<!-- TODO: Add form to add categories -->
 		<div class="adminPanel addCategory">
-			<form class="adminPanel" @submit.prevent="addCategory()">
+			<form
+				class="adminPanel"
+				@submit.prevent="addCategory()"
+			>
 				<h2 class="voice2">Add Category</h2>
 				<div>
 					<label for="newCategoryName">Category name</label>
-					<input type="text" id="newCategoryName" v-model="categoryForm.name" />
+					<input
+						type="text"
+						id="newCategoryName"
+						v-model="categoryForm.name"
+					/>
 				</div>
 				<div>
 					<label for="newCategoryDescription">Description</label>
-					<input type="text" id="newCategoryDescription" v-model="categoryForm.description" />
+					<input
+						type="text"
+						id="newCategoryDescription"
+						v-model="categoryForm.description"
+					/>
 				</div>
 
 				<button type="submit">Add</button>
@@ -144,27 +161,46 @@
 				<h2 class="voice2">Add Item</h2>
 				<div>
 					<label for="newItemName">Item Name</label>
-					<input type="text" id="newItemName" v-model="form.name" />
+					<input
+						type="text"
+						id="newItemName"
+						v-model="form.name"
+					/>
 				</div>
 				<div>
 					<label for="newItemPrice">Price</label>
-					<input type="number" id="newItemPrice" v-model="form.price" />
+					<input
+						type="number"
+						id="newItemPrice"
+						v-model="form.price"
+					/>
 				</div>
 				<div>
 					<label for="newItemDescription">Item Description</label>
-					<input type="text" id="newItemDescription" v-model="form.description" />
+					<input
+						type="text"
+						id="newItemDescription"
+						v-model="form.description"
+					/>
 				</div>
 				<div>
 					<label for="newItemName">Category</label>
 					<select v-model="form.category">
-						<option v-for="category in categories" :value="category.id">
+						<option
+							v-for="category in categories"
+							:value="category.id"
+						>
 							{{ category.name }}
 						</option>
 					</select>
 				</div>
 				<div>
 					<label for="newItemImageUrl">Item ImageUrl</label>
-					<input type="text" id="newItemImageUrl" v-model="form.imageUrl" />
+					<input
+						type="text"
+						id="newItemImageUrl"
+						v-model="form.imageUrl"
+					/>
 				</div>
 				<button type="submit">Add</button>
 			</form>
@@ -174,7 +210,7 @@
 
 <style scoped>
 	.categories {
-		border: 1px solid yellow;
+		/*		border: 1px solid yellow;*/
 		display: flex;
 		flex-direction: column;
 		gap: 40px;

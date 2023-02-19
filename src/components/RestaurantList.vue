@@ -82,142 +82,139 @@
 </script>
 
 <template>
-	<h2 class="voice2">Restaurant List</h2>
-	<ul class="restaurantGrid">
-		<li
-			class="restaurant-card"
-			v-for="restaurant in userRestaurants"
-		>
-			<RouterLink :to="`/restaurant/${restaurant.id}`">
-				<picture>
-					<img
-						:src="restaurant.imageUrl"
-						alt=""
-					/>
-				</picture>
-				<h2 class="voice3">{{ restaurant.name }}</h2>
-				<p class="quiet-voice">
-					This is where the restaurant description will go. Right here in this spot. Who knows
-					how long it will be.
-				</p>
-			</RouterLink>
-			<div
-				class="favHeart"
-				@click="favorites.toggleFavorite(restaurant.id)"
+	<div class="section">
+		<div class="headline">
+			<div class="eyebrow">Eat local, eat fresh</div>
+			<h2 class="voice1">Nearby Restaurants</h2>
+		</div>
+		<ul class="restaurantGrid card-grid">
+			<li
+				class="card restaurant-card"
+				v-for="restaurant in userRestaurants"
 			>
-				<SvgIcons
-					v-if="restaurant.favorite"
-					class="svg-icon full"
-					name="heart-full"
-				/>
-				<SvgIcons
-					v-else
-					class="svg-icon empty"
-					name="heart-empty"
-				/>
-			</div>
+				<RouterLink :to="`/restaurant/${restaurant.id}`">
+					<picture>
+						<img
+							:src="restaurant.imageUrl"
+							alt=""
+						/>
+					</picture>
+					<div class="card-text">
+						<h2 class="voice3">{{ restaurant.name }}</h2>
+						<p class="quiet-voice">
+							This is where the restaurant description will go. Right here in this spot. No
+							one knows how long it will be but hopefully not too long.
+						</p>
+					</div>
+				</RouterLink>
+				<div
+					class="favHeart"
+					@click="favorites.toggleFavorite(restaurant.id)"
+				>
+					<SvgIcons
+						v-if="restaurant.favorite"
+						class="svg-icon full"
+						name="heart-full"
+					/>
+					<SvgIcons
+						v-else
+						class="svg-icon empty"
+						name="heart-empty"
+					/>
+				</div>
 
-			<div class="adminPanel">
-				<!-- TODO: ^ v-if user is an admin -->
-				<button
-					@click="removeRestaurant(restaurant.id)"
-					type="button"
-				>
-					x
-				</button>
-				<button
-					@click="editRestaurant(restaurant.id, restaurant.name)"
-					v-if="editing != restaurant.id"
-				>
-					Edit
-				</button>
-				<template v-if="editing == restaurant.id">
-					<input
-						type="text"
-						placeholder="Restaurant Name"
-						v-model="restaurant.name"
-					/>
-					<input
-						type="text"
-						placeholder="Image URL"
-						v-model="restaurant.imageUrl"
-					/>
+				<div class="admin-panel">
+					<!-- TODO: ^ v-if user is an admin -->
 					<button
-						@click="updateRestaurant(restaurant.id, restaurant.name, restaurant.imageUrl)"
+						@click="removeRestaurant(restaurant.id)"
+						type="button"
 					>
-						Update
+						x
 					</button>
-					<button @click="clearEdit()">Cancel</button>
-				</template>
-			</div>
-		</li>
-	</ul>
-	<form
-		class="adminPanel"
-		@submit.prevent="addRestaurant()"
-	>
-		<h2 class="voice2">Add item</h2>
-		<label for="newRestName">Restaurant name</label>
-		<input
-			type="text"
-			id="newRestName"
-			v-model="form.name"
-		/>
-		<button type="submit">Add</button>
-	</form>
+					<button
+						@click="editRestaurant(restaurant.id, restaurant.name)"
+						v-if="editing != restaurant.id"
+					>
+						Edit
+					</button>
+					<template v-if="editing == restaurant.id">
+						<input
+							type="text"
+							placeholder="Restaurant Name"
+							v-model="restaurant.name"
+						/>
+						<input
+							type="text"
+							placeholder="Image URL"
+							v-model="restaurant.imageUrl"
+						/>
+						<button
+							@click="updateRestaurant(restaurant.id, restaurant.name, restaurant.imageUrl)"
+						>
+							Update
+						</button>
+						<button @click="clearEdit()">Cancel</button>
+					</template>
+				</div>
+			</li>
+		</ul>
+		<form
+			class="admin-panel"
+			@submit.prevent="addRestaurant()"
+		>
+			<h2 class="voice2">Add item</h2>
+			<label for="newRestName">Restaurant name</label>
+			<input
+				type="text"
+				id="newRestName"
+				v-model="form.name"
+			/>
+			<button type="submit">Add</button>
+		</form>
+	</div>
 </template>
 
 <style scoped>
-	.restaurantGrid {
-		border: 1px solid blue;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
-	}
-
 	.restaurant-card {
-		border: 2px solid red;
 		position: relative;
-	}
-
-	picture {
-		/*		aspect-ratio: 1/1;*/
-		/*		width: 200px;*/
-		width: 100%;
-		height: 250px;
-	}
-
-	img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
 	}
 
 	.favHeart {
 		z-index: 10;
-		width: 3rem;
+		/*		width: 3rem;*/
 		position: absolute;
-		top: 5px;
-		right: 0;
-		padding: 0;
+		top: 180px;
+		right: 15px;
+		padding: 10px;
+		border-radius: 20px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
+		fill: var(--light-ink);
+		background-color: var(--paper-color);
+		box-shadow: var(--card-shadow);
+		/*		border: 1px solid red;*/
 	}
 	.svg-icon {
 		height: 1.5rem;
 		width: 1.5rem;
 	}
-	.favHeart .empty:hover {
-		fill: red;
+	.favHeart:hover {
+		fill: var(--highlight);
 	}
 
 	.favHeart .full {
-		fill: red;
+		fill: var(--highlight);
 	}
 
 	.favHeart .full:hover {
-		fill: black;
+		/*		fill: var(--light-ink);*/
+	}
+
+	.admin-panel {
+		padding: 10px;
+		padding-top: 0px;
+		/*		background-color: var(--paper-color);*/
 	}
 </style>

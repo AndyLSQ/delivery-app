@@ -1,23 +1,31 @@
 html {
 	--paper: var(--light-green);
+	--paper-color: var(--light-green2);
 	--ink: var(--text-gray);
 	--light-ink: hsla(60, 0%, 44%, 1);
 
+	--paper-dark: var(--dark-green);
+
 	--light-green: hsla(160, 68%, 99%, 1);
+	--light-green2: hsla(160, 68%, 96%, 1);
+	--dark-green: hsla(146, 12%, 13%, 1);
 	--text-gray: hsla(0, 0%, 22%, 1);
 	--light-gray: hsla(0, 0%, 85%, 1);
 	--highlight: hsla(151, 89%, 32%, 1);
 
 	--black: #111111;
-	--white: #efefef;
+	--white: white;
 
 	--neutral-stuffs: gray;
 
 	--color: hsla(206, 66%, 77%, 1);
 
 	--shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	--shadow-subtle: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+	--card-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+	--card-shadow-hover: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
-	--corners: 10px; /* or whatevers */
+	--corners: 10px;
 }
 
 @media (prefers-color-scheme: dark) {

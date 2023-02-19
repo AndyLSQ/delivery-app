@@ -10,39 +10,12 @@
 	const restaurants = useRestaurantStore();
 	const favorites = useFavoritesStore();
 
-	// function toggleFav(restaurantId) {
-	// 	console.log('saving favorite');
-	// 	favorites.toggleFavorite(restaurantId);
-	// }
-
 	const restaurant = restaurants.list.find(function (record) {
 		return record.slug == route.params.slug;
 	});
 
-	// // create computed property
-	// const userRestaurants = computed(function () {
-	// 	//Look over full restaurant list (look at each restaurant)
-	// 	const userRestaurantsArray = [];
-
-	// 	restaurants.list.forEach(function (restaurant) {
-	// 		//If ID is in the favorites list,
-	// 		if (favorites.favList.includes(restaurant.id)) {
-	// 			//Give it a favorite boolean
-	// 			restaurant.favorite = true;
-	// 		} else {
-	// 			restaurant.favorite = false;
-	// 		}
-	// 		userRestaurantsArray.push(restaurant);
-	// 	});
-
-	// 	//Return a new array (add an addtl property to each item)
-	// 	return userRestaurantsArray;
-	// });
-
 	const favRestaurants = computed(function () {
-		// return 'hi';
 		return userRestaurants.value.filter((restaurant) => {
-			// console.log(restaurant);
 			return restaurant.favorite == true;
 		});
 	});
@@ -65,97 +38,173 @@
 </script>
 
 <template>
-	<RestaurantList />
-	<div class="rest__detail">
-		<!-- DELETE THIS DIV - MOVED TO RESTAURANTLIST.vue -->
-		<!-- <div class="favRestaurants">
-			<h2 class="loud-voice favorites-list">Favorites</h2>
-			<ul>
-				<li class="favPlaceholder" v-if="favRestaurants == ''">
-					A space for all your favorites
-				</li>
-				<li v-for="restaurant in favRestaurants" class="restaurant">
-					<RouterLink :to="`/restaurant/${restaurant.slug}`">
-						<p>{{ restaurant.name }}</p>
-						<p>Price level: {{ restaurant.price }}</p>
-					</RouterLink>
-					<div class="favHeart">
-						<SvgIcons
-							v-if="restaurant.favorite"
-							@click="toggleFav(restaurant.id)"
-							class="svg-icon full"
-							name="heart-full"
-						/><SvgIcons
-							v-else
-							@click="toggleFav(restaurant.id)"
-							class="svg-icon empty"
-							name="heart-empty"
-						/>
-					</div>
-				</li>
-			</ul>
-			<p>(side scroll this section)</p>
-		</div> -->
-
-		<!-- 		<h1 class="voice1">All Restaurants</h1>
-		<div class="allRestaurants">
-			<div class="filter-menu">
-				<h2 class="voice3">Filters</h2>
-				<button>Mexican</button>
-				<button>Fast Food</button>
-				<button>Healthy</button>
-				<p>
-					other ideas: vegan options, fast food, healthy, mexican, asian, pizza, coffee,
-					snacks, desserts
-				</p>
-			
-			</div>
-
-			<h2 class="voice2">List:</h2>
-			<ul>
-				<li v-for="restaurant in userRestaurants" class="restaurant">
-					<RouterLink :to="`/restaurant/${restaurant.slug}`">
-						<p>{{ restaurant.name }}</p>
-						<p>Price level: {{ restaurant.price }}</p>
-					</RouterLink>
-					<div class="favHeart">
-						<SvgIcons
-							v-if="restaurant.favorite"
-							@click="toggleFav(restaurant.id)"
-							class="svg-icon full"
-							name="heart-full"
-						/><SvgIcons
-							v-else
-							@click="toggleFav(restaurant.id)"
-							class="svg-icon empty"
-							name="heart-empty"
-						/>
-					</div>
-				</li>
-			</ul>
-		</div> -->
+	<div class="section filters">
+		<div class="headline">
+			<div class="eyebrow">Choose your craving</div>
+			<h2 class="voice2">Restaurant Filter</h2>
+		</div>
+		<ul class="filter-list">
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/asian.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Asian</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/mexican.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Mexican</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/pizza.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Pizza</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/burgers.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Burgers</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/chicken.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Chicken</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/fast-food.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Fast Food</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/healthy.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Healthy</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/dessert.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Dessert</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/sushi.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Sushi</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/chinese.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Chinese</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/mediterranean.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Mediterranean</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/vegan.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Vegan</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/vegetarian.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Vegetarian</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/breakfast.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Breakfast</div>
+			</li>
+			<li class="filter-selector">
+				<picture class="filter-icon">
+					<img
+						src="@/components/icons/food-icons/indian.svg"
+						alt=""
+					/>
+				</picture>
+				<div class="cat-label quiet-voice">Indian</div>
+			</li>
+		</ul>
 	</div>
+	<RestaurantList />
 </template>
 
 <style scoped>
+	/* ==== FAVORITE ==== */
 	.restaurant {
 		border: 2px solid red;
 		position: relative;
 	}
-	.favHeart {
+	/*	.favHeart {
 		z-index: 10;
 		width: 3rem;
 		position: absolute;
 		top: 0;
 		right: 0;
 		padding: 0;
+		background-color: white;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
+	}*/
 	.svg-icon {
-		height: 1.5rem;
-		width: 1.5rem;
+		/*		height: 1.5rem;*/
+		/*		width: 1.5rem;*/
 	}
 	.favHeart .empty:hover {
 		fill: red;
@@ -168,4 +217,45 @@
 	/*	.favHeart .full:hover {
 		fill: black;
 	}*/
+
+	/* ==== FILTERS ==== */
+
+	.filter-list {
+		padding: 5px 0px;
+	}
+
+	.filter-selector {
+		border: 2px solid var(--paper-color);
+		background-color: var(--paper-color);
+		border-radius: 20px;
+		padding: 15px;
+		width: 95px;
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		align-items: center;
+		justify-content: space-between;
+		box-shadow: var(--shadow-subtle);
+	}
+
+	.filter-selector:hover {
+		border: 2px solid var(--highlight);
+	}
+	.filter-selector picture {
+		/*		border: 1px solid red;*/
+		padding: 5px;
+		width: 100%;
+	}
+	.filter-icon {
+		width: 100%;
+	}
+
+	.filter-list {
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-rows: repeat(1, 1fr);
+		/*		flex-direction: row;*/
+		gap: 25px;
+		overflow: scroll;
+	}
 </style>
