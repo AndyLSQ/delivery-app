@@ -1,9 +1,58 @@
+button {
+	transition: 0.2s;
+}
+
+button:hover {
+	transition: 0.2s;
+}
+
+/* ==== ADMIN PANEL ==== */
+.admin-panel button {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1rem;
+	font-family: inherit;
+	padding: 5px 10px;
+	background-color: var(--admin-highlight);
+	color: var(--white);
+	fill: var(--white);
+	border: none;
+	border-radius: var(--corners);
+	box-shadow: var(--card-shadow);
+}
+
+.admin-panel button:hover {
+	background-color: var(--admin-highlight-hover);
+	box-shadow: var(--card-shadow-hover);
+}
+
+.admin-panel button:hover .svg-icon {
+	/*	fill: var(--ink);*/
+}
+
+/* Close button */
+.admin-panel button.close {
+	padding: 0;
+	background-color: transparent;
+	border: none;
+	border-radius: 100px;
+	fill: var(--admin-highlight);
+	/*	box-shadow: none;*/
+}
+
+.admin-panel button.close:hover {
+	/*	fill: var(--warn);*/
+	/*	box-shadow: none;*/
+}
+
+/* ==== ADMIN PANEL (Inline) ==== */
 .admin-panel-inline button {
 	background-color: var(--admin-highlight);
-	border: 2px solid var(--admin-highlight);
+	border: none;
 	border-radius: 5px;
 	color: var(--white);
-	padding: 4px 12px;
+	padding: 5px 12px;
 	box-shadow: var(--shadow-subtle);
 	font-family: inherit;
 }
@@ -16,10 +65,19 @@
 
 .admin-panel-inline button.warn {
 	background-color: var(--warn);
-	border: 2px solid var(--warn);
+	/*	border: 2px solid var(--warn);*/
 }
 
 .admin-panel-inline button:hover {
-	box-shadow: var(--card-shadow);
-	border: 2px solid var(--black);
+	background-color: var(--admin-highlight-hover);
+	box-shadow: var(--card-shadow-hover);
+	/*	border: 2px solid var(--ink);*/
+}
+
+.admin-panel-inline button.warn:hover {
+	background-color: var(--warn-hover);
+	/*	border: 2px solid var(--warn-hover);*/
+}
+.admin-panel-inline button:hover .svg-icon {
+	/*	fill: var(--ink);*/
 }

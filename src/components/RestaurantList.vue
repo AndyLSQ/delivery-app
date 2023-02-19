@@ -36,6 +36,22 @@
 		clearForm();
 	}
 
+	// == Add Restaurant Modal ==
+	const addRestaurantModalOpen = ref(false);
+	function openAddRestaurantModal() {
+		console.log('addRestaurantModalOpen');
+		addRestaurantModalOpen.value = true;
+	}
+	function closeAddRestaurantModal() {
+		addRestaurantModalOpen.value = false;
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (addRestaurantModalOpen && e.keyCode == 27) {
+			addRestaurantModalOpen.value = false;
+		}
+	});
+
 	// ==== READ (FAVORITES) ====
 	// User specific array to track favorites
 	const userRestaurants = computed(function () {
@@ -172,19 +188,45 @@
 				</div>
 			</li>
 		</ul>
-		<form
-			class="admin-panel"
-			@submit.prevent="addRestaurant()"
-		>
-			<h2 class="voice2">Add item</h2>
-			<label for="newRestName">Restaurant name</label>
-			<input
-				type="text"
-				id="newRestName"
-				v-model="form.name"
-			/>
-			<button type="submit">Add</button>
-		</form>
+
+		<div class="admin-panel">
+			<button
+				class="toggle-add"
+				@click="openAddRestaurantModal()"
+			>
+				<SvgIcons
+					class="svg-icon"
+					name="add"
+				/>
+				New Restaurant
+			</button>
+			<div
+				class="modal"
+				v-if="addRestaurantModalOpen"
+			>
+				<div class="dialogue">
+					<button
+						class="close"
+						@click="closeAddRestaurantModal()"
+					>
+						<SvgIcons
+							class="svg-icon close"
+							name="close"
+						/>
+					</button>
+					<form @submit.prevent="addRestaurant()">
+						<h2 class="voice2">Add item</h2>
+						<label for="newRestName">Restaurant name</label>
+						<input
+							type="text"
+							id="newRestName"
+							v-model="form.name"
+						/>
+						<button type="submit">Add</button>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -197,10 +239,10 @@
 		z-index: 10;
 		/*		width: 3rem;*/
 		position: absolute;
-		top: 180px;
+		top: 178px;
 		right: 15px;
 		padding: 10px;
-		border-radius: 20px;
+		border-radius: 30px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -208,7 +250,7 @@
 		fill: var(--light-ink);
 		background-color: var(--white);
 		box-shadow: var(--card-shadow);
-		/*		border: 1px solid red;*/
+		border: 1px solid var(--light-gray);
 	}
 	.svg-icon {
 		height: 1.5rem;
@@ -227,9 +269,12 @@
 		/*		fill: var(--light-ink);*/
 	}
 
-	.admin-panel {
-		padding: 10px;
-		padding-top: 0px;
-		/*		background-color: var(--paper-color);*/
+	.toggle-add {
+		padding: 10px 20px;
+	}
+
+	.toggle-add .svg-icon {
+		width: 1.1rem;
+		height: 1.1rem;
 	}
 </style>
