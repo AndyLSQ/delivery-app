@@ -43,14 +43,19 @@
 
 	<button @click="user.dismissWelcome()">Hide Welcome</button>
 	<button @click="user.showWelcome()">Show Welcome</button>
-	<div class="delete">{{ user.welcomeShown }}</div>
 
-	<div class="welcomeView" v-if="user.welcomeShown == 'true'">
+	<div
+		class="welcomeView"
+		v-if="user.welcomeShown == 'true'"
+	>
 		<WelcomeView />
 	</div>
 
-	<!-- Site menu -->
-	<div class="standardView" v-else>
+	<div
+		class="standardView"
+		v-else
+	>
+		<!-- Site menu -->
 		<header v-bind:class="`${route.name} ${ui.menuClass}`">
 			<div class="inner-column">
 				<SiteMenu />
@@ -67,8 +72,17 @@
 
 	<!-- Login modal -->
 	<Transition>
-		<div class="modal" v-if="user.modalOpen" @click="user.closeModal()">
-			<div class="dialogue" @click.stop><LoginForm /></div>
+		<div
+			class="modal"
+			v-if="user.modalOpen"
+			@click="user.closeModal()"
+		>
+			<div
+				class="dialogue"
+				@click.stop
+			>
+				<LoginForm />
+			</div>
 		</div>
 	</Transition>
 
@@ -76,13 +90,25 @@
 	<footer>
 		<div class="inner-column">
 			<!-- DONT USE COLON IN FRONT OF NAME -->
-			<a href="https://github.com/AndyLSQ/delivery-app" target="github">GitHub</a>
+			<a
+				href="https://github.com/AndyLSQ/delivery-app"
+				target="github"
+				>GitHub</a
+			>
 		</div>
 	</footer>
 </template>
 
 <style scoped>
 	/* TODO: MOVE THIS ALL INTO SITE MENU FILE	*/
+	header {
+		box-shadow: var(--shadow);
+	}
+	header .inner-column {
+		padding: 25px 14px;
+		/*		border: 2px solid red;*/
+	}
+
 	.site-menu {
 		display: flex;
 		flex-direction: row;
