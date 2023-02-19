@@ -20,10 +20,10 @@
 		</button>
 		<!-- User: {{ user.currentFB.email }} -->
 		User email: {{ user?.info.email }}
-		<h1 class="voice1">Test Area</h1>
+		<!-- <h1 class="voice1">Test Area</h1>
 		<p>{{ user?.info.roles }}</p>
 		<p v-if="user.isAdmin">THIS IS AN ADMIN</p>
-		<p>Name: {{ user?.info.firstName }}</p>
+		<p>Name: {{ user?.info.firstName }}</p> -->
 	</div>
 	<RouterView />
 </template>
