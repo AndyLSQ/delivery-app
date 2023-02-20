@@ -240,6 +240,7 @@
 
 	.filter-selector:hover {
 		border: 2px solid var(--highlight);
+		cursor: pointer;
 	}
 	.filter-selector picture {
 		/*		border: 1px solid red;*/
