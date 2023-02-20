@@ -67,26 +67,49 @@
 		return userRestaurantsArray;
 	});
 
+	//
+
 	// ==== UPDATE ====
+	// PULL FB DATA INTO UPDATE FORM (CREATE NEW REACTIVE OBJECTS)
+	// const update = reactive({ ...props.item });
+
 	const editing = ref(false);
 	// const originalName = null;
 
-	function editRestaurant(id, name, imageUrl) {
-		editing.value = id;
-		// originalName = name;
+	const update = ref(null);
+
+	function editRestaurant(restaurant, id, name, imageUrl) {
+		editing.value = restaurant.id; //was: id (delete id from args)
+		update.value = { ...restaurant };
+		console.log('update: ', update.value);
+	}
+
+	function save(restaurant) {
+		console.log(restaurant.id);
+		const recordToSave = {
+			name: update?.value.name,
+			imageUrl: update?.value.imageUrl,
+		};
+		console.log('recordToSave', recordToSave);
+		setDoc(doc(db, 'restaurants', restaurant.id), recordToSave);
+		clearEdit();
 	}
 
 	function clearEdit() {
 		editing.value = false;
 	}
 
-	function updateRestaurant(id, r, imageUrl) {
-		setDoc(doc(db, 'restaurants', id), {
-			name: r,
-			imageUrl: imageUrl,
-		});
-		clearEdit();
-	}
+	// function updateRestaurant() {}
+
+	// function updateRestaurant(restaurant, id, name, imageUrl) {
+	// 	setDoc(doc(db, 'restaurants', id), {
+	// 		name: name,
+	// 		imageUrl: imageUrl,
+	// 	});
+	// 	clearEdit();
+	// }
+
+	//
 
 	// ==== DELETE =====
 	async function removeRestaurant(docId) {
@@ -153,38 +176,45 @@
 					</button>
 					<button
 						class=""
-						@click="editRestaurant(restaurant.id, restaurant.name)"
-						v-if="editing != restaurant.id"
+						@click="editRestaurant(restaurant, restaurant.id, restaurant.name)"
 					>
 						<SvgIcons
 							class="svg-icon edit"
 							name="edit"
 						/>
 					</button>
-					<form v-if="editing == restaurant.id">
-						<input
-							type="text"
-							placeholder="Restaurant Name"
-							v-model="restaurant.name"
-						/>
-						<input
-							type="text"
-							placeholder="Image URL"
-							v-model="restaurant.imageUrl"
-						/>
-						<button
-							class=""
-							@click="updateRestaurant(restaurant.id, restaurant.name, restaurant.imageUrl)"
-						>
-							Update
-						</button>
-						<button
-							class=""
-							@click="clearEdit()"
-						>
-							Cancel
-						</button>
-					</form>
+
+					<div
+						v-if="editing == restaurant.id"
+						class="modal admin-panel"
+					>
+						<div class="dialogue">
+							<form>
+								<input
+									type="text"
+									placeholder="Restaurant Name"
+									v-model="update.name"
+								/>
+								<input
+									type="text"
+									placeholder="Image URL"
+									v-model="update.imageUrl"
+								/>
+								<button
+									class=""
+									@click="save(restaurant)"
+								>
+									Update
+								</button>
+								<button
+									class=""
+									@click="clearEdit()"
+								>
+									Cancel
+								</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</li>
 		</ul>
@@ -200,9 +230,11 @@
 				/>
 				New Restaurant
 			</button>
+
 			<div
 				class="modal"
 				v-if="addRestaurantModalOpen"
+				@click="closeAddRestaurantModal()"
 			>
 				<div class="dialogue">
 					<button
@@ -230,13 +262,14 @@
 	</div>
 </template>
 
+<!-- STYLE -->
 <style scoped>
 	.restaurant-card {
 		position: relative;
 	}
 
 	.favHeart {
-		z-index: 10;
+		z-index: 2;
 		/*		width: 3rem;*/
 		position: absolute;
 		top: 178px;
@@ -271,6 +304,8 @@
 
 	.toggle-add {
 		padding: 10px 20px;
+		/*		border: 1px solid red;*/
+		/*		box-shadow: var(--card-shadow);*/
 	}
 
 	.toggle-add .svg-icon {
