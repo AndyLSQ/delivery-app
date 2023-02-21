@@ -90,7 +90,10 @@
 	<div class="itemCard">
 		<picture>
 			<!-- template allows me to reference prop direclty, but in script would need to say props.item -->
-			<img :src="item.imageUrl" alt="" />
+			<img
+				:src="item.imageUrl"
+				alt=""
+			/>
 		</picture>
 		<h3 class="voice3">{{ item.name }}</h3>
 		<div>${{ item.price }}</div>
@@ -102,18 +105,32 @@
 
 		<!-- ======== CART-ADD MODAL ======== -->
 		<Transition>
-			<div class="modal cartAdd" v-if="cartAddOpen" @click="closeCartAdd()">
-				<div class="dialogue" @click.stop>
+			<div
+				class="modal cartAdd"
+				v-if="cartAddOpen"
+				@click="closeCartAdd()"
+			>
+				<div
+					class="dialogue"
+					@click.stop
+				>
 					<button @click.prevent="closeCartAdd()">Close</button>
 					<h2 class="loud-voice">{{ cartAddItem.name }}</h2>
 					<picture>
-						<img :src="item.imageUrl" alt="" />
+						<img
+							:src="item.imageUrl"
+							alt=""
+						/>
 					</picture>
 					<div>${{ item.price }}</div>
 					<div>{{ item.description }}</div>
 					<form action="">
 						<label for="cartNote">Special Requests</label>
-						<input id="cartNote" type="text" v-model="notes" />
+						<input
+							id="cartNote"
+							type="text"
+							v-model="notes"
+						/>
 						<label for="quantity">Quantity</label>
 						<input
 							id="quantity"
@@ -139,21 +156,55 @@
 
 		<!-- ======== ADMIN PANEL ======== -->
 		<div class="adminPanel">
-			<button @click="removeItem(item.id)" type="button">X</button>
+			<button
+				@click="removeItem(item.id)"
+				type="button"
+			>
+				X
+			</button>
 
-			<button @click="editItem(item.id)" v-if="editing != item.id">Edit!</button>
-
+			<button
+				@click="editItem(item.id)"
+				v-if="editing != item.id"
+			>
+				Edit!
+			</button>
 			<template v-if="editing == item.id">
-				<input type="text" placeholder="Name" v-model="update.name" />
-				$<input type="number" placeholder="Price" v-model="update.price" />
-				<input type="text" placeholder="Description" v-model="update.description" />
-				<select v-model="update.belongsToCategory" :value="update.belongsToCategory" required>
+				<!-- HEREEEEEE -->
+
+				<input
+					type="text"
+					placeholder="Name"
+					v-model="update.name"
+				/>
+				$<input
+					type="number"
+					placeholder="Price"
+					v-model="update.price"
+				/>
+				<input
+					type="text"
+					placeholder="Description"
+					v-model="update.description"
+				/>
+				<select
+					v-model="update.belongsToCategory"
+					:value="update.belongsToCategory"
+					required
+				>
 					<!-- <option disabled value="">Please select one</option> -->
-					<option v-for="category in categories" :value="category.id">
+					<option
+						v-for="category in categories"
+						:value="category.id"
+					>
 						{{ category.name }}
 					</option>
 				</select>
-				<input type="text" placeholder="Image URL" v-model="update.imageUrl" />
+				<input
+					type="text"
+					placeholder="Image URL"
+					v-model="update.imageUrl"
+				/>
 				<button
 					@click="
 						save(item.id)
@@ -170,6 +221,8 @@
 					Update
 				</button>
 				<button @click="clearEdit()">Cancel</button>
+
+				<!-- END HEREEEE -->
 			</template>
 		</div>
 		<!-- ======== / ADMIN PANEL ======== -->

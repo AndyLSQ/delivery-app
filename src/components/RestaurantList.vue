@@ -9,6 +9,7 @@
 	const db = useFirestore();
 	// Set FB collection of restaurants as reactive data
 	const restaurants = useCollection(collection(db, 'restaurants'));
+	const tags = useCollection(collection(db, 'tags'));
 	const favorites = useFavoritesStore();
 
 	// ========== CRUD SETUP ==========
@@ -19,19 +20,23 @@
 	const form = reactive({
 		name: '',
 		tags: [], // TODO: Add checkboxes for this
-		imageUrl: '',
+		imageUrl: 'https://peprojects.dev/images/landscape.jpg',
+		priceLevel: '',
 	});
 
 	function clearForm() {
 		form.name = '';
 		form.tags = [];
-		form.imageUrl = '';
+		form.imageUrl = 'https://peprojects.dev/images/landscape.jpg';
+		priceLevel: '';
 	}
 
 	function addRestaurant() {
 		addDoc(collection(db, 'restaurants'), {
 			name: form.name,
 			imageUrl: form.imageUrl,
+			tags: [], //form.tags
+			priceLevel: '', //form.priceLevel
 		});
 		clearForm();
 	}
@@ -50,9 +55,12 @@
 		if (addRestaurantModalOpen && e.keyCode == 27) {
 			addRestaurantModalOpen.value = false;
 		}
+		if (editing.value && e.keyCode == 27) {
+			editing.value = false;
+		}
 	});
 
-	// ==== READ (FAVORITES) ====
+	// ==== READ (CUSTOMER FAVORITES) ====
 	// User specific array to track favorites
 	const userRestaurants = computed(function () {
 		const userRestaurantsArray = [];
@@ -73,10 +81,10 @@
 	// PULL FB DATA INTO UPDATE FORM (CREATE NEW REACTIVE OBJECTS)
 	// const update = reactive({ ...props.item });
 
+	// ==== UPDATE (VENDOR RESTAURANTS) ====
 	const editing = ref(false);
-	// const originalName = null;
-
 	const update = ref(null);
+	// const checkedTags = ref([]);
 
 	function editRestaurant(restaurant, id, name, imageUrl) {
 		editing.value = restaurant.id; //was: id (delete id from args)
@@ -86,9 +94,13 @@
 
 	function save(restaurant) {
 		console.log(restaurant.id);
+		console.log('update: ', update);
+		// console.log('checkedTags.value: ', checkedTags.value);
 		const recordToSave = {
 			name: update?.value.name,
 			imageUrl: update?.value.imageUrl,
+			tags: update?.value.tags,
+			priceLevel: update?.value.priceLevel,
 		};
 		console.log('recordToSave', recordToSave);
 		setDoc(doc(db, 'restaurants', restaurant.id), recordToSave);
@@ -97,6 +109,7 @@
 
 	function clearEdit() {
 		editing.value = false;
+		// update.vaule = null;
 	}
 
 	// function updateRestaurant() {}
@@ -140,10 +153,12 @@
 					</picture>
 					<div class="card-text">
 						<h2 class="voice3">{{ restaurant.name }}</h2>
+						<div class="quiet-voice">{{ restaurant.priceLevel }}</div>
 						<p class="quiet-voice">
 							This is where the restaurant description will go. Right here in this spot. No
 							one knows how long it will be but hopefully not too long.
 						</p>
+						<p>{{ restaurant.tags }}</p>
 					</div>
 				</RouterLink>
 				<div
@@ -187,19 +202,69 @@
 					<div
 						v-if="editing == restaurant.id"
 						class="modal admin-panel"
+						@click="clearEdit()"
 					>
-						<div class="dialogue">
+						<div
+							class="dialogue"
+							@click.stop
+						>
 							<form>
-								<input
-									type="text"
-									placeholder="Restaurant Name"
-									v-model="update.name"
-								/>
-								<input
-									type="text"
-									placeholder="Image URL"
-									v-model="update.imageUrl"
-								/>
+								<div class="form-field">
+									<label for="restaurant-name">Restaurant Name</label>
+									<input
+										id="restaurant-name"
+										type="text"
+										placeholder="Restaurant Name"
+										v-model="update.name"
+									/>
+								</div>
+								<div class="form-field">
+									<label for="image-url">Image URL</label>
+									<input
+										id="image-url"
+										type="text"
+										placeholder="Image URL"
+										v-model="update.imageUrl"
+									/>
+								</div>
+								<div class="form-field">
+									<label for="tag-checks">Tags</label>
+
+									<ul
+										id="tag-checks"
+										v-for="tag in tags"
+									>
+										<li class="checkbox">
+											<input
+												type="checkbox"
+												:id="`check-${tag.id}`"
+												:value="tag.id"
+												v-model="update.tags"
+											/>
+											<label :for="`check-${tag.id}`">{{ tag.id }}</label>
+										</li>
+									</ul>
+								</div>
+								<div class="form-field">
+									<label for="form-price-level"></label>
+									<select
+										name="priceLevel"
+										id="form-price-level"
+										v-model="update.priceLevel"
+									>
+										<option
+											disabled
+											value=""
+										>
+											Please select one
+										</option>
+										<option value="$">$ - (Entrees under $10)</option>
+										<option value="$$">$$ - (Entrees $10 - $25)</option>
+										<option value="$$$">$$$ - (Entrees $25 - $50)</option>
+										<option value="$$$$">$$$$ - (Entrees $50 - $100)</option>
+										<option value="$$$$$">$$$$$ - (Entrees over $100)</option>
+									</select>
+								</div>
 								<button
 									class=""
 									@click="save(restaurant)"
@@ -236,25 +301,63 @@
 				v-if="addRestaurantModalOpen"
 				@click="closeAddRestaurantModal()"
 			>
-				<div class="dialogue">
-					<button
-						class="close"
-						@click="closeAddRestaurantModal()"
-					>
-						<SvgIcons
-							class="svg-icon close"
-							name="close"
-						/>
-					</button>
+				<div
+					class="dialogue"
+					@click.stop
+				>
 					<form @submit.prevent="addRestaurant()">
 						<h2 class="voice2">Add item</h2>
-						<label for="newRestName">Restaurant name</label>
-						<input
-							type="text"
-							id="newRestName"
-							v-model="form.name"
-						/>
+						<div class="form-field">
+							<label for="newRestName">Restaurant name</label>
+							<input
+								type="text"
+								id="newRestName"
+								v-model="form.name"
+							/>
+						</div>
+						<label for="newRestImageURL">Image URL</label>
+						<div class="form-field">
+							<input
+								type="text"
+								id="newRestImageURL"
+								v-model="form.imageUrl"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="newRestTags">Tags</label>
+							<input
+								type="text"
+								id="newRestTags"
+								v-model="form.tags"
+							/>
+						</div>
+						<!-- <div class="form-field">
+							<label for="form-price-level"></label>
+							<select
+								name="priceLevel"
+								id="form-price-level"
+								v-model="NEEEED TO ADD THIS!!!"
+							>
+								<option
+									disabled
+									value=""
+								>
+									Please select one
+								</option>
+								<option value="$">$ - (Entrees under $10)</option>
+								<option value="$$">$$ - (Entrees $10 - $25)</option>
+								<option value="$$$">$$$ - (Entrees $25 - $50)</option>
+								<option value="$$$$">$$$$ - (Entrees $50 - $100)</option>
+								<option value="$$$$$">$$$$$ - (Entrees over $100)</option>
+							</select>
+						</div> -->
 						<button type="submit">Add</button>
+						<button
+							class="close"
+							@click="closeAddRestaurantModal()"
+						>
+							Cancel
+						</button>
 					</form>
 				</div>
 			</div>
