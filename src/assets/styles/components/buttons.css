@@ -32,14 +32,13 @@ button:hover {
 }
 
 /* Close button */
-.admin-panel button.close {
+/*.admin-panel button.close {
 	padding: 0;
 	background-color: transparent;
 	border: none;
 	border-radius: 100px;
 	fill: var(--admin-highlight);
-	/*	box-shadow: none;*/
-}
+}*/
 
 .admin-panel button.close:hover {
 	/*	fill: var(--warn);*/
