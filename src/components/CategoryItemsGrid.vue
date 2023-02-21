@@ -34,6 +34,7 @@
 	function clearEdit() {
 		editing.value = false;
 	}
+
 	function updateCategory(id, newName, newDescription) {
 		setDoc(doc(db, 'restaurants', route.params.slug, 'categories', id), {
 			name: newName,
