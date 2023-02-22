@@ -37,8 +37,27 @@
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
+	/*	border: 1px solid red;*/
 }
 
 .card-text p {
 	color: var(--light-ink);
+}
+
+.tags-display {
+	/*	border: 1px solid red;*/
+	margin-top: 5px;
+	display: flex;
+	white-space: nowrap;
+	gap: 0.75rem;
+	overflow: scroll;
+}
+
+.tag-display {
+	background-color: var(--paper-color);
+	font-size: 0.75rem;
+	padding: 5px 10px;
+	border-radius: 5px;
+	box-shadow: var(--shadow-subtle);
+	text-transform: capitalize;
 }
