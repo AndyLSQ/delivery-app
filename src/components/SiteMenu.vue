@@ -161,7 +161,15 @@
 				class="sideCartDialogue"
 				@click.stop
 			>
-				<button @click="toggleSideMenu">X</button>
+				<button
+					@click="toggleSideMenu"
+					class="closeX"
+				>
+					<SvgIcons
+						class="svg-icons"
+						name="close"
+					/>
+				</button>
 				<CartView />
 			</div>
 		</div>
@@ -287,7 +295,7 @@
 
 	.sideCartDialogue {
 		position: fixed;
-		background-color: lightblue;
+		background-color: var(--paper-color);
 		top: 0;
 		right: 0;
 		width: 400px;
@@ -351,11 +359,12 @@
 			display: none;
 		}
 
-		.sideCart {
-			position: fixed;
+		.sideCartDialogue {
+			/*			position: fixed;
+			border: 1px solid red;
 			background-color: lightblue;
 			top: 0;
-			right: 0;
+			right: 0;*/
 			width: 100%;
 			height: 100%;
 		}
