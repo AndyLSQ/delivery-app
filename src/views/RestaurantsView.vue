@@ -96,7 +96,7 @@
 						alt=""
 					/>
 				</picture>
-				<div class="cat-label quiet-voice">Fast Food</div>
+				<div class="cat-label quiet-voice">Fast-Food</div>
 			</li>
 			<li class="filter-selector">
 				<picture class="filter-icon">
