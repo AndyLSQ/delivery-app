@@ -11,26 +11,51 @@
 </script>
 
 <template>
-	<div class="empty-cart" v-if="cart.items == ''">
-		<p>Your cart is empty.</p>
+	<div
+		class="empty-cart"
+		v-if="cart.items == ''"
+	>
+		<p class="voice2">Your cart is empty</p>
 		<picture class="empty-cart-image">
-			<SvgIcons class="svg-icons" name="food" />
+			<SvgIcons
+				class="svg-icons"
+				name="food"
+			/>
 		</picture>
-		<p>Add items to get started</p>
+		<p class="voice3">Add items to get started</p>
 	</div>
-	<div class="full-cart" v-else>
+	<div
+		class="full-cart"
+		v-else
+	>
 		<h1 class="voice1">Cart</h1>
 		<button @click="cart.clearCart()">Clear Cart</button>
 		<ul>
-			<li class="cartItem" v-for="item in cart.items">
+			<li
+				class="cartItem"
+				v-for="item in cart.items"
+			>
 				<h2 class="voice3">{{ item.name }}</h2>
-				<div v-if="item.notes" class="itemNotes">
+				<div
+					v-if="item.notes"
+					class="itemNotes"
+				>
 					<em>{{ item.notes }}</em>
 				</div>
 				<!-- <p>${{ item.price }}</p> -->
 				<div>${{ item.subtotal }}</div>
-				<button v-if="item.quantity == 1" @click="cart.remove(item)">D</button>
-				<button v-if="item.quantity > 1" @click="cart.minusOne(item)">-</button>
+				<button
+					v-if="item.quantity == 1"
+					@click="cart.remove(item)"
+				>
+					D
+				</button>
+				<button
+					v-if="item.quantity > 1"
+					@click="cart.minusOne(item)"
+				>
+					-
+				</button>
 				{{ item.quantity }}
 				<button @click="cart.plusOne(item)">+</button>
 			</li>
@@ -49,6 +74,15 @@
 </template>
 
 <style scoped>
+	.empty-cart {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3rem;
+		padding: 2rem 0rem;
+		color: var(--light-ink);
+		fill: var(--light-ink);
+	}
 	.cartItem {
 		border: 1px solid red;
 	}
