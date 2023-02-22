@@ -6,6 +6,22 @@ button:hover {
 	transition: 0.2s;
 }
 
+.closeX {
+	background-color: transparent;
+	border: none;
+	width: 2.5rem;
+	height: 2.5rem;
+	display: flex;
+}
+
+.closeX .svg-icons {
+	/*	border: 2px solid blue;*/
+	/*	object-fit: cover;*/
+	height: 100%;
+	fill: var(--ink);
+	/*	width: 100%;*/
+}
+
 /* ==== ADMIN PANEL ==== */
 .admin-panel button {
 	display: flex;
@@ -13,7 +29,7 @@ button:hover {
 	gap: 0.5rem;
 	font-size: 1rem;
 	font-family: inherit;
-	padding: 5px 10px;
+	padding: 8px 16px;
 	background-color: var(--admin-highlight);
 	color: var(--white);
 	fill: var(--white);
