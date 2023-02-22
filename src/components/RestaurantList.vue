@@ -10,7 +10,10 @@
 	// Set FB collection of restaurants as reactive data
 	const restaurants = useCollection(collection(db, 'restaurants'));
 	const tags = useCollection(collection(db, 'tags'));
+	const priceLevels = useCollection(collection(db, 'priceLevel'));
+	const avgWaitTimes = useCollection(collection(db, 'avgWaitTime'));
 	const favorites = useFavoritesStore();
+	const errorImage = '@/assets/images/image-not-found.jpg';
 
 	// ========== CRUD SETUP ==========
 	// TODO: CUD FOR ADMIN ONLY
@@ -22,23 +25,26 @@
 		tags: [], // TODO: Add checkboxes for this
 		imageUrl: 'https://peprojects.dev/images/landscape.jpg',
 		priceLevel: '',
+		avgWaitTime: '',
 	});
 
 	function clearForm() {
 		form.name = '';
 		form.tags = [];
 		form.imageUrl = 'https://peprojects.dev/images/landscape.jpg';
-		priceLevel: '';
+		form.priceLevel = '';
+		form.avgWaitTime = '';
 	}
 
 	function addRestaurant() {
 		addDoc(collection(db, 'restaurants'), {
 			name: form.name,
 			imageUrl: form.imageUrl,
-			tags: [], //form.tags
-			priceLevel: '', //form.priceLevel
+			tags: form.tags,
+			priceLevel: form.priceLevel,
+			avgWaitTime: form.avgWaitTime,
 		});
-		clearForm();
+		closeAddRestaurantModal();
 	}
 
 	// == Add Restaurant Modal ==
@@ -49,8 +55,10 @@
 	}
 	function closeAddRestaurantModal() {
 		addRestaurantModalOpen.value = false;
+		clearForm();
 	}
 
+	// Keydown for add & edit modals
 	document.addEventListener('keydown', (e) => {
 		if (addRestaurantModalOpen && e.keyCode == 27) {
 			addRestaurantModalOpen.value = false;
@@ -101,6 +109,7 @@
 			imageUrl: update?.value.imageUrl,
 			tags: update?.value.tags,
 			priceLevel: update?.value.priceLevel,
+			avgWaitTime: update?.value.avgWaitTime,
 		};
 		console.log('recordToSave', recordToSave);
 		setDoc(doc(db, 'restaurants', restaurant.id), recordToSave);
@@ -153,12 +162,32 @@
 					</picture>
 					<div class="card-text">
 						<h2 class="voice3">{{ restaurant.name }}</h2>
-						<div class="quiet-voice">{{ restaurant.priceLevel }}</div>
-						<p class="quiet-voice">
+						<div class="restaurant-stats">
+							<div class="">
+								<span>{{ restaurant.priceLevel }}</span> • {{ restaurant.avgWaitTime }}
+							</div>
+							<div class="tags-display">
+								<div
+									class="tag-display"
+									v-for="tag in restaurant.tags"
+								>
+									{{ tag }}
+								</div>
+							</div>
+
+							<!-- <div class="">
+								Price Level: <span>{{ restaurant.priceLevel }}</span>
+							</div>
+							<div class="">
+								Avg Wait: <span>{{ restaurant.avgWaitTime }}</span>
+							</div> -->
+						</div>
+
+						<!-- 	<p class="quiet-voice">
 							This is where the restaurant description will go. Right here in this spot. No
 							one knows how long it will be but hopefully not too long.
-						</p>
-						<p>{{ restaurant.tags }}</p>
+						</p> -->
+						<!-- <p>{{ restaurant.tags }}</p> -->
 					</div>
 				</RouterLink>
 				<div
@@ -189,6 +218,8 @@
 							name="trash"
 						/>
 					</button>
+
+					<!-- ======== "EDIT" MODAL ======== -->
 					<button
 						class=""
 						@click="editRestaurant(restaurant, restaurant.id, restaurant.name)"
@@ -209,6 +240,7 @@
 							@click.stop
 						>
 							<form>
+								<h2 class="voice1">Edit Restaurant</h2>
 								<div class="form-field">
 									<label for="restaurant-name">Restaurant Name</label>
 									<input
@@ -229,24 +261,30 @@
 								</div>
 								<div class="form-field">
 									<label for="tag-checks">Tags</label>
-
-									<ul
-										id="tag-checks"
-										v-for="tag in tags"
-									>
-										<li class="checkbox">
-											<input
-												type="checkbox"
-												:id="`check-${tag.id}`"
-												:value="tag.id"
-												v-model="update.tags"
-											/>
-											<label :for="`check-${tag.id}`">{{ tag.id }}</label>
-										</li>
-									</ul>
+									<div class="tag-list">
+										<ul
+											id="tag-checks"
+											v-for="tag in tags"
+										>
+											<li class="checkbox">
+												<input
+													type="checkbox"
+													:id="`check-${tag.id}`"
+													:value="tag.id"
+													v-model="update.tags"
+												/>
+												<label
+													class="checkbox-label"
+													:for="`check-${tag.id}`"
+													>{{ tag.id }}</label
+												>
+											</li>
+										</ul>
+									</div>
 								</div>
+
 								<div class="form-field">
-									<label for="form-price-level"></label>
+									<label for="form-price-level">Price level</label>
 									<select
 										name="priceLevel"
 										id="form-price-level"
@@ -258,31 +296,81 @@
 										>
 											Please select one
 										</option>
-										<option value="$">$ - (Entrees under $10)</option>
-										<option value="$$">$$ - (Entrees $10 - $25)</option>
-										<option value="$$$">$$$ - (Entrees $25 - $50)</option>
-										<option value="$$$$">$$$$ - (Entrees $50 - $100)</option>
-										<option value="$$$$$">$$$$$ - (Entrees over $100)</option>
+										<option
+											v-for="priceLevel in priceLevels"
+											:value="priceLevel.id"
+										>
+											{{ priceLevel.label }}
+										</option>
 									</select>
 								</div>
-								<button
-									class=""
-									@click="save(restaurant)"
-								>
-									Update
-								</button>
-								<button
-									class=""
-									@click="clearEdit()"
-								>
-									Cancel
-								</button>
+
+								<!-- <div class="form-field">
+									<label for="form-price-level">Price Level (OLD)</label>
+									<select
+										name="priceLevel"
+										id="form-price-level"
+										v-model="update.priceLevel"
+									>
+										<option value="">Please select one</option>
+										<option value="$">$ - (Entrees average under $10)</option>
+										<option value="$$">$$ - (Entrees average $10 - $25)</option>
+										<option value="$$$">$$$ - (Entrees average $25 - $50)</option>
+										<option value="$$$$">$$$$ - (Entrees average $50 - $100)</option>
+										<option value="$$$$$">$$$$$ - (Entrees average over $100)</option>
+									</select>
+								</div> -->
+
+								<div class="form-field">
+									<label for="form-wait-time">Average wait time</label>
+									<select
+										name="avgWaitTime"
+										id="form-wait-time"
+										v-model="update.avgWaitTime"
+									>
+										<option
+											disabled
+											value=""
+										>
+											Please select one
+										</option>
+										<option
+											v-for="avgWaitTime in avgWaitTimes"
+											:value="avgWaitTime.label"
+										>
+											{{ avgWaitTime.label }}
+										</option>
+									</select>
+								</div>
+
+								<!-- 			<option value="20">20 - 30 min</option>
+										<option value="30">20 - 30 min</option>
+										<option value="45">20 - 30 min</option>
+										<option value="60">20 - 30 min</option>
+										<option value="61">20 - 30 min</option> -->
+
+								<div class="form-buttons">
+									<button
+										class=""
+										@click="save(restaurant)"
+									>
+										Update
+									</button>
+									<button
+										class=""
+										@click="clearEdit()"
+									>
+										Cancel
+									</button>
+								</div>
 							</form>
 						</div>
 					</div>
 				</div>
 			</li>
 		</ul>
+
+		<!-- ======== "ADD" MODAL ======== -->
 
 		<div class="admin-panel">
 			<button
@@ -306,37 +394,114 @@
 					@click.stop
 				>
 					<form @submit.prevent="addRestaurant()">
-						<h2 class="voice2">Add item</h2>
+						<h2 class="voice2">Add new restaurant</h2>
 						<div class="form-field">
 							<label for="newRestName">Restaurant name</label>
 							<input
 								type="text"
 								id="newRestName"
 								v-model="form.name"
+								required
 							/>
 						</div>
-						<label for="newRestImageURL">Image URL</label>
 						<div class="form-field">
+							<label for="newRestImageURL">Image URL</label>
 							<input
 								type="text"
 								id="newRestImageURL"
 								v-model="form.imageUrl"
+								required
 							/>
+						</div>
+
+						<div class="form-field preview">
+							<label for="img-preview">Image Preview</label>
+
+							<div class="picture-contain">
+								<!-- <p v-if="imageLoadError">hi there</p> -->
+								<picture id="img-preview">
+									<img
+										:src="form.imageUrl"
+										@error="errorImage"
+									/>
+								</picture>
+							</div>
 						</div>
 						<div class="form-field">
-							<label for="newRestTags">Tags</label>
-							<input
-								type="text"
-								id="newRestTags"
-								v-model="form.tags"
-							/>
+							<label for="tag-checks">Tags</label>
+							<div class="tag-list">
+								<ul
+									id="tag-checks"
+									v-for="tag in tags"
+								>
+									<li class="checkbox">
+										<input
+											type="checkbox"
+											:id="`check-${tag.id}`"
+											:value="tag.id"
+											v-model="form.tags"
+										/>
+										<label
+											class="checkbox-label"
+											:for="`check-${tag.id}`"
+											>{{ tag.id }}</label
+										>
+									</li>
+								</ul>
+							</div>
 						</div>
-						<!-- <div class="form-field">
-							<label for="form-price-level"></label>
+
+						<div class="form-field">
+							<label for="form-price-level">Price level</label>
 							<select
 								name="priceLevel"
 								id="form-price-level"
-								v-model="NEEEED TO ADD THIS!!!"
+								v-model="form.priceLevel"
+								required
+							>
+								<option
+									disabled
+									value=""
+								>
+									Please select one
+								</option>
+								<option
+									v-for="priceLevel in priceLevels"
+									:value="priceLevel.id"
+								>
+									{{ priceLevel.label }}
+								</option>
+							</select>
+						</div>
+						<div class="form-field">
+							<label for="form-wait-time">Average wait time</label>
+							<select
+								name="avgWaitTime"
+								id="form-wait-time"
+								v-model="form.avgWaitTime"
+								required
+							>
+								<option
+									disabled
+									value=""
+								>
+									Please select one
+								</option>
+								<option
+									v-for="avgWaitTime in avgWaitTimes"
+									:value="avgWaitTime.label"
+								>
+									{{ avgWaitTime.label }}
+								</option>
+							</select>
+						</div>
+
+						<!-- <div class="form-field">
+							<label for="form-price-level">Price Level (OLD)</label>
+							<select
+								name="priceLevel"
+								id="form-price-level"
+								v-model="form.priceLevel"
 							>
 								<option
 									disabled
@@ -351,13 +516,15 @@
 								<option value="$$$$$">$$$$$ - (Entrees over $100)</option>
 							</select>
 						</div> -->
-						<button type="submit">Add</button>
-						<button
-							class="close"
-							@click="closeAddRestaurantModal()"
-						>
-							Cancel
-						</button>
+						<div class="form-buttons">
+							<button type="submit">Add</button>
+							<button
+								class="close"
+								@click="closeAddRestaurantModal()"
+							>
+								Cancel
+							</button>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -414,5 +581,19 @@
 	.toggle-add .svg-icon {
 		width: 1.1rem;
 		height: 1.1rem;
+	}
+
+	.restaurant-stats {
+		/*		margin-top: 5px;*/
+		display: flex;
+		flex-direction: column;
+		/*		display: grid;*/
+		/*		grid-template-columns: repeat(3, 1fr);*/
+		gap: 10px;
+		color: var(--light-ink);
+	}
+
+	.restaurant-stats span {
+		/*		color: var(--highlight);*/
 	}
 </style>
