@@ -236,11 +236,13 @@
 		align-items: center;
 		justify-content: space-between;
 		box-shadow: var(--shadow-subtle);
+		transition: 0.3s ease-in-out;
 	}
 
 	.filter-selector:hover {
 		border: 2px solid var(--highlight);
 		cursor: pointer;
+		transition: 0.3s ease-in-out;
 	}
 	.filter-selector picture {
 		/*		border: 1px solid red;*/
