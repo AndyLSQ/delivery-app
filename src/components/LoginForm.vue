@@ -33,12 +33,25 @@
 
 <template>
 	<!-- NEW -->
-	<button v-if="user.modalOpen" @click="user.closeModal()">Close</button>
-	<div v-if="user.currentFB">
-		<button type="button" @click="user.signOut()">signout</button>
-		<p>email: {{ user.currentFB.email }}</p>
+	<button
+		v-if="user.modalOpen"
+		@click="user.closeModal()"
+	>
+		Close
+	</button>
+	<div v-if="user.authUser">
+		<button
+			type="button"
+			@click="user.signOut()"
+		>
+			signout
+		</button>
+		<p>email: {{ user.authUser.email }}</p>
 	</div>
-	<div class="authForm" v-if="!user.currentFB">
+	<div
+		class="authForm"
+		v-if="!user.authUser"
+	>
 		<!-- ==== SIGN UP FORM ==== -->
 		<form
 			@submit.prevent="user.signUp(user.form.username, user.form.password)"
@@ -47,7 +60,11 @@
 			<h2 class="voice1">Sign Up</h2>
 			<div class="form-field">
 				<label for="email1">email</label>
-				<input id="email1" type="text" v-model="user.form.username" />
+				<input
+					id="email1"
+					type="text"
+					v-model="user.form.username"
+				/>
 			</div>
 			<div class="form-field password">
 				<label for="password1">password</label>
@@ -57,16 +74,32 @@
 					v-model="user.form.password"
 					required
 				/>
-				<div class="pwToggleContain" @click="togglePasswordVisibility()">
-					<SvgIcons class="pwToggle" name="show" v-if="passwordVisibility == 'password'" />
-					<SvgIcons class="pwToggle" name="hide" v-if="passwordVisibility == 'text'" />
+				<div
+					class="pwToggleContain"
+					@click="togglePasswordVisibility()"
+				>
+					<SvgIcons
+						class="pwToggle"
+						name="show"
+						v-if="passwordVisibility == 'password'"
+					/>
+					<SvgIcons
+						class="pwToggle"
+						name="hide"
+						v-if="passwordVisibility == 'text'"
+					/>
 				</div>
 			</div>
 			<button type="submit">Sign up</button>
 			<div v-if="user.errorMessage">{{ user.errorMessage }}</div>
 			<div class="authToggle">
 				<p>Already have an account?</p>
-				<button type="button" @click="toggleAuthScreen()">Sign in</button>
+				<button
+					type="button"
+					@click="toggleAuthScreen()"
+				>
+					Sign in
+				</button>
 			</div>
 		</form>
 
@@ -78,7 +111,11 @@
 			<h2 class="voice1">Sign In</h2>
 			<div class="form-field">
 				<label for="email2">email</label>
-				<input id="email2" type="text" v-model="user.form.username" />
+				<input
+					id="email2"
+					type="text"
+					v-model="user.form.username"
+				/>
 			</div>
 			<div class="form-field password">
 				<label for="password2">password</label>
@@ -88,9 +125,20 @@
 					v-model="user.form.password"
 					required
 				/>
-				<div class="pwToggleContain" @click="togglePasswordVisibility()">
-					<SvgIcons class="pwToggle" name="show" v-if="passwordVisibility == 'password'" />
-					<SvgIcons class="pwToggle" name="hide" v-if="passwordVisibility == 'text'" />
+				<div
+					class="pwToggleContain"
+					@click="togglePasswordVisibility()"
+				>
+					<SvgIcons
+						class="pwToggle"
+						name="show"
+						v-if="passwordVisibility == 'password'"
+					/>
+					<SvgIcons
+						class="pwToggle"
+						name="hide"
+						v-if="passwordVisibility == 'text'"
+					/>
 				</div>
 				<!-- <button type="button" @click="togglePasswordVisibility()">Show/Hide Password</button> -->
 			</div>
@@ -98,7 +146,12 @@
 			<div v-if="user.errorMessage">{{ user.errorMessage }}</div>
 			<div class="authToggle">
 				<p>Don't have an account yet?</p>
-				<button type="button" @click="toggleAuthScreen()">Sign up</button>
+				<button
+					type="button"
+					@click="toggleAuthScreen()"
+				>
+					Sign up
+				</button>
 			</div>
 		</form>
 	</div>

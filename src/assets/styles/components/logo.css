@@ -7,7 +7,15 @@
 	justify-content: center;
 	color: var(--highlight);
 	fill: var(--highlight);
+	transition: 0.3s ease-in-out;
 }
+
+.logo:hover {
+	fill: var(--highlight-hover);
+	color: var(--highlight-hover);
+	transition: 0.3s ease-in-out;
+}
+
 .logo .svg-icons {
 	width: 2rem;
 	height: 2rem;

@@ -14,6 +14,7 @@ import NotFoundView from '../views/NotFoundView.vue';
 // import DishView from '../views/DishView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
 import { useCurrentUser, getCurrentUser } from 'vuefire';
+import { userService } from '@/services/userService';
 
 const router = createRouter({
    history: createWebHistory(import.meta.env.BASE_URL),
@@ -113,9 +114,13 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
+   const user = userService();
+   // await user.isUserLoadedPromise();
+
    // routes with `meta: { requiresAuth: true }` will check for the users, others won't
    if (to.meta.requiresAuth) {
       const currentUser = await getCurrentUser();
+      await user.isUserLoadedPromise;
       // console.log('run router.beforeEach. user: ', getCurrentUser());
       // if the user is not logged in, redirect to the welcome page
       if (!currentUser) {
@@ -126,6 +131,16 @@ router.beforeEach(async (to) => {
                // with `router.push(route.query.redirect || '/')`
                redirect: to.fullPath,
             },
+         };
+      }
+   }
+
+   // NOT YET USED - but use this for admin panel stuff for business owners only
+   if (to.meta.requiresBusiness) {
+      await user.isUserLoadedPromise;
+      if (!user.isBusiness) {
+         return {
+            path: '/for-businesses',
          };
       }
    }

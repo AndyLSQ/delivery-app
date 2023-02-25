@@ -2,8 +2,8 @@
 	import { ref, computed, onBeforeMount, onMounted } from 'vue';
 	import { useRoute } from 'vue-router';
 	import { useRestaurantStore } from '@/stores/restaurants';
-	import { useCartStore } from '@/stores/cart';
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
+	import { useCartStore } from '@/stores/cart';
 
 	const route = useRoute();
 	const restaurants = useRestaurantStore();

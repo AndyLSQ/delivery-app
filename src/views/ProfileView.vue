@@ -15,20 +15,20 @@
 
 	// EDIT
 	const form = reactive({
-		firstName: user.info.firstName,
-		lastName: user.info.lastName,
-		email: user.info.email,
-		phone: user.info.phone,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		email: user.email,
+		phone: user.phone,
 	});
 
 	const profileEditing = ref(false);
 
 	function editUser() {
 		profileEditing.value = true;
-		form.firstName = user.info.firstName;
-		form.lastName = user.info.lastName;
-		form.email = user.info.email;
-		form.phone = user.info.phone;
+		form.firstName = user.firstName;
+		form.lastName = user.lastName;
+		form.email = user.email;
+		form.phone = user.phone;
 	}
 
 	function clearEdit() {
@@ -48,33 +48,28 @@
 	<div class="userInfo">
 		<div
 			class="userField"
-			v-if="user?.info.firstName"
+			v-if="user.firstName"
 		>
-			First Name: {{ user?.info.firstName }}
+			First Name: {{ user.firstName }}
 		</div>
 		<div
 			class="userField"
-			v-if="user?.info.lastName"
+			v-if="user.lastName"
 		>
-			Last Name: {{ user?.info.lastName }}
+			Last Name: {{ user.lastName }}
 		</div>
+		<div class="userField">Email: {{ user.email }}</div>
 		<div
 			class="userField"
-			v-if="user?.info.email"
+			v-if="user.phone"
 		>
-			Email: {{ user?.info.email }}
-		</div>
-		<div
-			class="userField"
-			v-if="user?.info.phone"
-		>
-			Phone: {{ user?.info.phone }}
+			Phone: {{ user.phone }}
 		</div>
 	</div>
 
 	<button
 		v-if="!profileEditing"
-		@click="editUser(user.currentFB.uid)"
+		@click="editUser(user.authUser.uid)"
 	>
 		Edit
 	</button>

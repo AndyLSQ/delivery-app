@@ -13,42 +13,6 @@ import {
 
 import { useCurrentUser, useFirestore, useDocument } from 'vuefire';
 
-// ======== GET USER AUTH DOCS ========
-// Function: If there is a current user, get their doc
-function useUser() {
-	const db = useFirestore();
-	const authUser = useCurrentUser();
-
-	const docReference = computed(function () {
-		if (authUser.value) {
-			return doc(collection(db, 'users'), authUser.value.uid);
-		} else {
-			return false;
-		}
-	});
-
-	const userDoc = useDocument(docReference);
-
-	const isAdmin = computed(function () {
-		return userDoc.value?.roles.admin;
-	});
-
-	// Set constants for user data fields
-	const roles = computed(() => userDoc.value?.roles);
-	const firstName = computed(() => userDoc.value?.firstName);
-	const lastName = computed(() => userDoc.value?.lastName);
-	const email = computed(() => userDoc.value?.email);
-	const phone = computed(() => userDoc.value?.phone);
-
-	const address = computed(() => userDoc.value?.address);
-	const city = computed(() => userDoc.value?.city);
-	const state = computed(() => userDoc.value?.state);
-	const zip = computed(() => userDoc.value?.zip);
-
-	// Return all of them
-	return { isAdmin, roles, firstName, lastName, email, phone, address, city, state, zip };
-}
-
 // ======== EXPORT ============
 export const userService = defineStore('user', function () {
 	// ROUTER (for sign in redirect)
@@ -58,15 +22,47 @@ export const userService = defineStore('user', function () {
 	// ======== SIGNUP & SIGNIN ========
 	const auth = getAuth();
 
-	const currentFB = useCurrentUser();
+	const authUser = useCurrentUser();
+
+	// MOVE USEUSER STUFF HERE
+	const db = useFirestore();
+
+	const docReference = computed(function () {
+		if (authUser.value) {
+			return doc(collection(db, 'users'), authUser.value.uid);
+		} else {
+			return false;
+		}
+	});
+
+	const { data: userDoc, promise: isUserLoadedPromise } = useDocument(docReference);
+	// globalUserDoc.value = userDoc;
+
+	const isAdmin = computed(function () {
+		return userDoc.value?.roles.admin;
+	});
+
+	// Set constants for user data fields
+	const roles = computed(() => userDoc.value?.roles);
+	const firstName = computed(() => userDoc.value?.firstName);
+	const lastName = computed(() => userDoc.value?.lastName);
+	const email = computed(() => authUser.value?.email);
+	const phone = computed(() => userDoc.value?.phone);
+
+	const address = computed(() => userDoc.value?.address);
+	const city = computed(() => userDoc.value?.city);
+	const state = computed(() => userDoc.value?.state);
+	const zip = computed(() => userDoc.value?.zip);
+
+	const favoriteRestaurants = computed(() => userDoc.value?.favoriteRestaurants);
+
+	// ==== USER LOAD PROMISE ====
 
 	const form = reactive({
 		username: '',
 		password: '',
 		// role: "",
 	});
-
-	const db = useFirestore();
 
 	const errorMessage = ref(null);
 
@@ -80,7 +76,7 @@ export const userService = defineStore('user', function () {
 		// form.role = '';
 	}
 
-	const { isAdmin, ...info } = useUser();
+	// PULLS IN USER DATA FROM FUNCTION BEFORE THE EXPORT
 
 	function signUp(email, password) {
 		createUserWithEmailAndPassword(auth, email, password)
@@ -91,11 +87,12 @@ export const userService = defineStore('user', function () {
 				const newUserId = userCredential.user.uid;
 				try {
 					await setDoc(doc(db, 'users', newUserId), {
-						username: '',
+						// username: '',
 						email: email,
 						roles: {
 							admin: true,
 						},
+						favoriteRestaurants: [],
 					});
 				} catch (error) {
 					console.log(error.message);
@@ -141,66 +138,8 @@ export const userService = defineStore('user', function () {
 
 	// ======== UPDATE USER INFO ========
 	function updateProfile(formData) {
-		updateDoc(doc(db, 'users', currentFB.value.uid), formData);
+		updateDoc(doc(db, 'users', authUser.value.uid), formData);
 	}
-
-	// ========OLD============
-
-	// const users = [
-	// {
-	// 	username: 'tom',
-	// 	password: '123',
-	// 	address: '',
-	// 	phone: '',
-	// },
-	// {
-	// 	username: 'bill',
-	// 	password: '999',
-	// 	address: '',
-	// 	phone: '',
-	// 	role: 'admin',
-	// },
-	// ];
-
-	// const current = ref(null);
-
-	// function logout() {
-	// 	current.value = null;
-	// }
-
-	// const formInput = reactive({
-	// 	username: '',
-	// 	password: '',
-	// });
-
-	// function clearForm() {
-	// 	formInput.username = '';
-	// 	formInput.password = '';
-	// }
-
-	// function login() {
-	// 	console.log('username: ', formInput.username);
-	// 	const found = users.find(function (user) {
-	// 		return user.username == formInput.username;
-	// 	});
-
-	// 	if (found) {
-	// 		current.value = found;
-	// 		clearForm();
-	// 	} else {
-	// 		alert('invalid user!!');
-	// 	}
-	// }
-
-	// const loggedIn = computed(function () {
-	// 	if (current.value) {
-	// 		return true;
-	// 		console.log('loggedIn is true');
-	// 	} else {
-	// 		console.log('loggedIn is false');
-	// 		return false;
-	// 	}
-	// });
 
 	// =======LOGIN MODAL========
 	const modalOpen = ref(false);
@@ -232,24 +171,45 @@ export const userService = defineStore('user', function () {
 		welcomeShown.value = window.localStorage.getItem('showWelcome');
 	}
 
-	// onMounted(function () {
-	// 	if (window.localStorage.showWelcome) {
-	// 		console.log('showWelcome already exists in LS');
-	// 	} else {
-	// 		console.log('showWelcome doesnt yet exist in LS, so set it to true');
-	// 		window.localStorage.setItem('showWelcome', true);
-	// 		// user.setWelcome();
-	// 	}
-	// });
+	// =============== FAVORITES ===============
+
+	function toggleFavorite(restaurantId) {
+		if (alreadyFavorite(restaurantId)) {
+			removeFavorite(restaurantId);
+		} else {
+			addFavorite(restaurantId);
+		}
+	}
+
+	function alreadyFavorite(restaurantId) {
+		if (userDoc.favoriteRestaurants) {
+			return favoriteRestaurants?.value.find(function (favorite) {
+				return favorite == restaurantId;
+			});
+		} else {
+			return false;
+		}
+	}
+
+	function addFavorite(favoriteId) {
+		favoriteRestaurants.value.push(favoriteId);
+		// console.log('favoriteRestaurants.value AFTER PUSH: ', favoriteRestaurants.value);
+		updateFavorites(favoriteRestaurants.value);
+	}
+
+	function removeFavorite(excludeId) {
+		const newFavoriteRestaurants = favoriteRestaurants.value.filter(function (itemId) {
+			return excludeId != itemId;
+		});
+		updateFavorites(newFavoriteRestaurants);
+	}
+
+	async function updateFavorites(favoriteRestaurants) {
+		await updateDoc(doc(db, 'users', authUser.value.uid), { favoriteRestaurants });
+	}
 
 	return {
-		// users,
-		// login,
-		// logout,
-		// loggedIn,
-		// current,
-		// formInput,
-		currentFB,
+		authUser,
 		form,
 		signUp,
 		signOut,
@@ -263,8 +223,22 @@ export const userService = defineStore('user', function () {
 		setWelcome,
 		showWelcome,
 		dismissWelcome,
-		info,
 		isAdmin,
 		updateProfile,
+		toggleFavorite,
+		alreadyFavorite,
+		isUserLoadedPromise,
+		isAdmin,
+		roles,
+		firstName,
+		lastName,
+		email,
+		phone,
+		address,
+		city,
+		state,
+		zip,
+		favoriteRestaurants,
+		// favoriteRestaurant,
 	};
 });

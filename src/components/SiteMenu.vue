@@ -106,7 +106,7 @@
 
 		<div class="icon-nav">
 			<div
-				v-if="user.currentFB"
+				v-if="user.authUser"
 				class="icon-link signIn-link"
 			>
 				<RouterLink to="/account">
@@ -114,7 +114,7 @@
 						class="svg-icons"
 						name="user"
 					/>
-					<p class="quiet-voice">Account</p>
+					<!-- <p class="quiet-voice">Account</p> -->
 				</RouterLink>
 			</div>
 			<!-- SIGN IN -->
@@ -235,13 +235,24 @@
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.75rem;
 		font-size: 0.75rem;
-		fill: var(--ink);
-	}
 
-	.menu-link:hover {
-		fill: var(--light-ink);
 		color: var(--light-ink);
 	}
+
+	.icon-nav .svg-icons {
+		fill: var(--light-ink);
+		transition: fill 0.3s ease-in-out;
+	}
+
+	.icon-nav .svg-icons:hover {
+		fill: var(--ink);
+		transition: fill 0.3s ease-in-out;
+	}
+
+	/*	.menu-link:hover {
+		fill: var(--light-ink);
+		color: var(--light-ink);
+	}*/
 
 	.icon-link {
 		display: grid;
@@ -298,9 +309,11 @@
 		background-color: var(--paper-color);
 		top: 0;
 		right: 0;
-		width: 400px;
+		width: 425px;
 		height: 100%;
 		z-index: 11;
+		border-radius: 15px 0px 0px 15px;
+		padding: 8px;
 	}
 
 	.cart-link {

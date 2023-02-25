@@ -13,6 +13,8 @@ html {
 	--text-gray: hsla(0, 0%, 22%, 1);
 	--light-gray: hsla(0, 0%, 85%, 1);
 	--highlight: hsla(151, 89%, 32%, 1);
+	--highlight-light: hsla(151, 89%, 45%, 1);
+	--highlight-hover: hsla(151, 89%, 22%, 1);
 	--admin-highlight: hsla(183, 100%, 27%, 1);
 	--admin-highlight-hover: hsla(183, 90%, 20%, 1);
 	--warn: hsla(7, 85%, 46%, 1);
@@ -35,7 +37,7 @@ html {
 
 @media (prefers-color-scheme: dark) {
 	html {
-		--black: #111111;
+		/*		--black: #111111;
 		--white: #efefef;
 
 		--neutral-stuffs: gray;
@@ -45,10 +47,10 @@ html {
 
 		--shadow: rgba(0, 0, 0, 0.8);
 
-		--corners: 10px; /* or whatevers */
+		--corners: 10px; 
 
 		--paper: black;
-		--paper2: hsla(217, 6%, 17%, 1); /*bunker*/
-		--ink: white;
+		--paper2: hsla(217, 6%, 17%, 1); 
+		--ink: white;*/
 	}
 }

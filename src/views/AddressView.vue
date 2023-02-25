@@ -15,20 +15,20 @@
 
 	// EDIT
 	const form = reactive({
-		address: user.info.address,
-		city: user.info.city,
-		state: user.info.state,
-		zip: user.info.zip,
+		address: user.address,
+		city: user.city,
+		state: user.state,
+		zip: user.zip,
 	});
 
 	const profileEditing = ref(false);
 
 	function editUser() {
 		profileEditing.value = true;
-		form.address = user.info.address;
-		form.city = user.info.city;
-		form.state = user.info.state;
-		form.zip = user.info.zip;
+		form.address = user.address;
+		form.city = user.city;
+		form.state = user.state;
+		form.zip = user.zip;
 	}
 
 	function clearEdit() {
@@ -48,33 +48,33 @@
 	<div class="userInfo">
 		<div
 			class="userField"
-			v-if="user?.info.address"
+			v-if="user.address"
 		>
-			{{ user?.info.address }}
+			{{ user.address }}
 		</div>
 		<div
 			class="userField"
-			v-if="user?.info.city && user?.info.state && user?.info.zip"
+			v-if="user.city && user.state && user.zip"
 		>
-			{{ user?.info.city }}, {{ user?.info.state }} {{ user?.info.zip }}
+			{{ user.city }}, {{ user.state }} {{ user.zip }}
 		</div>
 		<div
 			class="userField"
-			v-if="user?.info.state"
+			v-if="user.state"
 		>
-			State: {{ user?.info.state }}
+			State: {{ user.state }}
 		</div>
 		<div
 			class="userField"
-			v-if="user?.info.zip"
+			v-if="user.zip"
 		>
-			Zip: {{ user?.info.zip }}
+			Zip: {{ user.zip }}
 		</div>
 	</div>
 
 	<button
 		v-if="!profileEditing"
-		@click="editUser(user.currentFB.uid)"
+		@click="editUser(user.authUser.uid)"
 	>
 		Edit
 	</button>
