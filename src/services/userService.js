@@ -175,14 +175,17 @@ export const userService = defineStore('user', function () {
 
 	function toggleFavorite(restaurantId) {
 		if (alreadyFavorite(restaurantId)) {
+			console.log('ALREADY A FAVE');
 			removeFavorite(restaurantId);
 		} else {
+			console.log('FAVE NOT FOUND');
+			console.log('favoriteRestaurants: ', favoriteRestaurants.value);
 			addFavorite(restaurantId);
 		}
 	}
 
 	function alreadyFavorite(restaurantId) {
-		if (userDoc.favoriteRestaurants) {
+		if (favoriteRestaurants) {
 			return favoriteRestaurants?.value.find(function (favorite) {
 				return favorite == restaurantId;
 			});
@@ -193,7 +196,6 @@ export const userService = defineStore('user', function () {
 
 	function addFavorite(favoriteId) {
 		favoriteRestaurants.value.push(favoriteId);
-		// console.log('favoriteRestaurants.value AFTER PUSH: ', favoriteRestaurants.value);
 		updateFavorites(favoriteRestaurants.value);
 	}
 

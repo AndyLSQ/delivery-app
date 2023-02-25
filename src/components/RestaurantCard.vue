@@ -1,22 +1,44 @@
 <script setup>
 	import SvgIcons from '@/components/icons/IconTemplate.vue';
 	import { userService } from '@/services/userService';
-	import { ref, reactive, computed } from 'vue';
+	import { defineProps, ref, reactive, computed } from 'vue';
 	import { useFirestore, useCollection } from 'vuefire';
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
-	defineProps(['restaurant', 'tags', 'priceLevels', 'avgWaitTimes']);
+	const props = defineProps([
+		'restaurant',
+		'tags',
+		'priceLevels',
+		'avgWaitTimes',
+		'user',
+		'userFavorites',
+	]);
+	// defineProps(['restaurant']);
 
 	const user = userService();
-
 	const db = useFirestore();
 
-	// ==== UPDATE ====
-	// PULL FB DATA INTO UPDATE FORM (CREATE NEW REACTIVE OBJECTS)
-	// const update = reactive({ ...props.item });
+	// const favList = user.favoriteRestaurants;
+	// FAVORITES
+
+	const favorited = computed(function () {
+		// console.log('userFavorites: ', props.userFavorites);
+		if (props.userFavorites) {
+			return props.userFavorites.find((favoriteId) => favoriteId == props.restaurant.id);
+		}
+	});
+
+	function toggleUserFavorite(restaurantId) {
+		if (user.authUser) {
+			user.toggleFavorite(restaurantId);
+		} else {
+			alert('Log in to save favorites');
+		}
+	}
 
 	// ==== UPDATE (VENDOR RESTAURANTS) ====
 	const editing = ref(false);
 	const update = ref(null);
+
 	// const checkedTags = ref([]);
 
 	function editRestaurant(restaurant, id, name, imageUrl) {
@@ -92,8 +114,10 @@
 			<SvgIcons
 				class="svg-icon full"
 				name="heart-full"
+				v-if="user.authUser && favorited"
 			/>
 			<SvgIcons
+				v-else
 				class="svg-icon empty"
 				name="heart-empty"
 			/>
@@ -221,12 +245,6 @@
 						</select>
 					</div>
 
-					<!-- 			<option value="20">20 - 30 min</option>
-										<option value="30">20 - 30 min</option>
-										<option value="45">20 - 30 min</option>
-										<option value="60">20 - 30 min</option>
-										<option value="61">20 - 30 min</option> -->
-
 					<div class="form-buttons">
 						<button
 							class=""
@@ -246,3 +264,46 @@
 		</div>
 	</div>
 </template>
+
+<style scoped>
+	.favHeart {
+		z-index: 2;
+		/*		width: 3rem;*/
+		position: absolute;
+		top: 178px;
+		right: 15px;
+		padding: 10px;
+		border-radius: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		fill: var(--light-ink);
+		background-color: var(--white);
+		box-shadow: var(--card-shadow);
+		border: 1px solid var(--light-gray);
+	}
+	.svg-icon {
+		height: 1.5rem;
+		width: 1.5rem;
+	}
+
+	.favHeart:hover {
+		fill: var(--highlight);
+	}
+
+	.favHeart .full {
+		fill: var(--highlight);
+	}
+
+	.favHeart .full:hover {
+		/*		fill: var(--light-ink);*/
+	}
+
+	.restaurant-stats {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		color: var(--light-ink);
+	}
+</style>
