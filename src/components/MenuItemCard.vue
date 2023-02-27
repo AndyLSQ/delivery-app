@@ -140,9 +140,11 @@
 							v-model="qty"
 							ref="firstField"
 						/>
+
 						<button
 							@click.prevent="
-								cart.add(cartAddItem, qty, notes);
+								// TODO: USE THESE ARGS: cart.add(cartAddItem, qty, notes);
+								cart.addToCart(route.params.slug);
 								closeCartAdd();
 							"
 						>
