@@ -119,7 +119,10 @@
 		:key="$route.path"
 	>
 		<!-- {{ currentRestaurant.name }}  -->
-		<h1 class="voice1">Menu</h1>
+		<div class="headline">
+			<div class="eyebrow">Build your meal</div>
+			<h2 class="voice1">Menu selection</h2>
+		</div>
 
 		<ul class="categories">
 			<li v-for="category in categories">
