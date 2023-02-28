@@ -218,4 +218,12 @@
 		flex-direction: column;
 		gap: 40px;
 	}
+
+	.router-view {
+		/*		border: 3px solid red;*/
+		margin-top: 100px;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+	}
 </style>
