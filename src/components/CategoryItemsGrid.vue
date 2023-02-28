@@ -4,6 +4,7 @@
 	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import MenuItemCard from '@/components/MenuItemCard.vue';
 	import { useRoute } from 'vue-router';
+	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
 	const props = defineProps(['category', 'items']);
 
@@ -54,35 +55,49 @@
 
 <template>
 	<div class="category">
-		<h2 class="voice2">{{ category.name }}</h2>
-		<div>{{ category.description }}</div>
-		<!-- ADD BUTTONS HERE -->
-		<button
-			@click="removeCategory(category.id)"
-			type="button"
-		>
-			X
-		</button>
-		<button @click="editCategory(category.id)">Edit</button>
-		<template v-if="editing == category.id">
-			<input
-				type="text"
-				placeholder="Name"
-				v-model="category.name"
-			/>
-			<input
-				type="text"
-				placeholder="Description"
-				v-model="category.description"
-			/>
-			<button @click="updateCategory(category.id, category.name, category.description)">
-				Update
-			</button>
-			<button @click="clearEdit()">Cancel</button>
-		</template>
+		<div class="category-header">
+			<h2 class="voice2">{{ category.name }}</h2>
+			<!-- <div>{{ category.description }}</div> -->
+			<!-- ADD BUTTONS HERE -->
+			<div class="category-panel admin-panel-inline">
+				<button
+					@click="removeCategory(category.id)"
+					type="button"
+					class="warn"
+				>
+					<SvgIcons
+						class="svg-icon trash"
+						name="trash"
+					/>
+				</button>
+				<button @click="editCategory(category.id)">
+					<SvgIcons
+						class="svg-icon edit"
+						name="edit"
+					/>
+				</button>
+				<template v-if="editing == category.id">
+					<input
+						type="text"
+						placeholder="Name"
+						v-model="category.name"
+					/>
+					<input
+						type="text"
+						placeholder="Description"
+						v-model="category.description"
+					/>
+					<button @click="updateCategory(category.id, category.name, category.description)">
+						Update
+					</button>
+					<button @click="clearEdit()">Cancel</button>
+				</template>
+			</div>
+		</div>
+
 		<ul
 			v-if="categoryItems.length"
-			class="categoryGrid"
+			class="card-grid"
 		>
 			<li
 				v-for="item in categoryItems"
@@ -97,13 +112,28 @@
 
 <style scoped>
 	.category {
-		border: 4px solid orange;
+		/*		border: 4px solid orange;*/
+		background-color: var(--paper-color);
+		border-radius: 20px;
+		box-shadow: var(--card-shadow);
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
 	}
-	.categoryGrid {
-		border: 1px solid blue;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
+
+	.category-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		/*		gap: 25px;*/
+		/*		border: 1px solid blue;*/
+	}
+
+	.category-panel.admin-panel-inline {
+		/*		border: 1px solid red;*/
+		padding: 10px 0px;
 	}
 	picture {
 		aspect-ratio: 1/1;
