@@ -82,6 +82,8 @@
 						/>
 					</button>
 					<div class="quantity">{{ group.length }}</div>
+					<!-- TODO: NEED TO CHANGE THIS -->
+					<!-- Doesnt work if youre on a diff restaurant page -->
 					<button @click="cart.addToCart(group[0])">
 						<SvgIcons
 							class="svg-icon"

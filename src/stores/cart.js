@@ -37,7 +37,7 @@ export const useCartStore = defineStore('cart', function () {
 	// 	return items.value.length;
 	// });
 
-	// TODO
+	// TODO: EXPAND TO HANDLE NOTES
 	const groupedItems = computed(function () {
 		return items.value.reduce(function (group, item) {
 			console.log('group: ', group);
@@ -51,7 +51,6 @@ export const useCartStore = defineStore('cart', function () {
 			} else {
 				group[item.name] = [];
 			}
-			// group[item.name] = group[item.name] ?? []; //if there isnt one make one
 			group[item.name].push(item);
 			return group;
 		}, {});
