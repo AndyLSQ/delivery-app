@@ -3,73 +3,168 @@ import { defineStore } from 'pinia';
 import { useFirestore, useCollection, useDocument } from 'vuefire';
 import { collection, doc, getDoc, addDoc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { userService } from '@/services/userService';
+import { useRoute } from 'vue-router';
 
 export const useCartStore = defineStore('cart', function () {
-	const items = ref([]);
-	const user = userService();
-
-	//
-	const count = computed(function () {
-		return items.value.length;
-	});
-
-	const quantity = computed(function () {
-		let qty = 0;
-		items.value.forEach(function (item) {
-			qty += item.quantity;
-		});
-
-		return qty;
-	});
-
-	// =================== New Pseudocode ========================
-	// == Setup
 	// Pull cart DB
 	const db = useFirestore();
 	const cartDb = useCollection(collection(db, 'carts'));
 	// Set constants - LS cart list
 	const localCartList = ref(window.localStorage.getItem('cartList'));
+	const restaurantId = computed(function () {
+		return route.params.slug;
+	});
 
-	// ==== ADD ITEMS TO CART function: ====
-	async function findRestaurantCart(currentRestaurantId) {
-		let localCarts = JSON.parse(window.localStorage.getItem('cartList'));
-		let cartData = '';
-		let match = false;
-		console.log('localCarts: ', localCarts);
-		// const dbCartMatchId =
-		await localCarts.forEach(async function (localCartId) {
-			const docSnap = await getDoc(doc(db, 'carts', localCartId));
-			cartData = await docSnap.data();
-			console.log('cartData: ', cartData);
-			// console.log('cartData.restaurantId', cartData.restaurantId);
-			console.log('currentRestaurantId', currentRestaurantId);
-			// return cartData.restaurantId == currentRestaurantId;
+	const user = userService();
+	const route = useRoute();
 
-			if ((await cartData.restaurantId) == currentRestaurantId) {
-				await console.log('MATCH FOUND');
-				match = true;
-			} else {
-				await console.log('MATCH NOT FOUND');
-			}
-		});
+	const cartRef = computed(function () {
+		if (user.authUser) {
+			//logged in
+		} else {
+			const localCarts = getLocalCarts();
+			return collection(db, 'carts', localCarts[0], 'items');
+		}
+	});
 
-		return match;
-
-		// console.log('dbCartMatchId: ', dbCartMatchId);
-
-		// return dbCartMatchId;
-
-		// createLocalCart(currentRestaurantId);
+	function getLocalCarts() {
+		return JSON.parse(window.localStorage.getItem('cartList'));
 	}
 
-	async function createLocalCart(currentRestaurantId) {
+	const items = useCollection(cartRef);
+	//
+	// const count = computed(function () {
+	// 	return items.value.length;
+	// });
+
+	// TODO
+	const groupedItems = computed(function () {
+		return items.value.reduce(function (group, item) {
+			console.log('group: ', group);
+			// is there a key called guac
+			if (group[item.name]) {
+				// if (group[item.notes]){
+				// } else {
+				// 	group[item.name] = [];
+				// }
+				// group[item.name] = group[item.name];
+			} else {
+				group[item.name] = [];
+			}
+			// group[item.name] = group[item.name] ?? []; //if there isnt one make one
+			group[item.name].push(item);
+			return group;
+		}, {});
+		// group (the "accumulator") starts with empty object {}
+	});
+
+	async function remove(itemId) {
+		const localCarts = getLocalCarts();
+		await deleteDoc(doc(db, 'carts', localCarts[0], 'items', itemId));
+	}
+
+	function searchCart(newItem) {
+		return items.value.find(function (itemInCart) {
+			return newItem.id == itemInCart.id && newItem.notes == itemInCart.notes;
+		});
+	}
+
+	function clearCart() {
+		for (const item of items.value) {
+			remove(item.id);
+		}
+	}
+
+	// const quantity = computed(function () {
+	// 	let qty = 0;
+	// 	items.value.forEach(function (item) {
+	// 		qty += item.quantity;
+	// 	});
+
+	// 	return qty;
+	// });
+
+	// =================== New Pseudocode ========================
+	// == Setup
+
+	// ==== ADD ITEMS TO CART function: ====
+	function addToCart(item, notes) {
+		// console.log('currentRestaurantId: ', currentRestaurantId);
+		// == A. If logged out
+		console.log('items.value: ', items.value);
+		if (!user.authUser) {
+			handleLocalCarts(item, notes);
+		}
+	}
+	async function handleLocalCarts(item, notes) {
+		// 1. check if any carts in local storage cart list
+		if (window.localStorage.getItem('cartList')) {
+			console.log('yes existing cart list. ', localCartList.value);
+			// 2. loop thru carts in LS, check each for restaurant ID match
+			const restaurantFound = await findRestaurantCart();
+			if (restaurantFound) {
+				addToExistingCart(restaurantFound, item, notes);
+			} else {
+				// 2a. if no match, create a new cart,
+				createAnonymousCart(item);
+				// add item, & assign cartId to local storage
+			}
+		} else {
+			console.log('no cart list yet. ', localCartList.value);
+			// 3. if no carts in LS, create a new blank cartlist
+			localStorage.setItem('cartList', JSON.stringify([]));
+			createAnonymousCart(item);
+
+			// add item, & assign cartId to local storage
+		}
+	}
+
+	function addToExistingCart(cartId, item, notes) {
+		console.log(
+			'(Step 2 Should be 2nd bc should use the results of step 1) FOUND CART MATCH IN DB: ',
+		);
+		console.log('addToEXISTING -- cartId: ', cartId);
+		console.log('addToEXISTING -- item: ', item);
+		const newItemRef = addDoc(collection(db, 'carts', cartId, 'items'), item);
+	}
+
+	function restaurantNotFoundAction() {
+		console.log('Step 2 CART MATCH NOT FOUND IN DB');
+	}
+
+	async function findRestaurantCart() {
+		let localCarts = JSON.parse(window.localStorage.getItem('cartList'));
+		let cartData = '';
+
+		console.log('localCarts: ', localCarts);
+
+		for (const localCartId of localCarts) {
+			const docSnap = await getDoc(doc(db, 'carts', localCartId));
+			cartData = docSnap.data();
+			console.log('cartData: ', cartData);
+
+			if (cartData.restaurantId == restaurantId.value) {
+				console.log('Step 1 MATCH FOUND');
+				console.log('docSnap.id', docSnap.id);
+				return docSnap.id;
+			} else {
+				console.log('Step 1 MATCH NOT FOUND');
+			}
+		}
+
+		return false;
+	}
+
+	async function createAnonymousCart(item) {
 		//Create in FB
 		const newCartRef = await addDoc(collection(db, 'carts'), {
 			userId: 'anonymous',
-			restaurantId: currentRestaurantId,
-			items: [],
+			restaurantId: restaurantId.value,
+			createdDate: Date.now(),
 		});
 		console.log('New cart written with ID: ', newCartRef.id);
+
+		const newItemRef = addDoc(collection(db, 'carts', newCartRef.id, 'items'), item);
 
 		//Add cartId to LS
 		let cartList = JSON.parse(window.localStorage.getItem('cartList'));
@@ -79,49 +174,6 @@ export const useCartStore = defineStore('cart', function () {
 		cartList.push(newCartId);
 
 		localStorage.setItem('cartList', JSON.stringify(cartList));
-
-		let newItemList = ['test taco', 'test burrito'];
-
-		updateDoc(doc(db, 'carts', newCartRef.id), { items: newItemList });
-
-		// console.log('newCartRef.items: ', newCartRef.items);
-
-		// if (localCartList.value) {
-		// 	console.log('theres a local cart list: ', localCartList.value);
-
-		// }
-
-		// console.log('newCartList: ', newCartList);
-		// window.localStorage.setItem('cartList', newCartList);
-	}
-
-	async function addToCart(currentRestaurantId) {
-		console.log('currentRestaurantId: ', currentRestaurantId);
-		// == A. If logged out
-		if (!user.authUser) {
-			// 1. check if any carts in local storage cart list
-			if (await window.localStorage.getItem('cartList')) {
-				console.log('yes existing cart list. ', localCartList.value);
-				// 2. loop thru carts in LS, check each for restaurant ID match
-				if (await findRestaurantCart(currentRestaurantId)) {
-					console.log('FOUND CART MATCH IN DB: ');
-					// console.log('foundCart: ', findRestaurantCart(currentRestaurantId));
-					// 	// do something with the foundCart (reduce & add new item to it)
-				} else {
-					console.log('CART MATCH NOT FOUND IN DB');
-				}
-
-				// 2a. if no match, create a new cart,
-				// add item, & assign cartId to local storage
-			} else {
-				console.log('no cart list yet. ', localCartList.value);
-				// 3. if no carts in LS, create a new blank cartlist
-				localStorage.setItem('cartList', JSON.stringify([]));
-				createLocalCart(currentRestaurantId);
-
-				// add item, & assign cartId to local storage
-			}
-		}
 	}
 
 	function setLocalCartList() {
@@ -148,68 +200,70 @@ export const useCartStore = defineStore('cart', function () {
 	// 2. if so, render them
 
 	// ============= Original ====================
-	function searchCart(newItem) {
-		return items.value.find(function (itemInCart) {
-			return newItem.id == itemInCart.id && newItem.notes == itemInCart.notes;
-		});
-	}
+	// function searchCart(newItem) {
+	// 	return items.value.find(function (itemInCart) {
+	// 		return newItem.id == itemInCart.id && newItem.notes == itemInCart.notes;
+	// 	});
+	// }
 
-	function add(item, qty, notes) {
-		const newItem = { ...item, id: item.id, notes: notes };
+	// function add(item, qty, notes) {
+	// 	const newItem = { ...item, id: item.id, notes: notes };
 
-		const newQty = Number(qty);
-		newItem.quantity = newQty;
+	// 	const newQty = Number(qty);
+	// 	newItem.quantity = newQty;
 
-		// check if this item was found in the list
-		const found = searchCart(newItem);
+	// 	// check if this item was found in the list
+	// 	const found = searchCart(newItem);
 
-		if (found) {
-			console.log('item found in cart');
-			found.quantity += newQty;
-		} else {
-			console.log('item not found in cart');
-			items.value.push(newItem);
-		}
-	}
+	// 	if (found) {
+	// 		console.log('item found in cart');
+	// 		found.quantity += newQty;
+	// 	} else {
+	// 		console.log('item not found in cart');
+	// 		items.value.push(newItem);
+	// 	}
+	// }
 
-	function remove(excludeItem) {
-		items.value = items.value.filter(function (item) {
-			return item.id != excludeItem.id || item.notes != excludeItem.notes;
-		});
-	}
+	// function remove(excludeItem) {
+	// 	items.value = items.value.filter(function (item) {
+	// 		return item.id != excludeItem.id || item.notes != excludeItem.notes;
+	// 	});
+	// }
 
-	function plusOne(item) {
-		item.quantity += 1;
-	}
+	// function plusOne(item) {
+	// 	item.quantity += 1;
+	// }
 
-	function minusOne(item) {
-		item.quantity -= 1;
-	}
+	// function minusOne(item) {
+	// 	item.quantity -= 1;
+	// }
 
-	function clearCart() {
-		if (window.confirm('Are you sure you want to remove everything from your cart?') == true) {
-			items.value = [];
-		}
-	}
+	// function clearCart() {
+	// 	if (window.confirm('Are you sure you want to remove everything from your cart?') == true) {
+	// 		items.value = [];
+	// 	}
+	// }
 
-	const allSubtotal = computed(function () {
-		let cartSubtotal = 0;
-		items.value.forEach(function (item) {
-			item.subtotal = item.price * item.quantity;
-			cartSubtotal += item.subtotal;
-		});
-		return cartSubtotal;
-	});
+	// const allSubtotal = computed(function () {
+	// 	let cartSubtotal = 0;
+	// 	items.value.forEach(function (item) {
+	// 		item.subtotal = item.price * item.quantity;
+	// 		cartSubtotal += item.subtotal;
+	// 	});
+	// 	return cartSubtotal;
+	// });
 
 	return {
 		items,
-		count,
-		add,
+		groupedItems,
+
+		// count,
+		// add,
 		remove: remove,
-		quantity,
-		plusOne,
-		minusOne,
-		allSubtotal,
+		// quantity,
+		// plusOne,
+		// minusOne,
+		// allSubtotal,
 		clearCart,
 		addToCart,
 	};
