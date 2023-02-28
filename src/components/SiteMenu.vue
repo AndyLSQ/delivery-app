@@ -312,7 +312,7 @@
 		width: 425px;
 		height: 100%;
 		z-index: 11;
-		border-radius: 15px 0px 0px 15px;
+		border-radius: 8px 0px 0px 8px;
 		padding: 8px;
 	}
 
