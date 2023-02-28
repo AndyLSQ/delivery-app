@@ -4,6 +4,7 @@
 	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import { useRoute } from 'vue-router';
 	import { useCartStore } from '@/stores/cart';
+	import SvgIcons from '@/components/icons/IconTemplate.vue';
 
 	const route = useRoute();
 	const db = useFirestore();
@@ -87,22 +88,34 @@
 </script>
 
 <template>
-	<div class="itemCard">
-		<picture>
-			<!-- template allows me to reference prop direclty, but in script would need to say props.item -->
-			<img
-				:src="item.imageUrl"
-				alt=""
-			/>
-		</picture>
-		<h3 class="voice3">{{ item.name }}</h3>
-		<div>${{ item.price }}</div>
-		<div>{{ item.description }}</div>
+	<div class="card">
+		<div
+			class="item-card"
+			@click="openCartAdd(item)"
+		>
+			<picture>
+				<!-- template allows me to reference prop direclty, but in script would need to say props.item -->
+				<img
+					:src="item.imageUrl"
+					alt=""
+				/>
+			</picture>
+			<div class="card-text">
+				<h3 class="voice3">{{ item.name }}</h3>
+				<div>${{ item.price }}</div>
+				<!-- <div>{{ item.description }}</div> -->
 
-		<div class="addToCartButton">
-			<button @click="openCartAdd(item)">Add to cart</button>
+				<button
+					@click="openCartAdd(item)"
+					class="add-to-cart-button"
+				>
+					<SvgIcons
+						class="svg-icon edit"
+						name="add"
+					/>
+				</button>
+			</div>
 		</div>
-
 		<!-- ======== CART-ADD MODAL ======== -->
 		<Transition>
 			<div
@@ -157,19 +170,27 @@
 		<!-- ======== / CART-ADD MODAL ======== -->
 
 		<!-- ======== ADMIN PANEL ======== -->
-		<div class="adminPanel">
+
+		<div class="admin-panel-inline">
 			<button
+				class="warn"
 				@click="removeItem(item.id)"
 				type="button"
 			>
-				X
+				<SvgIcons
+					class="svg-icon trash"
+					name="trash"
+				/>
 			</button>
 
 			<button
 				@click="editItem(item.id)"
 				v-if="editing != item.id"
 			>
-				Edit!
+				<SvgIcons
+					class="svg-icon edit"
+					name="edit"
+				/>
 			</button>
 			<template v-if="editing == item.id">
 				<!-- HEREEEEEE -->
@@ -232,19 +253,45 @@
 </template>
 
 <style scoped>
-	.itemCard {
-		border: 1px solid red;
+	.card {
+		position: relative;
 	}
-	picture {
-		/*		aspect-ratio: 1/1;*/
-		/*		width: 200px;*/
-		width: 100%;
-		height: 250px;
+	.item-card {
+		cursor: pointer;
+	}
+
+	.add-to-cart-button {
+		z-index: 2;
+		/*		width: 3rem;*/
+		position: absolute;
+		top: 178px;
+		right: 15px;
+		padding: 10px;
+		border-radius: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		fill: var(--white);
+		background-color: var(--highlight);
+		box-shadow: var(--card-shadow);
+		border: none;
+	}
+
+	.add-to-cart-button:hover {
+		background-color: var(--highlight-hover);
+		box-shadow: var(--card-shadow-hover);
+	}
+
+	.add-to-cart-button .svg-icon {
+		height: 1.5rem;
+		width: 1.5rem;
 	}
 
 	.dialogue {
 		/*		width: 60vw; Todo: Define this later */
 	}
+
 	.modal picture {
 		border: 2px solid blue;
 		height: 400px;
