@@ -35,9 +35,14 @@
 			</div>
 		</div>
 		<ul class="cart-list">
+			<pre>
+				<code>
+{{cart.groupedItems}}
+				</code>
+			</pre>
 			<li
 				class="cart-item"
-				v-for="item in cart.items"
+				v-for="group in cart.groupedItems"
 			>
 				<!-- <picture>
 					<img
@@ -46,20 +51,21 @@
 					/>
 				</picture> -->
 				<div class="cart-item-text">
-					<h2 class="voice3">{{ item.name }}</h2>
+					<h2 class="voice3">{{ group[0].name }}</h2>
 					<div
-						v-if="item.notes"
-						class="itemNotes"
+						v-if="group.notes"
+						class="groupNotes"
 					>
-						<em>{{ item.notes }}</em>
+						<em>{{ group.length }}</em>
 					</div>
-					<!-- <p>${{ item.price }}</p> -->
-					<div>${{ item.subtotal }}</div>
+					<p></p>
+					<p>${{ group[0].price }}</p>
+					<!-- <div>${{ item.subtotal }}</div> -->
 				</div>
 				<div class="quantity-buttons">
 					<button
-						v-if="item.quantity == 1"
-						@click="cart.remove(item)"
+						v-if="group.length == 1"
+						@click="cart.remove(group[0].id)"
 					>
 						<SvgIcons
 							class="svg-icon"
@@ -67,16 +73,16 @@
 						/>
 					</button>
 					<button
-						v-if="item.quantity > 1"
-						@click="cart.minusOne(item)"
+						v-if="group.length > 1"
+						@click="cart.remove(group[0].id)"
 					>
 						<SvgIcons
 							class="svg-icon"
 							name="subtract"
 						/>
 					</button>
-					<div class="quantity">{{ item.quantity }}</div>
-					<button @click="cart.plusOne(item)">
+					<div class="quantity">{{ group.length }}</div>
+					<button @click="cart.addToCart(group[0])">
 						<SvgIcons
 							class="svg-icon"
 							name="add"
