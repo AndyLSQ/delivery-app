@@ -117,6 +117,7 @@
 		border-radius: 20px;
 		box-shadow: var(--card-shadow);
 		padding: 20px;
+		padding-bottom: 40px;
 		display: flex;
 		flex-direction: column;
 		gap: 25px;
