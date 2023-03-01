@@ -170,6 +170,7 @@
 						name="close"
 					/>
 				</button>
+
 				<CartView />
 			</div>
 		</div>
@@ -302,6 +303,7 @@
 		width: 100%;
 		height: 100%;
 		z-index: 12;
+		overflow: scroll;
 	}
 
 	.sideCartDialogue {
@@ -314,6 +316,7 @@
 		z-index: 11;
 		border-radius: 8px 0px 0px 8px;
 		padding: 8px;
+		overflow: scroll;
 	}
 
 	.cart-link {
