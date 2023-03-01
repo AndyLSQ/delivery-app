@@ -23,7 +23,9 @@ export const useCartStore = defineStore('cart', function () {
 			//logged in
 		} else {
 			const localCarts = getLocalCarts();
-			return collection(db, 'carts', localCarts[0], 'items');
+			if (localCarts) {
+				return collection(db, 'carts', localCarts[0], 'items');
+			}
 		}
 	});
 
@@ -87,44 +89,56 @@ export const useCartStore = defineStore('cart', function () {
 	// == Setup
 
 	// ==== ADD ITEMS TO CART function: ====
-	function addToCart(item, notes) {
-		// console.log('currentRestaurantId: ', currentRestaurantId);
+	function addToCart(item, notes, qty) {
+		const itemWithNotes = addNotesToItem(item, notes);
+		// console.log('itemWithNotes: ', itemWithNotes);
 		// == A. If logged out
-		console.log('items.value: ', items.value);
+
 		if (!user.authUser) {
-			handleLocalCarts(item, notes);
+			handleLocalCarts(itemWithNotes, qty);
 		}
 	}
-	async function handleLocalCarts(item, notes) {
+
+	function addNotesToItem(item, notes) {
+		item.notes = notes;
+		return item;
+	}
+
+	async function handleLocalCarts(item, qty) {
 		// 1. check if any carts in local storage cart list
 		if (window.localStorage.getItem('cartList')) {
 			console.log('yes existing cart list. ', localCartList.value);
 			// 2. loop thru carts in LS, check each for restaurant ID match
-			const restaurantFound = await findRestaurantCart();
-			if (restaurantFound) {
-				addToExistingCart(restaurantFound, item, notes);
+			const restaurantCartFound = await findRestaurantCart();
+			if (restaurantCartFound) {
+				addToExistingCart(restaurantCartFound, item, qty);
 			} else {
 				// 2a. if no match, create a new cart,
-				createAnonymousCart(item);
+				createAnonymousCart(item, qty);
 				// add item, & assign cartId to local storage
 			}
 		} else {
 			console.log('no cart list yet. ', localCartList.value);
 			// 3. if no carts in LS, create a new blank cartlist
 			localStorage.setItem('cartList', JSON.stringify([]));
-			createAnonymousCart(item);
+			createAnonymousCart(item, qty);
 
 			// add item, & assign cartId to local storage
 		}
 	}
 
-	function addToExistingCart(cartId, item, notes) {
+	function addToExistingCart(cartId, item, qty) {
 		console.log(
 			'(Step 2 Should be 2nd bc should use the results of step 1) FOUND CART MATCH IN DB: ',
 		);
 		console.log('addToEXISTING -- cartId: ', cartId);
 		console.log('addToEXISTING -- item: ', item);
-		const newItemRef = addDoc(collection(db, 'carts', cartId, 'items'), item);
+		console.log('addToEXISTING -- qty: ', qty);
+
+		for (let i = 0; i < qty; i++) {
+			// const newItemRef =
+			addDoc(collection(db, 'carts', cartId, 'items'), item);
+		}
 	}
 
 	function restaurantNotFoundAction() {
@@ -140,7 +154,7 @@ export const useCartStore = defineStore('cart', function () {
 		for (const localCartId of localCarts) {
 			const docSnap = await getDoc(doc(db, 'carts', localCartId));
 			cartData = docSnap.data();
-			console.log('cartData: ', cartData);
+			// console.log('cartData: ', cartData);
 
 			if (cartData.restaurantId == restaurantId.value) {
 				console.log('Step 1 MATCH FOUND');
@@ -154,21 +168,25 @@ export const useCartStore = defineStore('cart', function () {
 		return false;
 	}
 
-	async function createAnonymousCart(item) {
+	async function createAnonymousCart(item, qty) {
 		//Create in FB
 		const newCartRef = await addDoc(collection(db, 'carts'), {
 			userId: 'anonymous',
 			restaurantId: restaurantId.value,
 			createdDate: Date.now(),
 		});
+
 		console.log('New cart written with ID: ', newCartRef.id);
 
-		const newItemRef = addDoc(collection(db, 'carts', newCartRef.id, 'items'), item);
+		let newCartId = newCartRef.id;
+
+		addToExistingCart(newCartId, item, qty);
+
+		// const newItemRef = addDoc(collection(db, 'carts', newCartRef.id, 'items'), item);
 
 		//Add cartId to LS
 		let cartList = JSON.parse(window.localStorage.getItem('cartList'));
 		console.log('cartList: ', cartList);
-		let newCartId = newCartRef.id;
 		// console.log('cartList', cartList);
 		cartList.push(newCartId);
 
