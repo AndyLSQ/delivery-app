@@ -157,7 +157,7 @@
 						<button
 							@click.prevent="
 								// TODO: USE THESE ARGS: cart.add(cartAddItem, qty, notes);
-								cart.addToCart(item, notes);
+								cart.addToCart(item, notes, qty);
 								closeCartAdd();
 							"
 						>
