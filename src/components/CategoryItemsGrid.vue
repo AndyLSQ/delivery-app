@@ -56,8 +56,10 @@
 <template>
 	<div class="category">
 		<div class="category-header">
-			<h2 class="voice2">{{ category.name }}</h2>
-			<!-- <div>{{ category.description }}</div> -->
+			<div class="category-text">
+				<h2 class="voice2">{{ category.name }}</h2>
+				<div>{{ category.description }}</div>
+			</div>
 			<!-- ADD BUTTONS HERE -->
 			<div class="category-panel admin-panel-inline">
 				<button
