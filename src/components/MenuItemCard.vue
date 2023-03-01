@@ -183,70 +183,97 @@
 				/>
 			</button>
 
-			<button
-				@click="editItem(item.id)"
-				v-if="editing != item.id"
-			>
+			<button @click="editItem(item.id)">
+				<!-- v-if="editing != item.id" -->
 				<SvgIcons
 					class="svg-icon edit"
 					name="edit"
 				/>
 			</button>
-			<template v-if="editing == item.id">
+			<div
+				v-if="editing == item.id"
+				class="modal admin-panel"
+				@click=""
+			>
 				<!-- HEREEEEEE -->
 
-				<input
-					type="text"
-					placeholder="Name"
-					v-model="update.name"
-				/>
-				$<input
-					type="number"
-					placeholder="Price"
-					v-model="update.price"
-				/>
-				<input
-					type="text"
-					placeholder="Description"
-					v-model="update.description"
-				/>
-				<select
-					v-model="update.belongsToCategory"
-					:value="update.belongsToCategory"
-					required
+				<div
+					class="dialogue"
+					@click.stop
 				>
-					<!-- <option disabled value="">Please select one</option> -->
-					<option
-						v-for="category in categories"
-						:value="category.id"
-					>
-						{{ category.name }}
-					</option>
-				</select>
-				<input
-					type="text"
-					placeholder="Image URL"
-					v-model="update.imageUrl"
-				/>
-				<button
-					@click="
-						save(item.id)
-						// updateItem(
-						// 	update.id,
-						// 	update.name,
-						// 	update.price,
-						// 	update.description,
-						// 	update.belongsToCategory,
-						// 	update.imageUrl,
-						// )
-					"
-				>
-					Update
-				</button>
-				<button @click="clearEdit()">Cancel</button>
+					<form>
+						<h2 class="voice1">Edit Item</h2>
+						<div class="form-field">
+							<label for="edit-item-name">Name</label>
+							<input
+								id="edit-item-name"
+								type="text"
+								placeholder="Name"
+								v-model="update.name"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="edit-item-price">price</label>
+							<input
+								id="edit-item-price"
+								type="number"
+								placeholder="Price"
+								v-model="update.price"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="edit-item-description">description</label>
+							<textarea
+								id="edit-item-description"
+								type="text"
+								placeholder="Description"
+								rows="4"
+								cols="50"
+								v-model="update.description"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="edit-item-category">category</label>
+							<select
+								id="edit-item-category"
+								v-model="update.belongsToCategory"
+								:value="update.belongsToCategory"
+								required
+							>
+								<!-- <option disabled value="">Please select one</option> -->
+								<option
+									v-for="category in categories"
+									:value="category.id"
+								>
+									{{ category.name }}
+								</option>
+							</select>
+						</div>
+						<div class="form-field">
+							<label for="edit-item-image">Image URL</label>
+							<textarea
+								class="edit-item-image"
+								type="text"
+								placeholder="Image URL"
+								rows="3"
+								cols="50"
+								v-model="update.imageUrl"
+							/>
+						</div>
+						<div class="form-buttons">
+							<button @click="save(item.id)">Update</button>
+							<button
+								type="button"
+								@click="clearEdit()"
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
 
 				<!-- END HEREEEE -->
-			</template>
+			</div>
 		</div>
 		<!-- ======== / ADMIN PANEL ======== -->
 	</div>
