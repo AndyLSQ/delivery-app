@@ -115,6 +115,7 @@
 		padding: 2rem 0rem;
 		color: var(--light-ink);
 		fill: var(--light-ink);
+		/*		overflow: scroll;*/
 	}
 
 	.full-cart {
@@ -169,6 +170,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 30px;
+		/*		overflow: scroll;*/
 	}
 	.cart-item {
 		border: 1px solid var(--light-gray);
@@ -181,6 +183,7 @@
 		/*				justify-items: center;*/
 		justify-content: space-between;
 		box-shadow: var(--card-shadow);
+		overflow: scroll;
 		/*		align-content: center;*/
 	}
 
