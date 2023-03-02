@@ -102,8 +102,8 @@
 			</picture>
 			<div class="card-text">
 				<h3 class="voice3">{{ item.name }}</h3>
+				<div>{{ item.description }}</div>
 				<div>${{ item.price }}</div>
-				<!-- <div>{{ item.description }}</div> -->
 
 				<button
 					@click="openCartAdd(item)"
@@ -139,11 +139,15 @@
 					<div>{{ item.description }}</div>
 					<form action="">
 						<label for="cartNote">Special Requests</label>
-						<input
+						<textarea
+							rows="4"
+							cols="50"
+							maxlength="200"
 							id="cartNote"
 							type="text"
 							v-model="notes"
 						/>
+						<div class="character-counter quiet-voice">{{ notes.length }}/200 characters</div>
 						<label for="quantity">Quantity</label>
 						<input
 							id="quantity"
