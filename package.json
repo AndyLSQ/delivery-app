@@ -10,6 +10,7 @@
       "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
    },
    "dependencies": {
+      "deep-equal": "^2.2.0",
       "firebase": "^9.17.1",
       "pinia": "^2.0.28",
       "slug": "^8.2.2",
