@@ -217,10 +217,36 @@
 							/>
 						</div>
 						<div class="form-field">
+							<label for="edit-item-image">Image URL</label>
+							<textarea
+								class="edit-item-image"
+								type="text"
+								placeholder="Image URL"
+								rows="3"
+								cols="50"
+								v-model="update.imageUrl"
+							/>
+						</div>
+						<div class="form-field preview">
+							<label for="img-preview">Image Preview</label>
+
+							<div class="picture-contain">
+								<!-- <p v-if="imageLoadError">hi there</p> -->
+								<picture id="img-preview">
+									<img
+										:src="update.imageUrl"
+										@error="errorImage"
+									/>
+								</picture>
+							</div>
+						</div>
+						<div class="form-field">
 							<label for="edit-item-price">price</label>
 							<input
 								id="edit-item-price"
 								type="number"
+								step="0.01"
+								min="0"
 								placeholder="Price"
 								v-model="update.price"
 							/>
