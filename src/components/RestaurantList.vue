@@ -120,7 +120,7 @@
 					class="svg-icon"
 					name="add"
 				/>
-				<div>New Restaurant</div>
+				<div>Add Restaurant</div>
 			</button>
 
 			<div
@@ -255,19 +255,5 @@
 <style scoped>
 	.restaurant-card {
 		position: relative;
-	}
-
-	.toggle-add {
-		margin-top: 30px;
-		padding: 12px 24px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.toggle-add .svg-icon {
-		width: 1.1rem;
-		height: 1.1rem;
-		/*		border: 1px solid red;*/
 	}
 </style>
