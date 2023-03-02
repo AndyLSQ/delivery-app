@@ -39,7 +39,7 @@
 		imageUrl: 'https://peprojects.dev/images/square.jpg',
 	});
 
-	function clearForm() {
+	function clearItemForm() {
 		form.name = '';
 		form.price = '';
 		form.category = '';
@@ -55,7 +55,7 @@
 			description: form.description,
 			imageUrl: form.imageUrl,
 		});
-		clearForm();
+		clearItemForm();
 	}
 
 	// == (CATEGORY) ==
@@ -65,6 +65,7 @@
 	});
 
 	function clearCategoryForm() {
+		// console.log('clear category Form');
 		categoryForm.name = '';
 		categoryForm.description = '';
 	}
@@ -111,6 +112,37 @@
 	}
 
 	// == (CATEGORY) ==
+
+	// ===== MODALS =====
+	const addCategoryModalOpen = ref(false);
+	function openAddCategoryModal() {
+		// console.log('open add category modal');
+		addCategoryModalOpen.value = true;
+	}
+	function closeAddCategoryModal() {
+		// console.log('close add category modal');
+		addCategoryModalOpen.value = false;
+		clearCategoryForm();
+		// console.log('addCategoryModalOpen.value: ', addCategoryModalOpen.value);
+	}
+
+	const addItemModalOpen = ref(false);
+	function openAddItemModal() {
+		addItemModalOpen.value = true;
+	}
+	function closeAddItemModal() {
+		addItemModalOpen.value = false;
+		clearItemForm();
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (addCategoryModalOpen && e.keyCode == 27) {
+			addCategoryModalOpen.value = false;
+		}
+		if (addItemModalOpen && e.keyCode == 27) {
+			addItemModalOpen.value = false;
+		}
+	});
 </script>
 
 <template>
@@ -133,80 +165,143 @@
 			</li>
 		</ul>
 		<!-- TODO: Add form to add categories -->
-		<div class="adminPanel addCategory">
-			<form
-				class="adminPanel"
-				@submit.prevent="addCategory()"
+		<div class="admin-add-buttons admin-panel">
+			<button
+				class="toggle-add"
+				@click="openAddCategoryModal()"
 			>
-				<h2 class="voice2">Add Category</h2>
-				<div>
-					<label for="newCategoryName">Category name</label>
-					<input
-						type="text"
-						id="newCategoryName"
-						v-model="categoryForm.name"
-					/>
-				</div>
-				<div>
-					<label for="newCategoryDescription">Description</label>
-					<input
-						type="text"
-						id="newCategoryDescription"
-						v-model="categoryForm.description"
-					/>
-				</div>
+				<SvgIcons
+					class="svg-icon"
+					name="add"
+				/>
+				<div>Add Category</div>
+			</button>
 
-				<button type="submit">Add</button>
-			</form>
-		</div>
-		<div class="adminPanel addItem">
-			<form @submit.prevent="addItem()">
-				<h2 class="voice2">Add Item</h2>
-				<div>
-					<label for="newItemName">Item Name</label>
-					<input
-						type="text"
-						id="newItemName"
-						v-model="form.name"
-					/>
+			<div
+				class="addCategory modal"
+				v-if="addCategoryModalOpen"
+				@click="closeAddCategoryModal()"
+			>
+				<div
+					class="dialogue"
+					@click.stop
+				>
+					<form
+						class="admin-panel-form"
+						@submit.prevent="addCategory()"
+					>
+						<h2 class="voice2">Add Category</h2>
+						<div class="form-field">
+							<label for="newCategoryName">Category name</label>
+							<input
+								type="text"
+								id="newCategoryName"
+								v-model="categoryForm.name"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="newCategoryDescription">Description</label>
+							<input
+								type="text"
+								id="newCategoryDescription"
+								v-model="categoryForm.description"
+							/>
+						</div>
+						<div class="form-buttons">
+							<button type="submit">Add</button>
+							<button
+								class="close"
+								@click="closeAddCategoryModal()"
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
 				</div>
-				<div>
-					<label for="newItemPrice">Price</label>
-					<input
-						type="number"
-						id="newItemPrice"
-						v-model="form.price"
-					/>
+			</div>
+
+			<button
+				class="toggle-add"
+				@click="openAddItemModal()"
+			>
+				<SvgIcons
+					class="svg-icon"
+					name="add"
+				/>
+				<div>Add Item</div>
+			</button>
+
+			<div
+				class="addItem modal"
+				v-if="addItemModalOpen"
+				@click="closeAddItemModal()"
+			>
+				<div
+					class="dialogue"
+					@click.stop
+				>
+					<form
+						class="admin-panel-form"
+						@submit.prevent="addItem()"
+					>
+						<h2 class="voice2">Add Item</h2>
+						<div class="form-field">
+							<label for="newItemName">Item Name</label>
+							<input
+								type="text"
+								id="newItemName"
+								v-model="form.name"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="newItemPrice">Price</label>
+							<input
+								type="number"
+								id="newItemPrice"
+								v-model="form.price"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="newItemDescription">Item Description</label>
+							<input
+								type="text"
+								id="newItemDescription"
+								v-model="form.description"
+							/>
+						</div>
+						<div class="form-field">
+							<label for="newItemName">Category</label>
+							<select v-model="form.category">
+								<option
+									v-for="category in categories"
+									:value="category.id"
+								>
+									{{ category.name }}
+								</option>
+							</select>
+						</div>
+						<div class="form-field">
+							<label for="newItemImageUrl">Item ImageUrl</label>
+							<textarea
+								rows="2"
+								cols="50"
+								type="text"
+								id="newItemImageUrl"
+								v-model="form.imageUrl"
+							/>
+						</div>
+						<div class="form-buttons">
+							<button type="submit">Add</button>
+							<button
+								class="close"
+								@click="closeAddItemModal()"
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
 				</div>
-				<div>
-					<label for="newItemDescription">Item Description</label>
-					<input
-						type="text"
-						id="newItemDescription"
-						v-model="form.description"
-					/>
-				</div>
-				<div>
-					<label for="newItemName">Category</label>
-					<select v-model="form.category">
-						<option
-							v-for="category in categories"
-							:value="category.id"
-						>
-							{{ category.name }}
-						</option>
-					</select>
-				</div>
-				<div>
-					<label for="newItemImageUrl">Item ImageUrl</label>
-					<input
-						type="text"
-						id="newItemImageUrl"
-						v-model="form.imageUrl"
-					/>
-				</div>
-				<button type="submit">Add</button>
-			</form>
+			</div>
 		</div>
 	</div>
 </template>
@@ -225,5 +320,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 40px;
+	}
+
+	.admin-add-buttons {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+		padding: 30px 0px;
+		/*		justify-content: center;*/
 	}
 </style>
