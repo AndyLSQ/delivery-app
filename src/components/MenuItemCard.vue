@@ -323,10 +323,10 @@
 		/*		width: 60vw; Todo: Define this later */
 	}
 
-	.modal picture {
+	/*	.modal picture {
 		border: 2px solid blue;
 		height: 400px;
-	}
+	}*/
 
 	img {
 		width: 100%;
