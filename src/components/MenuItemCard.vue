@@ -187,7 +187,8 @@
 				/>
 			</button>
 
-			<button @click="editItem(item.id)">
+			<!-- ======== "EDIT" MODAL ======== -->
+			<button @click="editItem(item, item.id)">
 				<!-- v-if="editing != item.id" -->
 				<SvgIcons
 					class="svg-icon edit"
@@ -197,7 +198,7 @@
 			<div
 				v-if="editing == item.id"
 				class="modal admin-panel"
-				@click=""
+				@click="clearEdit()"
 			>
 				<!-- HEREEEEEE -->
 
