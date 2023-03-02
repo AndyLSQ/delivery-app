@@ -253,19 +253,14 @@
 								</option>
 							</select>
 						</div>
-						<div class="form-field">
-							<label for="edit-item-image">Image URL</label>
-							<textarea
-								class="edit-item-image"
-								type="text"
-								placeholder="Image URL"
-								rows="3"
-								cols="50"
-								v-model="update.imageUrl"
-							/>
-						</div>
+
 						<div class="form-buttons">
-							<button @click="save(item.id)">Update</button>
+							<button
+								type="button"
+								@click="save(item)"
+							>
+								Update
+							</button>
 							<button
 								type="button"
 								@click="clearEdit()"
