@@ -17,21 +17,23 @@
 	// ============= ITEM U.D. =============
 
 	// PULL FB DATA INTO UPDATE FORM (CREATE NEW REACTIVE OBJECTS)
-	const update = reactive({ ...props.item });
+	// const update = reactive({ ...props.item });
 
-	function save(id) {
-		const recordToSave = {
-			...props.item,
-			...update,
-		};
-		console.log('recordToSave: ', recordToSave);
-		setDoc(doc(db, 'restaurants', route.params.slug, 'items', id), recordToSave);
-	}
+	// function save(id) {
+	// 	console.log(update);
+	// 	// const recordToSave = {
+	// 	// 	...props.item,
+	// 	// 	...update,
+	// 	// };
+	// 	// console.log('recordToSave: ', recordToSave);
+	// 	// setDoc(doc(db, 'restaurants', route.params.slug, 'items', id), recordToSave);
+	// }
 
 	// ==== UPDATE ====
 	const editing = ref(false);
+	const update = reactive({ ...props.item });
 
-	function editItem(id, name) {
+	function editItem(item, id) {
 		editing.value = id;
 	}
 
@@ -39,16 +41,34 @@
 		editing.value = false;
 	}
 
-	function updateItem(id, newName, newPrice, newDescription, newCategory, newImageUrl) {
-		setDoc(doc(db, 'restaurants', route.params.slug, 'items', id), {
-			name: newName,
-			price: newPrice,
-			description: newDescription,
-			belongsToCategory: newCategory,
-			imageUrl: newImageUrl,
-		});
+	function save(item) {
+		// console.log(item.id);
+		// console.log('save() update.value: ', update.value);
+		const recordToSave = {
+			// ...props.item,
+			...update,
+		};
+		// console.log('recordToSave: ', recordToSave);
+		setDoc(doc(db, 'restaurants', route.params.slug, 'items', item.id), recordToSave);
 		clearEdit();
 	}
+
+	// function updateItem(id, newName, newImageUrl, newPrice, newDescription, newCategory) {
+	// 	setDoc(doc(db, 'restaurants', route.params.slug, 'items', id), {
+	// 		name: newName,
+	// 		imageUrl: newImageUrl,
+	// 		price: newPrice,
+	// 		description: newDescription,
+	// 		belongsToCategory: newCategory,
+	// 	});
+	// 	clearEdit();
+	// }
+
+	document.addEventListener('keydown', (e) => {
+		if (editing.value && e.keyCode == 27) {
+			clearEdit();
+		}
+	});
 
 	// ==== DELETE =====
 	async function removeItem(id) {
@@ -57,6 +77,7 @@
 			await deleteDoc(record);
 		}
 	}
+	// ==== / DELETE =====
 
 	// ============= CART-ADD MODAL =============
 	const cartAddOpen = ref(false);
