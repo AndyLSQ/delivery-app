@@ -142,6 +142,9 @@
 		if (addItemModalOpen && e.keyCode == 27) {
 			addItemModalOpen.value = false;
 		}
+		// if (editCategoryModalOpen && e.keyCode == 27) {
+		// 	editCategoryModalOpen.value = false;
+		// }
 	});
 </script>
 
