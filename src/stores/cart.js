@@ -4,6 +4,7 @@ import { useFirestore, useCollection, useDocument } from 'vuefire';
 import { collection, doc, getDoc, addDoc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { userService } from '@/services/userService';
 import { useRoute } from 'vue-router';
+import deepEqual from 'deep-equal';
 
 export const useCartStore = defineStore('cart', function () {
 	// Pull cart DB
@@ -39,24 +40,29 @@ export const useCartStore = defineStore('cart', function () {
 	// 	return items.value.length;
 	// });
 
-	// TODO: EXPAND TO HANDLE NOTES
 	const groupedItems = computed(function () {
 		return items.value.reduce(function (group, item) {
-			console.log('group: ', group);
-			// is there a key called guac
-			if (group[item.name]) {
-				// if (group[item.notes]){
-				// } else {
-				// 	group[item.name] = [];
-				// }
-				// group[item.name] = group[item.name];
-			} else {
-				group[item.name] = [];
+			let groupName = [item.name] + '_' + [item.notes];
+			if (!group[groupName]) {
+				group[groupName] = [];
+				group[groupName].subtotal = 0;
 			}
-			group[item.name].push(item);
+
+			group[groupName].push(item);
+			group[groupName].subtotal += item.price;
+			// console.log('group[groupName].subtotal: ', group[groupName].subtotal);
 			return group;
 		}, {});
-		// group (the "accumulator") starts with empty object {}
+	});
+
+	const cartSubtotal = computed(function () {
+		const groupedItemsArray = Object.values(groupedItems.value);
+
+		let cartSub = 0;
+		for (const group of groupedItemsArray) {
+			cartSub += group.subtotal;
+		}
+		return cartSub;
 	});
 
 	async function remove(itemId) {
@@ -107,7 +113,7 @@ export const useCartStore = defineStore('cart', function () {
 	async function handleLocalCarts(item, qty) {
 		// 1. check if any carts in local storage cart list
 		if (window.localStorage.getItem('cartList')) {
-			console.log('yes existing cart list. ', localCartList.value);
+			// console.log('yes existing cart list. ', localCartList.value);
 			// 2. loop thru carts in LS, check each for restaurant ID match
 			const restaurantCartFound = await findRestaurantCart();
 			if (restaurantCartFound) {
@@ -118,7 +124,7 @@ export const useCartStore = defineStore('cart', function () {
 				// add item, & assign cartId to local storage
 			}
 		} else {
-			console.log('no cart list yet. ', localCartList.value);
+			// console.log('no cart list yet. ', localCartList.value);
 			// 3. if no carts in LS, create a new blank cartlist
 			localStorage.setItem('cartList', JSON.stringify([]));
 			createAnonymousCart(item, qty);
@@ -128,12 +134,12 @@ export const useCartStore = defineStore('cart', function () {
 	}
 
 	function addToExistingCart(cartId, item, qty) {
-		console.log(
-			'(Step 2 Should be 2nd bc should use the results of step 1) FOUND CART MATCH IN DB: ',
-		);
-		console.log('addToEXISTING -- cartId: ', cartId);
-		console.log('addToEXISTING -- item: ', item);
-		console.log('addToEXISTING -- qty: ', qty);
+		// console.log(
+		// 	'(Step 2 Should be 2nd bc should use the results of step 1) FOUND CART MATCH IN DB: ',
+		// );
+		// console.log('addToEXISTING -- cartId: ', cartId);
+		// console.log('addToEXISTING -- item: ', item);
+		// console.log('addToEXISTING -- qty: ', qty);
 
 		for (let i = 0; i < qty; i++) {
 			// const newItemRef =
@@ -142,7 +148,7 @@ export const useCartStore = defineStore('cart', function () {
 	}
 
 	function restaurantNotFoundAction() {
-		console.log('Step 2 CART MATCH NOT FOUND IN DB');
+		// console.log('Step 2 CART MATCH NOT FOUND IN DB');
 	}
 
 	async function findRestaurantCart() {
@@ -176,7 +182,7 @@ export const useCartStore = defineStore('cart', function () {
 			createdDate: Date.now(),
 		});
 
-		console.log('New cart written with ID: ', newCartRef.id);
+		// console.log('New cart written with ID: ', newCartRef.id);
 
 		let newCartId = newCartRef.id;
 
@@ -186,7 +192,7 @@ export const useCartStore = defineStore('cart', function () {
 
 		//Add cartId to LS
 		let cartList = JSON.parse(window.localStorage.getItem('cartList'));
-		console.log('cartList: ', cartList);
+		// console.log('cartList: ', cartList);
 		// console.log('cartList', cartList);
 		cartList.push(newCartId);
 
@@ -273,7 +279,7 @@ export const useCartStore = defineStore('cart', function () {
 	return {
 		items,
 		groupedItems,
-
+		cartSubtotal,
 		// count,
 		// add,
 		remove: remove,
