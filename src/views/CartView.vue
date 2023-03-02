@@ -53,13 +53,17 @@
 				<div class="cart-item-text">
 					<h2 class="voice3">{{ group[0].name }}</h2>
 					<div
-						v-if="group.notes"
-						class="groupNotes"
+						v-if="group[0].notes"
+						class="group-notes"
 					>
-						<em>{{ group.length }}</em>
+						<em>
+							{{ group[0].notes }}
+						</em>
 					</div>
-					<p></p>
-					<p>${{ group[0].price }}</p>
+					<!-- <em>{{ group.length }}</em> -->
+
+					<!-- <p>${{ group[0].price * group.length }}</p> -->
+					<p>${{ group.subtotal }}</p>
 					<!-- <div>${{ item.subtotal }}</div> -->
 				</div>
 				<div class="quantity-buttons">
@@ -84,7 +88,7 @@
 					<div class="quantity">{{ group.length }}</div>
 					<!-- TODO: NEED TO CHANGE THIS -->
 					<!-- Doesnt work if youre on a diff restaurant page -->
-					<button @click="cart.addToCart(group[0])">
+					<button @click="cart.addToCart(group[0], group[0].notes, 1)">
 						<SvgIcons
 							class="svg-icon"
 							name="add"
@@ -96,7 +100,7 @@
 
 		<!-- <p>Total quantity: {{ cart.quantity }}</p> -->
 		<ul class="cartCalc">
-			<li class="voice3">Cart Subtotal: ${{ cart.allSubtotal }}</li>
+			<li class="voice3">{{ cart.restaurantId }} Cart Subtotal: ${{ cart.cartSubtotal }}</li>
 			<!-- <li>Delivery fee:</li>
 		<li>Tax:</li>
 		<li>Total:</li> -->
@@ -185,6 +189,11 @@
 		box-shadow: var(--card-shadow);
 		overflow: scroll;
 		/*		align-content: center;*/
+	}
+
+	.cart-item-text {
+		/*		border: 1px solid red;*/
+		max-width: 60%;
 	}
 
 	.quantity-buttons {
