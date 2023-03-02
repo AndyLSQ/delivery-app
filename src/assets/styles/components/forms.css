@@ -18,6 +18,11 @@ form input {
 	padding: 8px;
 	border: 2px solid var(--light-ink);
 	border-radius: 5px;
+	/*	min-width: 40ch;*/
+}
+
+form input[type='text'] {
+	min-width: 40ch;
 }
 
 form select {
