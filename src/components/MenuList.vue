@@ -257,6 +257,29 @@
 							/>
 						</div>
 						<div class="form-field">
+							<label for="newItemImageUrl">Item ImageUrl</label>
+							<textarea
+								rows="2"
+								cols="50"
+								type="text"
+								id="newItemImageUrl"
+								v-model="form.imageUrl"
+							/>
+						</div>
+						<div class="form-field preview">
+							<label for="img-preview">Image Preview</label>
+
+							<div class="picture-contain">
+								<!-- <p v-if="imageLoadError">hi there</p> -->
+								<picture id="img-preview">
+									<img
+										:src="form.imageUrl"
+										@error="errorImage"
+									/>
+								</picture>
+							</div>
+						</div>
+						<div class="form-field">
 							<label for="newItemPrice">Price</label>
 							<input
 								type="number"
@@ -282,16 +305,6 @@
 									{{ category.name }}
 								</option>
 							</select>
-						</div>
-						<div class="form-field">
-							<label for="newItemImageUrl">Item ImageUrl</label>
-							<textarea
-								rows="2"
-								cols="50"
-								type="text"
-								id="newItemImageUrl"
-								v-model="form.imageUrl"
-							/>
 						</div>
 						<div class="form-buttons">
 							<button type="submit">Add</button>
