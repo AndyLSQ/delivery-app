@@ -1,14 +1,18 @@
 html {
 	--paper: var(--light-green);
 	--paper-color: var(--light-green2);
+	--paper-card: var(--white);
 	--paper-gray: hsla(0, 0%, 96%, 1);
 	--ink: var(--text-gray);
 	--light-ink: hsla(60, 0%, 44%, 1);
+	--modal-background: rgba(0, 0, 0, 0.5);
+	--form-field-background: var(--white);
+	--form-field-border: var(--light-gray);
 
 	--paper-dark: var(--dark-green);
 
 	--light-green: hsla(160, 68%, 99%, 1);
-	--light-green2: hsla(160, 68%, 96%, 1);
+	--light-green2: hsla(160, 40%, 94%, 1);
 	--dark-green: hsla(146, 12%, 13%, 1);
 	--text-gray: hsla(0, 0%, 22%, 1);
 	--light-gray: hsla(0, 0%, 85%, 1);
@@ -29,14 +33,28 @@ html {
 
 	--shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 	--shadow-subtle: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-	--card-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+	--card-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
 	--card-shadow-hover: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
-	--corners: 10px;
+	--corners: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
 	html {
+		--paper: hsla(147, 18%, 19%, 1);
+		--paper-color: hsla(147, 13%, 12%, 1);
+		--paper-card: hsla(151, 11%, 17%, 1);
+		--ink: var(--white);
+		--light-ink: hsla(60, 0%, 75%, 1);
+		--highlight: hsla(151, 89%, 34%, 1);
+		--highlight-hover: hsla(151, 98%, 38%, 1);
+		--modal-background: rgba(255, 255, 255, 0.25);
+		--white: var(--light-green2);
+		--form-field-background: hsla(0, 0%, 15%, 1);
+		--form-field-border: hsla(0, 0%, 45%, 1);
+
+		--shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+		--paper-dark: hsla(147, 18%, 10%, 1);
 		/*		--black: #111111;
 		--white: #efefef;
 
