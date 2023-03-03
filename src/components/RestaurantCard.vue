@@ -136,6 +136,7 @@
 				name="trash"
 			/>
 		</button>
+		<!-- ======== / FAVORITES ======== -->
 
 		<!-- ======== "EDIT" MODAL ======== -->
 		<button
