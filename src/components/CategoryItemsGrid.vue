@@ -116,13 +116,13 @@
 	.category {
 		/*		border: 4px solid orange;*/
 		background-color: var(--paper-color);
-		border-radius: 20px;
+		border-radius: 10px;
 		box-shadow: var(--card-shadow);
-		padding: 20px;
+		padding: 30px;
 		padding-bottom: 40px;
 		display: flex;
 		flex-direction: column;
-		gap: 25px;
+		gap: 35px;
 	}
 
 	.category-header {
