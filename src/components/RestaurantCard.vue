@@ -280,9 +280,9 @@
 		align-items: center;
 		cursor: pointer;
 		fill: var(--light-ink);
-		background-color: var(--white);
+		background-color: var(--form-field-background);
 		box-shadow: var(--card-shadow);
-		border: 1px solid var(--light-gray);
+		border: 1px solid var(--form-field-border);
 	}
 	.svg-icon {
 		height: 1.5rem;
