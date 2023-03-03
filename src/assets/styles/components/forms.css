@@ -16,8 +16,10 @@ form input {
 	font-family: inherit;
 	/*	font-size: 1.1rem;*/
 	padding: 8px;
-	border: 2px solid var(--light-ink);
+	border: 2px solid var(--form-field-border);
 	border-radius: 5px;
+	background-color: var(--form-field-background);
+	color: var(--ink);
 	/*	min-width: 40ch;*/
 }
 
@@ -30,8 +32,10 @@ form select {
 	/*	font-size: 1.1rem;*/
 	padding: 8px;
 	padding-right: 20px;
-	border: 2px solid var(--light-ink);
+	border: 2px solid var(--form-field-border);
 	border-radius: 5px;
+	background-color: var(--form-field-background);
+	color: var(--ink);
 }
 
 select,
@@ -43,10 +47,12 @@ select option {
 }*/
 
 form textarea {
-	border: 2px solid var(--light-ink);
+	border: 2px solid var(--form-field-border);
 	border-radius: 5px;
 	padding: 8px;
 	font-family: inherit;
+	background-color: var(--form-field-background);
+	color: var(--ink);
 	/*	font-size: inherit;*/
 }
 
@@ -92,6 +98,12 @@ form #img-preview img {
 	text-transform: capitalize;
 }
 
+form input[type='checkbox'] {
+	background-color: red;
+	fill: red;
+	color: red;
+	stroke: red;
+}
 .checkbox-label {
 	/*	font-size: 1.1rem;*/
 }
