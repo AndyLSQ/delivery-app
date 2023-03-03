@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, onBeforeMount, onMounted } from 'vue';
+	import { ref, computed, onBeforeMount, onMounted } from 'vue';
 	import { RouterLink, RouterView, useRoute } from 'vue-router';
 	import SiteMenu from '@/components/SiteMenu.vue';
 	import { useInterfaceStore } from '@/stores/interface';
@@ -33,6 +33,21 @@
 			// user.setWelcome();
 		}
 	});
+
+	// const prefersDark =
+	// 	window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+	// const darkMode = computed(function () {
+	// 	if (prefersDark) {
+	// 		console.log('prefersDark: ', prefersDark);
+	// 		$('html').addClass('dark');
+	// 	}
+
+	// 	$('.dark-mode-switcher').on('click', function (e) {
+	// 		$('html').toggleClass('dark');
+	// 		e.preventDefault();
+	// 	});
+	// });
 
 	// const WelcomeShown = ref(true);
 </script>
@@ -96,6 +111,13 @@
 				>GitHub</a
 			>
 		</div>
+		<!-- 	<button
+			class="dark-mode-switcher"
+			type="button"
+			value="Toggle dark mode"
+		>
+			Toggle dark mode
+		</button> -->
 	</footer>
 </template>
 
