@@ -145,6 +145,12 @@
 		border-bottom: 3px solid red;
 	}
 
+	/* FOR SIGN IN SIGN OUT MODAL */
+	.dialogue {
+		position: relative;
+		padding: 60px 50px;
+	}
+
 	footer {
 		box-shadow: var(--shadow);
 		background-color: var(--paper-dark);
