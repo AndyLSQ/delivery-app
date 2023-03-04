@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, computed } from 'vue';
+	import { ref, reactive, computed } from 'vue';
 	import { collection, doc, addDoc, deleteDoc, setDoc } from 'firebase/firestore';
 	import { useFirestore, useCollection, useDocument } from 'vuefire';
 	import MenuItemCard from '@/components/MenuItemCard.vue';
@@ -26,6 +26,7 @@
 	// ==== UPDATE ====
 	// == CATEGORY ==
 	const editing = ref(false);
+	const update = reactive({ ...props.category });
 
 	function editCategory(id) {
 		editing.value = id;
@@ -36,13 +37,23 @@
 		editing.value = false;
 	}
 
-	function updateCategory(id, newName, newDescription) {
-		setDoc(doc(db, 'restaurants', route.params.slug, 'categories', id), {
-			name: newName,
-			description: newDescription,
-		});
+	function save(category) {
+		// console.log('category: ', category);
+		const recordToSave = {
+			...update,
+		};
+		setDoc(doc(db, 'restaurants', route.params.slug, 'categories', category.id), recordToSave);
+
 		clearEdit();
 	}
+
+	// function updateCategory(id, newName, newDescription) {
+	// 	setDoc(doc(db, 'restaurants', route.params.slug, 'categories', id), {
+	// 		name: newName,
+	// 		description: newDescription,
+	// 	});
+	// 	clearEdit();
+	// }
 
 	// ==== DELETE =====
 	async function removeCategory(id) {
@@ -78,22 +89,52 @@
 						name="edit"
 					/>
 				</button>
-				<template v-if="editing == category.id">
-					<input
-						type="text"
-						placeholder="Name"
-						v-model="category.name"
-					/>
-					<input
-						type="text"
-						placeholder="Description"
-						v-model="category.description"
-					/>
-					<button @click="updateCategory(category.id, category.name, category.description)">
-						Update
-					</button>
-					<button @click="clearEdit()">Cancel</button>
-				</template>
+
+				<!-- ---EDIT MODAL--- -->
+				<Transition>
+					<div
+						class="modal admin-panel"
+						v-if="editing == category.id"
+						@click="clearEdit()"
+					>
+						<div
+							class="dialogue"
+							@click.stop
+						>
+							<form>
+								<h2 class="voice1">Edit Category</h2>
+								<div class="form-field">
+									<label for="edit-category-name-input">Name</label>
+									<input
+										id="edit-category-name-input"
+										type="text"
+										placeholder="Name"
+										v-model="update.name"
+									/>
+								</div>
+								<div class="form-field">
+									<label for="edit-category-description-input">Description</label>
+									<input
+										id="edit-category-description-input"
+										type="text"
+										placeholder="Description"
+										v-model="update.description"
+									/>
+								</div>
+								<div class="form-buttons">
+									<button @click.prevent="save(category)">Update</button>
+
+									<button
+										type="button"
+										@click="clearEdit()"
+									>
+										Cancel
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</Transition>
 			</div>
 		</div>
 
