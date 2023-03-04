@@ -123,8 +123,8 @@
 			</picture>
 			<div class="card-text">
 				<h3 class="voice3">{{ item.name }}</h3>
-				<div>{{ item.description }}</div>
-				<div>${{ item.price }}</div>
+				<div class="item-description">{{ item.description }}</div>
+				<div class="item-price">{{ $filters.currencyUSD(item.price) }}</div>
 
 				<button
 					@click="openCartAdd(item)"
@@ -332,6 +332,15 @@
 	}
 	.item-card {
 		cursor: pointer;
+	}
+
+	.item-card .item-description {
+		color: var(--light-ink);
+	}
+
+	.item-card .item-price {
+		margin-top: 15px;
+		color: var(--highlight);
 	}
 
 	.add-to-cart-button {
