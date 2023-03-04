@@ -22,6 +22,10 @@ html {
 	font-weight: bold;
 }
 
+.highlight-voice {
+	color: var(--highlight);
+}
+
 @media (min-width: 600px) {
 	.loud-voice {
 		font-weight: 700; /* or variable font */
