@@ -4,7 +4,7 @@ html {
 	--paper-card: var(--white);
 	--paper-gray: hsla(0, 0%, 96%, 1);
 	--ink: var(--text-gray);
-	--light-ink: hsla(60, 0%, 44%, 1);
+	--light-ink: hsla(60, 0%, 55%, 1);
 	--modal-background: rgba(0, 0, 0, 0.5);
 	--form-field-background: var(--white);
 	--form-field-border: var(--light-gray);
