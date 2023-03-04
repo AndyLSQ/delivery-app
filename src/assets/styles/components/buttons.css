@@ -33,11 +33,11 @@ button.inline-link {
 	width: 2.5rem;
 	height: 2.5rem;
 	display: flex;
-	fill: var(--ink);
+	fill: var(--highlight);
 }
 
 .closeX:hover {
-	fill: var(--highlight);
+	fill: var(--ink);
 }
 
 .closeX .svg-icons {
