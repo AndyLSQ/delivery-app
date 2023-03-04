@@ -34,11 +34,15 @@
 <template>
 	<!-- NEW -->
 	<button
-		v-if="user.modalOpen"
 		@click="user.closeModal()"
+		class="closeX"
 	>
-		Close
+		<SvgIcons
+			class="svg-icons"
+			name="close"
+		/>
 	</button>
+
 	<div v-if="user.authUser">
 		<button
 			type="button"
@@ -57,7 +61,7 @@
 			@submit.prevent="user.signUp(user.form.username, user.form.password)"
 			v-if="authType == 'signUp'"
 		>
-			<h2 class="voice1">Sign Up</h2>
+			<h2 class="voice1 highlight-voice">Sign Up</h2>
 			<div class="form-field">
 				<label for="email1">email</label>
 				<input
@@ -68,38 +72,48 @@
 			</div>
 			<div class="form-field password">
 				<label for="password1">password</label>
-				<input
-					id="password1"
-					:type="passwordVisibility"
-					v-model="user.form.password"
-					required
-				/>
-				<div
-					class="pwToggleContain"
-					@click="togglePasswordVisibility()"
-				>
-					<SvgIcons
-						class="pwToggle"
-						name="show"
-						v-if="passwordVisibility == 'password'"
+				<div class="password-input-field">
+					<input
+						id="password1"
+						:type="passwordVisibility"
+						v-model="user.form.password"
+						required
 					/>
-					<SvgIcons
-						class="pwToggle"
-						name="hide"
-						v-if="passwordVisibility == 'text'"
-					/>
+					<div
+						class="pwToggleContain"
+						@click="togglePasswordVisibility()"
+					>
+						<SvgIcons
+							class="pwToggle"
+							name="show"
+							v-if="passwordVisibility == 'password'"
+						/>
+						<SvgIcons
+							class="pwToggle"
+							name="hide"
+							v-if="passwordVisibility == 'text'"
+						/>
+					</div>
 				</div>
 			</div>
-			<button type="submit">Sign up</button>
+			<button
+				type="submit"
+				class="default-button1"
+			>
+				Sign up
+			</button>
 			<div v-if="user.errorMessage">{{ user.errorMessage }}</div>
 			<div class="authToggle">
-				<p>Already have an account?</p>
-				<button
-					type="button"
-					@click="toggleAuthScreen()"
-				>
-					Sign in
-				</button>
+				<p>
+					Already have an account?
+					<button
+						class="inline-link"
+						type="button"
+						@click="toggleAuthScreen()"
+					>
+						Sign in
+					</button>
+				</p>
 			</div>
 		</form>
 
@@ -108,7 +122,7 @@
 			@submit.prevent="user.signIn(user.form.username, user.form.password)"
 			v-if="authType == 'signIn'"
 		>
-			<h2 class="voice1">Sign In</h2>
+			<h2 class="voice1 highlight-voice">Sign In</h2>
 			<div class="form-field">
 				<label for="email2">email</label>
 				<input
@@ -119,62 +133,102 @@
 			</div>
 			<div class="form-field password">
 				<label for="password2">password</label>
-				<input
-					id="password2"
-					:type="passwordVisibility"
-					v-model="user.form.password"
-					required
-				/>
-				<div
-					class="pwToggleContain"
-					@click="togglePasswordVisibility()"
-				>
-					<SvgIcons
-						class="pwToggle"
-						name="show"
-						v-if="passwordVisibility == 'password'"
+				<div class="password-input-field">
+					<input
+						id="password2"
+						:type="passwordVisibility"
+						v-model="user.form.password"
+						required
 					/>
-					<SvgIcons
-						class="pwToggle"
-						name="hide"
-						v-if="passwordVisibility == 'text'"
-					/>
+					<div
+						class="pwToggleContain"
+						@click="togglePasswordVisibility()"
+					>
+						<SvgIcons
+							class="pwToggle"
+							name="show"
+							v-if="passwordVisibility == 'password'"
+						/>
+						<SvgIcons
+							class="pwToggle"
+							name="hide"
+							v-if="passwordVisibility == 'text'"
+						/>
+					</div>
 				</div>
 				<!-- <button type="button" @click="togglePasswordVisibility()">Show/Hide Password</button> -->
 			</div>
-			<button type="submit">Sign in</button>
+			<button
+				type="submit"
+				class="default-button1"
+			>
+				Sign in
+			</button>
 			<div v-if="user.errorMessage">{{ user.errorMessage }}</div>
 			<div class="authToggle">
-				<p>Don't have an account yet?</p>
-				<button
-					type="button"
-					@click="toggleAuthScreen()"
-				>
-					Sign up
-				</button>
+				<p>
+					Don't have an account yet?
+					<button
+						class="inline-link"
+						type="button"
+						@click="toggleAuthScreen()"
+					>
+						Sign up
+					</button>
+				</p>
 			</div>
 		</form>
 	</div>
 </template>
 
 <style scoped>
-	.form-field.password {
-		border: 2px solid red;
-		display: flex;
-		/*		justify-content: center;*/
-		align-items: center;
+	template {
+		/*		position: relative;*/
 	}
+
+	.dialogue {
+		color: red;
+		border: 10px solid red;
+	}
+
+	.closeX {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+	}
+
+	.form-field.password {
+		/*		border: 2px solid red;*/
+		align-items: center;
+		/*		position: relative;*/
+	}
+	.password-input-field {
+		/*		border: 3px solid purple;*/
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+
+	.password-input-field input {
+		/*		width: 100%;*/
+	}
+
 	.pwToggleContain {
 		display: block;
-		border: 3px solid blue;
-		width: 2rem;
-		height: 2rem;
+		/*		border: 3px solid blue;*/
+		width: 1.75rem;
+		height: 1.75rem;
 		cursor: pointer;
+		position: absolute;
+		right: 1em;
+		/*		top: 0;*/
 	}
 	.pwToggle {
 		display: block;
 		width: 100%;
 		height: 100%;
+		fill: var(--light-ink);
 		/*display: grid;
 		place-items: center;*/
 	}
