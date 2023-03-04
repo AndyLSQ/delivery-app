@@ -6,19 +6,45 @@ button:hover {
 	transition: 0.2s;
 }
 
+button.default-button1 {
+	background-color: var(--highlight);
+	color: var(--white);
+	border: none;
+	padding: 10px 30px;
+	border-radius: var(--corners);
+	font-family: inherit;
+	font-size: 1rem;
+}
+
+button.inline-link {
+	display: inline;
+	padding: 0 0.25ch;
+	font-family: inherit;
+	font-size: inherit;
+	background-color: transparent;
+	color: var(--highlight);
+	border: none;
+	text-decoration: underline;
+}
+
 .closeX {
 	background-color: transparent;
 	border: none;
 	width: 2.5rem;
 	height: 2.5rem;
 	display: flex;
+	fill: var(--ink);
+}
+
+.closeX:hover {
+	fill: var(--highlight);
 }
 
 .closeX .svg-icons {
 	/*	border: 2px solid blue;*/
 	/*	object-fit: cover;*/
 	height: 100%;
-	fill: var(--ink);
+	/*	fill: var(--ink);*/
 	/*	width: 100%;*/
 }
 
